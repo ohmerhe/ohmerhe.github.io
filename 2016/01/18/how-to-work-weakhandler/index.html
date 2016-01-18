@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: kotlin | Ohmer&#39;s Blog</title>
+  <title>WeakHandler是怎么解决Handler的内存问题的 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="/child/tags/kotlin/index.html">
+  <meta name="description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
+Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WeakHandler是怎么解决Handler的内存问题的">
+<meta property="og:url" content="/child/2016/01/18/how-to-work-weakhandler/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
+Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta property="og:image" content="https://raw.githubusercontent.com/badoo/android-weak-handler/master/WeakHandler.png">
+<meta property="og:updated_time" content="2016-01-18T11:58:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="WeakHandler是怎么解决Handler的内存问题的">
+<meta name="twitter:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
+Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
   
   
     <link rel="icon" href="favicon.png">
@@ -133,117 +138,101 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#kotlin</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-how-to-work-weakhandler" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2016/01/02/object-class-class/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/ski_evening.jpg?imageView2/1/w/200)" alt="类与对象 —— 类（一）" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/bridge_huge.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/02/object-class-class/">类与对象 —— 类（一）</a>
+    <h1 class="article-title" itemprop="name">
+      WeakHandler是怎么解决Handler的内存问题的
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/01/02/object-class-class/">
-      <time datetime="2016-01-02T08:01:28.000Z" itemprop="datePublished">2016 Jan 2</time>
+    <a href="/2016/01/18/how-to-work-weakhandler/">
+      <time datetime="2016-01-18T09:20:49.000Z" itemprop="datePublished">2016-01-18</time>
     </a>
   </div>
 
 
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
       
-    </header>
-  </div>
-</article>
-    
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2015/12/22/class-object-generic/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/sunrise.jpg?imageView2/1/w/200)" alt="类与对象 —— 泛型" class="thumbnail-image"></span>
-  
-</a>
+                
+        <h2 id="u95EE_u9898_u56DE_u987E"><a href="#u95EE_u9898_u56DE_u987E" class="headerlink" title="问题回顾"></a>问题回顾</h2><h3 id="u5185_u5B58_u6CC4_u9732"><a href="#u5185_u5B58_u6CC4_u9732" class="headerlink" title="内存泄露"></a>内存泄露</h3><p>什么是内存泄露，请参考<a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="external">Java的内存泄漏</a></p>
+<h3 id="Handler_u5185_u5B58_u6CC4_u9732"><a href="#Handler_u5185_u5B58_u6CC4_u9732" class="headerlink" title="Handler内存泄露"></a>Handler内存泄露</h3><p>对于安卓的初学者，常见的handler的写法如下：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public class SampleActivity extends Activity &#123;&#10;&#10;  private final Handler mHandler = new Handler() &#123;&#10;    @Override&#10;    public void handleMessage(Message msg) &#123;&#10;      // ... &#10;    &#125;&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，mHandler作为SampleActivity的内部匿名类的对象，持有对父类对象的引用。为了保证在子线程（一般是后台线程，可能比较耗时）能够通过Handler和主线程进行通讯，一般该子线程需要持有对应Handler的对象。因此，如上的代码即使SampleActivity被关闭，mHandler由于子线程的引用并不会被回收，同样mHandler厘面引用的SampleActivity对象也不会被回收（内存泄露）。</p>
+<h3 id="Runnable_u5185_u5B58_u6CC4_u9732"><a href="#Runnable_u5185_u5B58_u6CC4_u9732" class="headerlink" title="Runnable内存泄露"></a>Runnable内存泄露</h3><p>在发起一个延时操作时，通常会这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mHandler.postDelayed(new Runnable() &#123;&#10;  @Override&#10;  public void run() &#123; /* ... */ &#125;&#10;&#125;, 10 * 60 * 1000);</span><br></pre></td></tr></table></figure>
+<p>这里的实现Runnable接口的内部匿名类同样也持有了外部类（通常是Activity）的引用，这个对象作为Message的属性会一直存在直到达到指定的延时时长。这就很有可能在Activity被关闭时导致Activity不能及时被回收。</p>
+<p>有一些文章说这种情况也会造成mHandler的泄露，这一点我不太认同，因为Message对象或者后面保存Message的MessageQueue本身都没有持有对mHandler的引用，所以按理说这里应该不会造成mHandler的泄露。</p>
+<h2 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于上面的问题，已经可以找到比较多的解决方案，如下：</p>
+<ul>
+<li>静态内部类或独立类，一般针对Handler泄露的方案。既避免使用非静态内部类，这样Handler的对象就不会因为持有外部Activity的对象而造成泄露。</li>
+<li>弱引用，能够从根源处解决内存泄露问题。为了编写代码的方便性，一般不建议Runnable使用静态内部类或独立类来解决Runnable的泄露问题，而是通过让系统Message持有一个弱引用（<a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="external">参考</a>）来解决这个问题。</li>
+<li>在逻辑上控制，这个受限于业务的限制，不过如果逻辑允许的话，可以在页面关闭时将对应的线程结束，或者将Runnable对象从队列中移除<code>mHandler.removeCallback()</code>。</li>
+</ul>
+<h2 id="WeakHandler"><a href="#WeakHandler" class="headerlink" title="WeakHandler"></a>WeakHandler</h2><p>下面图片显示WeakHandler的实现逻辑</p>
+<p><img src="https://raw.githubusercontent.com/badoo/android-weak-handler/master/WeakHandler.png" alt="Screenshot"></p>
+<h3 id="u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732"><a href="#u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732" class="headerlink" title="解决Handler内存泄露"></a>解决Handler内存泄露</h3><p>WeakHandler强引用一个Handler子类(ExecHandler)的对象，然后通过自定义的一个Callback将Handler的消息处理转发到这个callback中。该对象仅仅维持对callback对象的弱引用。这样及时callback对象持有对Activity对象的引用，由于其本身不会产生泄露，因此</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static class ExecHandler extends Handler &#123;&#10;    private final WeakReference&#60;Callback&#62; mCallback;&#10;&#10;    ExecHandler() &#123;&#10;        this.mCallback = null;&#10;    &#125;&#10;&#10;    ExecHandler(WeakReference&#60;Callback&#62; callback) &#123;&#10;        this.mCallback = callback;&#10;    &#125;&#10;&#10;    ExecHandler(Looper looper) &#123;&#10;        super(looper);&#10;        this.mCallback = null;&#10;    &#125;&#10;&#10;    ExecHandler(Looper looper, WeakReference&#60;Callback&#62; callback) &#123;&#10;        super(looper);&#10;        this.mCallback = callback;&#10;    &#125;&#10;&#10;    public void handleMessage(@NonNull Message msg) &#123;&#10;        if(this.mCallback != null) &#123;&#10;            Callback callback = (Callback)this.mCallback.get();&#10;            if(callback != null) &#123;&#10;                callback.handleMessage(msg);&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="u89E3_u51B3Runnable_u6CC4_u9732_u95EE_u9898"><a href="#u89E3_u51B3Runnable_u6CC4_u9732_u95EE_u9898" class="headerlink" title="解决Runnable泄露问题"></a>解决Runnable泄露问题</h3><p>WeakHandler内部定义一个WeakRunnable用来包装我们传递进去的Runnable对象，在WeakRunnable中维持对Runnable对象的弱引用，从而解决了Runnable对象不释放而造成的内存泄露问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static class WeakRunnable implements Runnable &#123;&#10;    private final WeakReference&#60;Runnable&#62; mDelegate;&#10;    private final WeakReference&#60;WeakHandler.ChainedRef&#62; mReference;&#10;&#10;    WeakRunnable(WeakReference&#60;Runnable&#62; delegate, WeakReference&#60;WeakHandler.ChainedRef&#62; reference) &#123;&#10;        this.mDelegate = delegate;&#10;        this.mReference = reference;&#10;    &#125;&#10;&#10;    public void run() &#123;&#10;        Runnable delegate = (Runnable)this.mDelegate.get();&#10;        WeakHandler.ChainedRef reference = (WeakHandler.ChainedRef)this.mReference.get();&#10;        if(reference != null) &#123;&#10;            reference.remove();&#10;        &#125;&#10;&#10;        if(delegate != null) &#123;&#10;            delegate.run();&#10;        &#125;&#10;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>项目地址：<a href="https://github.com/badoo/android-weak-handler" target="_blank" rel="external">android-weak-handler</a></p>
+<h2 id="u53C2_u8003_u5185_u5BB9"><a href="#u53C2_u8003_u5185_u5BB9" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
+<li><a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="external">Java的内存泄漏</a></li>
+<li><a href="http://my.oschina.net/rengwuxian/blog/181449" target="_blank" rel="external">Android中使用Handler造成内存泄露的分析和解决</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="external">Java 理论与实践: 用弱引用堵住内存泄漏</a></li>
+<li><a href="https://techblog.badoo.com/blog/2014/08/28/android-handler-memory-leaks" target="_blank" rel="external">Android Handler Memory Leaks</a></li>
+</ul>
+
+      
     </div>
-    
-    <header class="archive-article-header">
+    <footer class="article-footer">
+      <a data-url="/child/2016/01/18/how-to-work-weakhandler/" data-id="cijjwwcjv000fu1t6o78u6moj" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/12/22/class-object-generic/">类与对象 —— 泛型</a>
-    </h1>
-  
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/handler/">handler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内存泄露/">内存泄露</a></li></ul>
 
-      
-        
-  <div class="archive-article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2015/12/22/class-object-generic/">
-      <time datetime="2015-12-22T15:08:50.000Z" itemprop="datePublished">2015 Dec 22</time>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/02/object-class-class/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">类与对象 —— 类（一）</div>
     </a>
-  </div>
+  
+</nav>
 
 
-      
-    </header>
-  </div>
+  
 </article>
-    
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2015/12/19/class-object-object/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/200)" alt="类与对象 —— object" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/12/19/class-object-object/">类与对象 —— object</a>
-    </h1>
-  
-
-      
-        
-  <div class="archive-article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2015/12/19/class-object-object/">
-      <time datetime="2015-12-19T11:02:38.000Z" itemprop="datePublished">2015 Dec 19</time>
-    </a>
-  </div>
 
 
-      
-    </header>
-  </div>
-</article>
-    
-    </div></section>
-    </section>
+</section>
       
         <aside id="sidebar">
   
