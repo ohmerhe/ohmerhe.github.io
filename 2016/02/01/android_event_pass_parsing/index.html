@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 单例 | Ohmer&#39;s Blog</title>
+  <title>安卓事件传递机制分析 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="http://ohmerhe.com/tags/单例/index.html">
+  <meta name="description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
+这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓事件传递机制分析">
+<meta property="og:url" content="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
+这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+<meta property="og:image" content="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png">
+<meta property="og:updated_time" content="2016-02-01T10:47:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="安卓事件传递机制分析">
+<meta name="twitter:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
+这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
   
   
     <link rel="icon" href="favicon.png">
@@ -129,49 +134,103 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#单例</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-android_event_pass_parsing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2015/12/19/class-object-object/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/200)" alt="类与对象 —— object" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/12/19/class-object-object/">类与对象 —— object</a>
+    <h1 class="article-title" itemprop="name">
+      安卓事件传递机制分析
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2015/12/19/class-object-object/">
-      <time datetime="2015-12-19T11:02:38.000Z" itemprop="datePublished">2015 Dec 19</time>
+    <a href="/2016/02/01/android_event_pass_parsing/">
+      <time datetime="2016-02-01T10:38:00.000Z" itemprop="datePublished">2016-02-01</time>
     </a>
   </div>
 
 
-      
-    </header>
-  </div>
-</article>
+          
+        </div>
+      </header>
     
-    </div></section>
-    </section>
+    <div class="article-entry" itemprop="articleBody">
+      
+                
+        <p>这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。</p>
+<p>这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。</p>
+<a id="more"></a>
+<p>先贴一张个人总结的事件传递的流程图，如果可以将这张图清楚的理解，下面的文章就可以不用看了，因为这篇文章的主要内容也就是围绕这幅图展开。</p>
+<p><img src="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png" alt="事件分发流程图"></p>
+<h2 id="ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406"><a href="#ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406" class="headerlink" title="ViewGroup中的事件处理"></a>ViewGroup中的事件处理</h2><p>在用户触碰屏幕后，经过系统一系列处理后，会分发到的View的dispatchTouchEvent方法中，事件将在这个方法中进行分发，决定该事件的去向。</p>
+<p>由于安卓的事件处理顺序是由外至里的，既外层视图最先拿到对应的事件，既事件会优先传递到ViewGroup的dispatchTouchEvent方法中。在自定义视图中可以重写dispatchTouchEvent这个方法定义事件的进一步分发，本文分析的是ViewGroup默认的分发机制。</p>
+<p>在ViewGroup中默认先将事件分发给onInterceptTouchEvent方法，通过该方法的返回来判断当前视图是否中断事件的进一步分发，如果onInterceptTouchEvent返回true，则该事件认为已经被消耗不会继续分发下去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!disallowIntercept) &#123;  &#10;    intercepted = onInterceptTouchEvent(ev);  &#10;    ev.setAction(action); // restore action in case it was changed  &#10;    &#125; else &#123;  &#10;    intercepted = false;  &#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>ViewGroup默认并不会中断该事件，而是直接返回false。在自定义的视图中，可以通过重写onInterceptTouchEvent返回true而中断所有事件的分发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public boolean onInterceptTouchEvent(MotionEvent ev) &#123;  &#10;    return false;  &#10;&#125; &#10;``` &#10;&#10;&#22914;&#26524;&#20107;&#20214;&#22312;&#24403;&#21069;&#35270;&#22270;&#27809;&#26377;&#34987;&#25130;&#21462;&#65292;ViewGroup&#20250;&#32487;&#32493;&#20998;&#21457;&#20107;&#20214;&#65292;&#21028;&#26029;&#33258;&#24049;&#26159;&#21542;&#26377;&#23376;&#35270;&#22270;&#31526;&#21512;&#25509;&#25910;&#35813;&#20107;&#20214;&#30340;&#26465;&#20214;&#65292;&#22914;&#26524;&#26377;&#30340;&#35805;&#65292;&#21017;&#30452;&#25509;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35813;&#23376;&#35270;&#22270;&#65292;&#24182;&#36820;&#22238;true&#20195;&#34920;&#22312;&#36825;&#23618;&#20107;&#20214;&#24050;&#32463;&#34987;&#20998;&#21457;&#20986;&#21435;&#12290;&#35813;&#35270;&#22270;&#30340;&#23376;&#35270;&#22270;&#21487;&#20197;&#26159;&#19968;&#20010;&#26222;&#36890;&#30340;view&#65292;&#20063;&#21487;&#20197;&#26159;&#19968;&#20010;Viewgroup&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;View&#30340;&#26102;&#20505;&#65292;&#35831;&#21442;&#32771;&#19979;&#38754;View&#30340;&#20107;&#20214;&#22788;&#29702;&#37096;&#20998;&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;ViewGroup&#65292;&#21017;&#37325;&#22797;&#21069;&#38754;&#25551;&#36848;&#30340;&#20998;&#21457;&#36923;&#36753;&#12290;&#10;&#10;&#22914;&#26524;&#27809;&#26377;&#23376;&#35270;&#22270;&#28040;&#32791;&#25481;&#24403;&#21069;&#30340;&#20107;&#20214;&#65292;&#36825;&#20010;&#20107;&#20214;&#26368;&#32456;&#34987;&#20256;&#36882;&#21040;ViewGroup&#26412;&#36523;&#65292;&#36825;&#20010;&#26102;&#20505;ViewGroup&#23558;&#20316;&#20026;&#19968;&#20010;&#26222;&#36890;&#30340;View&#32487;&#32493;&#22788;&#29702;&#20107;&#20214;&#65288;&#35814;&#32454;&#21442;&#35265;&#21518;&#38754;&#30340;View&#22788;&#29702;&#20107;&#20214;&#37096;&#20998;&#65289;</span><br></pre></td></tr></table></figure>
+<p>if (!canViewReceivePointerEvents(child)|| !isTransformedTouchPointInView(x, y, child, null)) {<br>    continue;<br>}<br>newTouchTarget = getTouchTarget(child);<br>if (newTouchTarget != null) {<br>    // Child is already receiving touch within its bounds.<br>    // Give it the new pointer in addition to the ones it is handling.<br>    newTouchTarget.pointerIdBits |= idBitsToAssign;<br>    break;<br>}  </p>
+<p>resetCancelNextUpFlag(child);<br>if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {<br>    // Child wants to receive touch within its bounds.<br>    mLastTouchDownTime = ev.getDownTime();<br>    mLastTouchDownIndex = childIndex;<br>    mLastTouchDownX = ev.getX();<br>    mLastTouchDownY = ev.getY();<br>    newTouchTarget = addTouchTarget(child, idBitsToAssign);<br>    alreadyDispatchedToNewTouchTarget = true;<br>    break;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;## View&#20013;&#30340;&#20107;&#20214;&#22788;&#29702;&#10;&#10;View&#20013;&#30340;&#20107;&#20214;&#20998;&#21457;&#20173;&#28982;&#26159;&#20174;dispatchTouchEvent&#26041;&#27861;&#24320;&#22987;&#12290;&#35813;&#26041;&#27861;&#20013;&#39318;&#20808;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35843;&#29992;&#21040;mOnTouchListener&#65292;mOnTouchListener&#26159;&#25105;&#20204;&#22312;&#20351;&#29992;view&#30340;setOnTouchListener&#26041;&#27861;&#26102;&#27880;&#20876;&#36827;&#21435;&#30340;&#30417;&#21548;&#12290;&#22914;&#26524;&#25105;&#20204;&#22312;&#27880;&#20876;&#36827;&#21435;&#30417;&#21548;&#30340;onTouch&#26041;&#27861;&#20013;&#22788;&#29702;&#20102;&#35813;&#20107;&#20214;&#24182;&#19988;&#36820;&#22238;&#20102;true&#21017;&#20195;&#34920;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#65292;&#20107;&#20214;&#23558;&#19981;&#20250;&#22312;&#32487;&#32493;&#20256;&#36882;&#12290;</span><br></pre></td></tr></table></figure></p>
+<p>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnTouchListener != null &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED<br>    &amp;&amp; li.mOnTouchListener.onTouch(this, event)) {<br>    return true;<br>}if (onTouchEvent(event)) {<br>    return true;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#32780;&#22914;&#26524;&#27809;&#26377;&#35774;&#32622;&#30417;&#21548;&#25110;&#36820;&#22238;&#20026;false&#30340;&#35805;&#65292;&#35813;&#20107;&#20214;&#23558;&#20250;&#34987;&#20256;&#36882;&#21040;onTouchEvent&#26041;&#27861;&#12290;&#22312;View&#31867;&#40664;&#35748;&#30340;onTouchEvent&#26041;&#27861;&#20013;&#65292;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#21040;&#35270;&#22270;&#30340;click&#25110;&#32773;longClick&#20107;&#20214;&#12290;&#10;&#10;&#29992;&#25143;&#38656;&#29992;&#36890;&#36807;setOnClickListener&#25110;&#32773;setOnLongClickListener&#35774;&#32622;click&#30340;&#22788;&#29702;&#65292;&#22914;&#26524;&#25105;&#20204;&#35774;&#32622;&#20102;listener&#65292;&#21017;onTouchEvent&#20998;&#21457;&#23436;&#20107;&#20214;&#21518;&#20250;&#36820;&#22238;true&#36890;&#30693;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#12290;</span><br></pre></td></tr></table></figure></p>
+<p>if (mPerformClick == null) {<br>    mPerformClick = new PerformClick();<br>}<br>if (!post(mPerformClick)) {<br>    performClick();<br>}<br>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnClickListener != null) {<br>    playSoundEffect(SoundEffectConstants.CLICK);<br>    li.mOnClickListener.onClick(this);<br>    return true;<br>}<br>```</p>
+<p>ps: 从上面的代码指导view的click方法并不是直接调用执行的，而是通过post将click的处理延迟以保证视觉效果的优先执行。</p>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>首先接收到事件的视图是最外层的视图，然后再往子视图上传递</li>
+<li>事件的传递是一个递归过程</li>
+<li>在上述每个环节都可以通过返回true的方法消耗该事件，结束事件的传递</li>
+<li>自定义视图的事件传递过程决定于其对应继承的方法，但应该遵守上述的规则</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/" data-id="cik3ug1pb0000oit673nrn9ez" class="article-share-link">Share</a>
+      
+        <a href="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/touchevent/">touchevent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件传递/">事件传递</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/18/how-to-work-weakhandler/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">WeakHandler是怎么解决Handler的内存问题的</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
       
         <aside id="sidebar">
   
@@ -321,7 +380,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
