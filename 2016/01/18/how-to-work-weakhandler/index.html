@@ -14,7 +14,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
 <meta property="og:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
 Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
 <meta property="og:image" content="https://raw.githubusercontent.com/badoo/android-weak-handler/master/WeakHandler.png">
-<meta property="og:updated_time" content="2016-01-18T11:58:51.000Z">
+<meta property="og:updated_time" content="2016-02-01T03:15:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WeakHandler是怎么解决Handler的内存问题的">
 <meta name="twitter:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
@@ -110,7 +110,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
         <span>posts</span>
       </div>
       <div class="article-info-block">
-        15
+        12
         <span>tags</span>
       </div>
     </div>
@@ -164,7 +164,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
   <div class="article-date">
     <i class="fa fa-calendar"></i>
     <a href="/2016/01/18/how-to-work-weakhandler/">
-      <time datetime="2016-01-18T09:20:49.000Z" itemprop="datePublished">2016-01-18</time>
+      <time datetime="2016-01-18T15:32:01.000Z" itemprop="datePublished">2016-01-18</time>
     </a>
   </div>
 
@@ -193,10 +193,16 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
 </ul>
 <h2 id="WeakHandler"><a href="#WeakHandler" class="headerlink" title="WeakHandler"></a>WeakHandler</h2><p>下面图片显示WeakHandler的实现逻辑</p>
 <p><img src="https://raw.githubusercontent.com/badoo/android-weak-handler/master/WeakHandler.png" alt="Screenshot"></p>
-<h3 id="u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732"><a href="#u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732" class="headerlink" title="解决Handler内存泄露"></a>解决Handler内存泄露</h3><p>WeakHandler强引用一个Handler子类(ExecHandler)的对象，然后通过自定义的一个Callback将Handler的消息处理转发到这个callback中。该对象仅仅维持对callback对象的弱引用。这样及时callback对象持有对Activity对象的引用，由于其本身不会产生泄露，因此</p>
+<h3 id="u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732"><a href="#u89E3_u51B3Handler_u5185_u5B58_u6CC4_u9732" class="headerlink" title="解决Handler内存泄露"></a>解决Handler内存泄露</h3><p>WeakHandler强引用一个Handler子类(ExecHandler)的对象，然后通过自定义的一个Callback将Handler的消息处理转发到这个callback中，这样就不必为了处理消息而构建一个匿名内部handler类对象。WeakHandler对象（通过ExecHandler对象）仅仅维持对callback对象的弱引用。这样即使callback对象持有对Activity对象的引用，由于其本身不会产生泄露，因此</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static class ExecHandler extends Handler &#123;&#10;    private final WeakReference&#60;Callback&#62; mCallback;&#10;&#10;    ExecHandler() &#123;&#10;        this.mCallback = null;&#10;    &#125;&#10;&#10;    ExecHandler(WeakReference&#60;Callback&#62; callback) &#123;&#10;        this.mCallback = callback;&#10;    &#125;&#10;&#10;    ExecHandler(Looper looper) &#123;&#10;        super(looper);&#10;        this.mCallback = null;&#10;    &#125;&#10;&#10;    ExecHandler(Looper looper, WeakReference&#60;Callback&#62; callback) &#123;&#10;        super(looper);&#10;        this.mCallback = callback;&#10;    &#125;&#10;&#10;    public void handleMessage(@NonNull Message msg) &#123;&#10;        if(this.mCallback != null) &#123;&#10;            Callback callback = (Callback)this.mCallback.get();&#10;            if(callback != null) &#123;&#10;                callback.handleMessage(msg);&#10;            &#125;&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，WeakHandler的对象会维持对callback对象的强引用。</p>
 <h3 id="u89E3_u51B3Runnable_u6CC4_u9732_u95EE_u9898"><a href="#u89E3_u51B3Runnable_u6CC4_u9732_u95EE_u9898" class="headerlink" title="解决Runnable泄露问题"></a>解决Runnable泄露问题</h3><p>WeakHandler内部定义一个WeakRunnable用来包装我们传递进去的Runnable对象，在WeakRunnable中维持对Runnable对象的弱引用，从而解决了Runnable对象不释放而造成的内存泄露问题。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static class WeakRunnable implements Runnable &#123;&#10;    private final WeakReference&#60;Runnable&#62; mDelegate;&#10;    private final WeakReference&#60;WeakHandler.ChainedRef&#62; mReference;&#10;&#10;    WeakRunnable(WeakReference&#60;Runnable&#62; delegate, WeakReference&#60;WeakHandler.ChainedRef&#62; reference) &#123;&#10;        this.mDelegate = delegate;&#10;        this.mReference = reference;&#10;    &#125;&#10;&#10;    public void run() &#123;&#10;        Runnable delegate = (Runnable)this.mDelegate.get();&#10;        WeakHandler.ChainedRef reference = (WeakHandler.ChainedRef)this.mReference.get();&#10;        if(reference != null) &#123;&#10;            reference.remove();&#10;        &#125;&#10;&#10;        if(delegate != null) &#123;&#10;            delegate.run();&#10;        &#125;&#10;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>记住，WeakHandler的对象会维持对runnable对象的强引用。</p>
+<h3 id="u6CE8_u610F_u4E8B_u9879"><a href="#u6CE8_u610F_u4E8B_u9879" class="headerlink" title="注意事项"></a>注意事项</h3><p>在使用WeakHandler时，应该在activity（或者fragment）中声明一个全局变量，以保证WeakHandler的生命周期和activity保持一致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Activity&#123;&#10;&#9;private WeakHandler mHandler = new WeakHandler();&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>如果只是定义一个临时变量，在内存不足时handler会被回收，导致callback和runnable对象也会被回收，从而不能拿到回调。</p>
+<p>或者如果定义一个静态变量的话，会导致callback和runnable不能被释放，从而导致内存泄露。</p>
 <p>项目地址：<a href="https://github.com/badoo/android-weak-handler" target="_blank" rel="external">android-weak-handler</a></p>
 <h2 id="u53C2_u8003_u5185_u5BB9"><a href="#u53C2_u8003_u5185_u5BB9" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
 <li><a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="external">Java的内存泄漏</a></li>
@@ -208,11 +214,9 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
       
     </div>
     <footer class="article-footer">
-      <a data-url="/child/2016/01/18/how-to-work-weakhandler/" data-id="cijjwwcjv000fu1t6o78u6moj" class="article-share-link">Share</a>
+      <a data-url="/child/2016/01/18/how-to-work-weakhandler/" data-id="cijmzu888000egwt64mn0euvn" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/handler/">handler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内存泄露/">内存泄露</a></li></ul>
-
     </footer>
   </div>
   
@@ -255,7 +259,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
             <div class="item-inner">
               <p class="item-category"></p>
               <p class="item-title"><a href="/2016/01/18/how-to-work-weakhandler/" class="title">WeakHandler是怎么解决Handler的内存问题的</a></p>
-              <p class="item-date"><time datetime="2016-01-18T09:20:49.000Z" itemprop="datePublished">2016-01-18</time></p>
+              <p class="item-date"><time datetime="2016-01-18T15:32:01.000Z" itemprop="datePublished">2016-01-18</time></p>
             </div>
           </li>
         
@@ -338,7 +342,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
   <div class="widget-wrap">
     <h3 class="widget-title">tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/companion/">companion</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kotlin/">kotlin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/">object</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例/">单例</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/委托/">委托</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/对象/">对象</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类/">类</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类与对象/">类与对象</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/companion/">companion</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/generics/">generics</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kotlin/">kotlin</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/">object</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例/">单例</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/委托/">委托</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/对象/">对象</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类/">类</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类与对象/">类与对象</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -347,7 +351,7 @@ Handler内存泄露对于安卓的初学者，常见的handler的写法如下：
   <div class="widget-wrap">
     <h3 class="widget-title">tag cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/companion/" style="font-size: 10px;">companion</a> <a href="/tags/generics/" style="font-size: 10px;">generics</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/kotlin/" style="font-size: 20px;">kotlin</a> <a href="/tags/object/" style="font-size: 10px;">object</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/单例/" style="font-size: 10px;">单例</a> <a href="/tags/委托/" style="font-size: 10px;">委托</a> <a href="/tags/对象/" style="font-size: 10px;">对象</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/类/" style="font-size: 10px;">类</a> <a href="/tags/类与对象/" style="font-size: 10px;">类与对象</a> <a href="/tags/继承/" style="font-size: 10px;">继承</a>
+      <a href="/tags/class/" style="font-size: 10px;">class</a> <a href="/tags/companion/" style="font-size: 10px;">companion</a> <a href="/tags/generics/" style="font-size: 10px;">generics</a> <a href="/tags/kotlin/" style="font-size: 20px;">kotlin</a> <a href="/tags/object/" style="font-size: 10px;">object</a> <a href="/tags/单例/" style="font-size: 10px;">单例</a> <a href="/tags/委托/" style="font-size: 10px;">委托</a> <a href="/tags/对象/" style="font-size: 10px;">对象</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/类/" style="font-size: 10px;">类</a> <a href="/tags/类与对象/" style="font-size: 10px;">类与对象</a> <a href="/tags/继承/" style="font-size: 10px;">继承</a>
     </div>
   </div>
 
