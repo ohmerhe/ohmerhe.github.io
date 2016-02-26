@@ -3,22 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>安卓事件传递机制分析 | Ohmer&#39;s Blog</title>
+  <title>提升gradle编译速度实践 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+  <meta name="description" content="随着项目规模越来越大，编译速度越来越慢，每次修改代码以后的编译都是痛苦的等待。对于兄弟们来说，gradle已经变成了一个潜藏的‘岁月神偷’。So，现在是时候我们来优化一下gradle的编译速度。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓事件传递机制分析">
-<meta property="og:url" content="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/index.html">
+<meta property="og:title" content="提升gradle编译速度实践">
+<meta property="og:url" content="http://ohmerhe.com/2016/02/26/gradle_speed_up/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
-<meta property="og:image" content="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png">
-<meta property="og:updated_time" content="2016-02-01T10:47:03.000Z">
+<meta property="og:description" content="随着项目规模越来越大，编译速度越来越慢，每次修改代码以后的编译都是痛苦的等待。对于兄弟们来说，gradle已经变成了一个潜藏的‘岁月神偷’。So，现在是时候我们来优化一下gradle的编译速度。">
+<meta property="og:updated_time" content="2016-02-26T08:32:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安卓事件传递机制分析">
-<meta name="twitter:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+<meta name="twitter:title" content="提升gradle编译速度实践">
+<meta name="twitter:description" content="随着项目规模越来越大，编译速度越来越慢，每次修改代码以后的编译都是痛苦的等待。对于兄弟们来说，gradle已经变成了一个潜藏的‘岁月神偷’。So，现在是时候我们来优化一下gradle的编译速度。">
   
   
     <link rel="icon" href="favicon.png">
@@ -134,12 +130,12 @@
 </aside>
 
       
-      <section id="main"><article id="post-android_event_pass_parsing" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-gradle_speed_up" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/plan_landed.jpg?imageView2/1/w/1024/h/460" class="article-banner">
 	
 
 
@@ -151,7 +147,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      安卓事件传递机制分析
+      提升gradle编译速度实践
     </h1>
   
 
@@ -159,8 +155,8 @@
           
   <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/02/01/android_event_pass_parsing/">
-      <time datetime="2016-02-01T10:38:00.000Z" itemprop="datePublished">2016-02-01</time>
+    <a href="/2016/02/26/gradle_speed_up/">
+      <time datetime="2016-02-26T08:25:44.000Z" itemprop="datePublished">2016-02-26</time>
     </a>
   </div>
 
@@ -172,38 +168,90 @@
     <div class="article-entry" itemprop="articleBody">
       
                 
-        <p>这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。</p>
-<p>这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。</p>
+        <p>随着项目规模越来越大，编译速度越来越慢，每次修改代码以后的编译都是痛苦的等待。对于兄弟们来说，gradle已经变成了一个潜藏的‘岁月神偷’。So，现在是时候我们来优化一下gradle的编译速度。</p>
 <a id="more"></a>
-<p>先贴一张个人总结的事件传递的流程图，如果可以将这张图清楚的理解，下面的文章就可以不用看了，因为这篇文章的主要内容也就是围绕这幅图展开。</p>
-<p><img src="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png" alt="事件分发流程图"></p>
-<h2 id="ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406"><a href="#ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406" class="headerlink" title="ViewGroup中的事件处理"></a>ViewGroup中的事件处理</h2><p>在用户触碰屏幕后，经过系统一系列处理后，会分发到的View的dispatchTouchEvent方法中，事件将在这个方法中进行分发，决定该事件的去向。</p>
-<p>由于安卓的事件处理顺序是由外至里的，既外层视图最先拿到对应的事件，既事件会优先传递到ViewGroup的dispatchTouchEvent方法中。在自定义视图中可以重写dispatchTouchEvent这个方法定义事件的进一步分发，本文分析的是ViewGroup默认的分发机制。</p>
-<p>在ViewGroup中默认先将事件分发给onInterceptTouchEvent方法，通过该方法的返回来判断当前视图是否中断事件的进一步分发，如果onInterceptTouchEvent返回true，则该事件认为已经被消耗不会继续分发下去。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!disallowIntercept) &#123;  &#10;    intercepted = onInterceptTouchEvent(ev);  &#10;    ev.setAction(action); // restore action in case it was changed  &#10;    &#125; else &#123;  &#10;    intercepted = false;  &#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>ViewGroup默认并不会中断该事件，而是直接返回false。在自定义的视图中，可以通过重写onInterceptTouchEvent返回true而中断所有事件的分发。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public boolean onInterceptTouchEvent(MotionEvent ev) &#123;  &#10;    return false;  &#10;&#125; &#10;``` &#10;&#10;&#22914;&#26524;&#20107;&#20214;&#22312;&#24403;&#21069;&#35270;&#22270;&#27809;&#26377;&#34987;&#25130;&#21462;&#65292;ViewGroup&#20250;&#32487;&#32493;&#20998;&#21457;&#20107;&#20214;&#65292;&#21028;&#26029;&#33258;&#24049;&#26159;&#21542;&#26377;&#23376;&#35270;&#22270;&#31526;&#21512;&#25509;&#25910;&#35813;&#20107;&#20214;&#30340;&#26465;&#20214;&#65292;&#22914;&#26524;&#26377;&#30340;&#35805;&#65292;&#21017;&#30452;&#25509;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35813;&#23376;&#35270;&#22270;&#65292;&#24182;&#36820;&#22238;true&#20195;&#34920;&#22312;&#36825;&#23618;&#20107;&#20214;&#24050;&#32463;&#34987;&#20998;&#21457;&#20986;&#21435;&#12290;&#35813;&#35270;&#22270;&#30340;&#23376;&#35270;&#22270;&#21487;&#20197;&#26159;&#19968;&#20010;&#26222;&#36890;&#30340;view&#65292;&#20063;&#21487;&#20197;&#26159;&#19968;&#20010;Viewgroup&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;View&#30340;&#26102;&#20505;&#65292;&#35831;&#21442;&#32771;&#19979;&#38754;View&#30340;&#20107;&#20214;&#22788;&#29702;&#37096;&#20998;&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;ViewGroup&#65292;&#21017;&#37325;&#22797;&#21069;&#38754;&#25551;&#36848;&#30340;&#20998;&#21457;&#36923;&#36753;&#12290;&#10;&#10;&#22914;&#26524;&#27809;&#26377;&#23376;&#35270;&#22270;&#28040;&#32791;&#25481;&#24403;&#21069;&#30340;&#20107;&#20214;&#65292;&#36825;&#20010;&#20107;&#20214;&#26368;&#32456;&#34987;&#20256;&#36882;&#21040;ViewGroup&#26412;&#36523;&#65292;&#36825;&#20010;&#26102;&#20505;ViewGroup&#23558;&#20316;&#20026;&#19968;&#20010;&#26222;&#36890;&#30340;View&#32487;&#32493;&#22788;&#29702;&#20107;&#20214;&#65288;&#35814;&#32454;&#21442;&#35265;&#21518;&#38754;&#30340;View&#22788;&#29702;&#20107;&#20214;&#37096;&#20998;&#65289;</span><br></pre></td></tr></table></figure>
-<p>if (!canViewReceivePointerEvents(child)|| !isTransformedTouchPointInView(x, y, child, null)) {<br>    continue;<br>}<br>newTouchTarget = getTouchTarget(child);<br>if (newTouchTarget != null) {<br>    // Child is already receiving touch within its bounds.<br>    // Give it the new pointer in addition to the ones it is handling.<br>    newTouchTarget.pointerIdBits |= idBitsToAssign;<br>    break;<br>}  </p>
-<p>resetCancelNextUpFlag(child);<br>if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {<br>    // Child wants to receive touch within its bounds.<br>    mLastTouchDownTime = ev.getDownTime();<br>    mLastTouchDownIndex = childIndex;<br>    mLastTouchDownX = ev.getX();<br>    mLastTouchDownY = ev.getY();<br>    newTouchTarget = addTouchTarget(child, idBitsToAssign);<br>    alreadyDispatchedToNewTouchTarget = true;<br>    break;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;## View&#20013;&#30340;&#20107;&#20214;&#22788;&#29702;&#10;&#10;View&#20013;&#30340;&#20107;&#20214;&#20998;&#21457;&#20173;&#28982;&#26159;&#20174;dispatchTouchEvent&#26041;&#27861;&#24320;&#22987;&#12290;&#35813;&#26041;&#27861;&#20013;&#39318;&#20808;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35843;&#29992;&#21040;mOnTouchListener&#65292;mOnTouchListener&#26159;&#25105;&#20204;&#22312;&#20351;&#29992;view&#30340;setOnTouchListener&#26041;&#27861;&#26102;&#27880;&#20876;&#36827;&#21435;&#30340;&#30417;&#21548;&#12290;&#22914;&#26524;&#25105;&#20204;&#22312;&#27880;&#20876;&#36827;&#21435;&#30417;&#21548;&#30340;onTouch&#26041;&#27861;&#20013;&#22788;&#29702;&#20102;&#35813;&#20107;&#20214;&#24182;&#19988;&#36820;&#22238;&#20102;true&#21017;&#20195;&#34920;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#65292;&#20107;&#20214;&#23558;&#19981;&#20250;&#22312;&#32487;&#32493;&#20256;&#36882;&#12290;</span><br></pre></td></tr></table></figure></p>
-<p>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnTouchListener != null &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED<br>    &amp;&amp; li.mOnTouchListener.onTouch(this, event)) {<br>    return true;<br>}if (onTouchEvent(event)) {<br>    return true;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#32780;&#22914;&#26524;&#27809;&#26377;&#35774;&#32622;&#30417;&#21548;&#25110;&#36820;&#22238;&#20026;false&#30340;&#35805;&#65292;&#35813;&#20107;&#20214;&#23558;&#20250;&#34987;&#20256;&#36882;&#21040;onTouchEvent&#26041;&#27861;&#12290;&#22312;View&#31867;&#40664;&#35748;&#30340;onTouchEvent&#26041;&#27861;&#20013;&#65292;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#21040;&#35270;&#22270;&#30340;click&#25110;&#32773;longClick&#20107;&#20214;&#12290;&#10;&#10;&#29992;&#25143;&#38656;&#29992;&#36890;&#36807;setOnClickListener&#25110;&#32773;setOnLongClickListener&#35774;&#32622;click&#30340;&#22788;&#29702;&#65292;&#22914;&#26524;&#25105;&#20204;&#35774;&#32622;&#20102;listener&#65292;&#21017;onTouchEvent&#20998;&#21457;&#23436;&#20107;&#20214;&#21518;&#20250;&#36820;&#22238;true&#36890;&#30693;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#12290;</span><br></pre></td></tr></table></figure></p>
-<p>if (mPerformClick == null) {<br>    mPerformClick = new PerformClick();<br>}<br>if (!post(mPerformClick)) {<br>    performClick();<br>}<br>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnClickListener != null) {<br>    playSoundEffect(SoundEffectConstants.CLICK);<br>    li.mOnClickListener.onClick(this);<br>    return true;<br>}<br>```</p>
-<p>ps: 从上面的代码指导view的click方法并不是直接调用执行的，而是通过post将click的处理延迟以保证视觉效果的优先执行。</p>
-<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>首先接收到事件的视图是最外层的视图，然后再往子视图上传递</li>
-<li>事件的传递是一个递归过程</li>
-<li>在上述每个环节都可以通过返回true的方法消耗该事件，结束事件的传递</li>
-<li>自定义视图的事件传递过程决定于其对应继承的方法，但应该遵守上述的规则</li>
+<p>本文优化的实践主要是参考<a href="http://androidweekly.net/" target="_blank" rel="external">Android Weekly</a>上推荐的一片文章<a href="https://medium.com/@shelajev/6-tips-to-speed-up-your-gradle-build-3d98791d3df9#.3ait6jmd3" target="_blank" rel="external">6 tips to speed up your Gradle build</a>和gradle官方文档。</p>
+<p>先看看我们都有神马方法可以用先：</p>
+<h2 id="Gradle_Daemon"><a href="#Gradle_Daemon" class="headerlink" title="Gradle Daemon"></a>Gradle Daemon</h2><p>Gradle Daemon是gradle官方极力推荐的一个优化gradle编译速度的方法在1.0之前的版本就已经提供，经过这么多的版本迭代，已经非常成熟。如果你的gradle版本足够新并且没有开启Daemon的话，在你的编译完成之后，经常会看到这样一句话：<code>This build could be faster, please consider using the Gradle Daemon: https://docs.gradle.org/2.8/userguide/gradle_daemon.html</code>。</p>
+<p>Gradle Daemon是一个长期生存（3个小时不被调用会自动结束）、能够提升编译速度的后台进程。它的优化原理有几个方面：</p>
+<ul>
+<li>由于gradle是运行在JVM之上的，并且有较多的库依赖，长期运行在后台能够节省每次编译需要重新初始化的时间。</li>
+<li>另外一个很重要的一点是通过运行时代码优化来提升编译性能。这种优化是循序渐进的，而不是立马见效的那种，也就是随着编译次数的增多，优化效果会越来越好，一般来讲在5-10次编译以后，这种优化效果会趋于稳定。</li>
+<li>Gradle Daemon通过编译缓存提高效率。如gradle能缓存一些编译时的输入和输出，支持增量编译。</li>
+</ul>
+<p>gradle官方对于Gradle Daemon还有更多的期待，比如预下载依赖库等</p>
+<h3 id="u5F00_u542FDaemon"><a href="#u5F00_u542FDaemon" class="headerlink" title="开启Daemon"></a>开启Daemon</h3><p>Gradle Daemon默认不是开启的，我们可以有多个方式开启的deamon，但是官方推荐的方法是在系统的gradle配置文件（$USER_HOME/.gradle/gradle.properties）中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.daemon=true</span><br></pre></td></tr></table></figure>
+<p>如果该文件不存在，需要创建该文件。</p>
+<p>我们还可以在执行命令后面添加<code>--no-daemon</code>和<code>--daemon</code>指定某次编译过程是否开启deamon。</p>
+<pre><code>不过在持续集成中，gradle官方建议不要开启deamon以保证每次编译的独立性。
+</code></pre><h2 id="Configuration_on_demand"><a href="#Configuration_on_demand" class="headerlink" title="Configuration on demand"></a>Configuration on demand</h2><p>gradle编译区分为三个阶段：</p>
+<ul>
+<li>初始化，gradle支持单个或多个项目同时编译，在初始化阶段，gradle决定哪些项目参与编译，并为每一个项目创建一个<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="_blank" rel="external">Project</a>实例。</li>
+<li>配置阶段，对所有的项目进行配置，会执行项目里的build.gradle文件，下载相关的插件和依赖等，决定需要执行哪些任务的集合。</li>
+<li>执行阶段，执行在配置阶段确定的所有task。</li>
+</ul>
+<p>按需配置（Configuration on demand）只对任务相关的项目进行配置，这在大型多项目编译过程中非常有用，能够大幅度的减少不必要的配置时间。gradle官方表示在长期的角度来看，按需配置会变成一项默认模式，甚至是唯一的模式。</p>
+<p>不过在大部分的安卓项目中，由于项目会太，且一般多使用aar的方式引用，所以该配置项对于安卓开发编译的优化效果没有那么大。按需配置功能现在还是孵化中，并没有正式发布。</p>
+<h3 id="Configuration_on_demand_u5F00_u542F"><a href="#Configuration_on_demand_u5F00_u542F" class="headerlink" title="Configuration on demand开启"></a>Configuration on demand开启</h3><p>和Daemon的配置类似，我们也可以在系统的<code>gradle.properties</code>中添加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.configureondemand=true</span><br></pre></td></tr></table></figure>
+<p>或者在编译命令后面添加<code>--configure-on-demand</code>。</p>
+<h2 id="parallel"><a href="#parallel" class="headerlink" title="parallel"></a>parallel</h2><p>并行执行在多项目编译的项目中能有效提升编译的速度，但是并行执行的前提是每个项目已经被模块化，每个项目之间没有耦合。并行执行功能现在也还是孵化中，并没有正式发布。</p>
+<h3 id="u5F00_u542Fparallel"><a href="#u5F00_u542Fparallel" class="headerlink" title="开启parallel"></a>开启parallel</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.parallel=true</span><br></pre></td></tr></table></figure>
+<p>或者在编译命令后面添加<code>--parallel</code></p>
+<h2 id="u9879_u76EE_u89E3_u8026"><a href="#u9879_u76EE_u89E3_u8026" class="headerlink" title="项目解耦"></a>项目解耦</h2><p>Gradle允许任何项目在配置和执行阶段访问其他项目。这是一把双刃剑，一方面为编译提供了灵活性；另一方面也会带来一些负面的阻碍，对并行编译和按需配置产生影响。</p>
+<p>两个互相解耦的项目之间最多只能有申明的依赖关系，任何其他形式的交互都被定为成耦合。一种常见的耦合方式就是使用配置注入，例如在项目中使用<code>allprojects</code>或<code>subprojects</code>关键字就会导致项目之间的耦合。通常这会被定义在一个只有一些公共配置的‘根项目’中，这导致这个‘根项目’被耦合到所有子项目中，但这是可以被接受的。但如果任何子项目中使用<code>allprojects</code>或<code>subprojects</code>是就会影响到并行编译和按需配置的效率。</p>
+<p>为了充分利用项目之间解耦的优势，gradle官方已经在尝试引入不会产生耦合的新特性来处理配置注入这种常用功能。</p>
+<p>关于如何解耦项目，官方给了两条建议：</p>
+<ul>
+<li>避免在一个子项目的build.gradle中去引用其他的子项目，最好是从‘根项目’中引用；</li>
+<li>避免在执行时改变其他项目的配置。</li>
+</ul>
+<h2 id="u5176_u4ED6_u4F18_u5316_u65B9_u6CD5"><a href="#u5176_u4ED6_u4F18_u5316_u65B9_u6CD5" class="headerlink" title="其他优化方法"></a>其他优化方法</h2><ul>
+<li>优化依赖，gradle允许我们在依赖一个项目是可以指定一个版本范围（如下），这会导致gradle每次都会去检测当前版本是不是最新版本，这会带来不必要的资源消耗，尤其在网络环境差时。而且这种写法还会导致版本兼容和持续集成时的不一致性等问题。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;&#10;&#9;compile &#39;com.google.code.gson:gson:2.+&#39;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>gradle的每次更新都会不断优化它的编译性能，同时也可能会提供更多新的特性去优化编译，所以我们应该尽量使用最新发布的正式版本去编译，如2.4这个版本在编译速度方面就做了非常大提升。</li>
+</ul>
+<p>说了这么多，下面让我们来实践一下：</p>
+<h2 id="u4F18_u5316_u5B9E_u8DF5"><a href="#u4F18_u5316_u5B9E_u8DF5" class="headerlink" title="优化实践"></a>优化实践</h2><p>为了比较优化前后的差异，我先记录一下优化前的编译实践。我这里选取的是<code>assembleDebug</code>的执行时间。</p>
+<p>为了减少误差，我每次修改少量代码，编译了五次。虽然不能作为实验数据使用，但是用来说名问题应该已经够了。五次执行的时间如下，平均大概在1min30s。</p>
+<p>## </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Executing external task &#39;assembleDebug&#39;&#10;&#10;...&#10;&#10;BUILD SUCCESSFUL&#10;&#10;Total time: 1 mins 32.81 secs&#10;&#10;Total time: 1 mins 19.539 secs&#10;&#10;Total time: 1 mins 22.601 secs&#10;&#10;Total time: 1 mins 26.14 secs&#10;&#10;Total time: 1 mins 38.686 secs</span><br></pre></td></tr></table></figure>
+<p>然后，开始优化我们的编译配置。</p>
+<ul>
+<li>在我的gradle全局配置中添加如下配置：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.daemon=true&#10;org.gradle.configureondemand=true&#10;org.gradle.parallel=true</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于Dexguard的阻碍，我们的项目的gradle版本不能高于2.8版本，所以只能放弃（最新版本已经是2.11）。</li>
+<li>检查了一下所有的依赖没有使用版本范围的依赖。</li>
+<li>检查所有项目除了根项目，没有项目间的耦合。</li>
+</ul>
+<p>准备就绪，开始执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle assembleDebug&#10;Parallel execution with configuration on demand is an incubating feature.&#10;&#10;Total time: 1 mins 41.859 secs&#10;&#10;Total time: 1 mins 1.363 secs&#10;&#10;Total time: 1 mins 0.425 secs&#10;&#10;Total time: 59.915 secs&#10;&#10;Total time: 56.681 secs&#10;&#10;Total time: 56.047 secs&#10;&#10;Total time: 55.667 secs</span><br></pre></td></tr></table></figure>
+<p>可以看到编译时间经过几次编译以后，基本稳定在50-60s之间，编译速度有了明显的提示。</p>
+<p>为了区分哪个优化效果最好，我还做了几个简单的实验，最后发现按需配置和并行编译并没有明显的提升，能够带来明显提升的就是deamon。这应该和我本地只有两个直接的代码依赖库有关。</p>
+<p>最后需要说明的是，Android Studio在编译时已经开启一些优化方案，如deamon和按需配置。针对AS上的编译优化，我的建议就是在条件允许的情况下，及时升级最新的AS版本、Android的gradle插件版本、gradle的版本等相关工具的版本。</p>
+<h2 id="u53C2_u8003_u6587_u4EF6"><a href="#u53C2_u8003_u6587_u4EF6" class="headerlink" title="参考文件"></a>参考文件</h2><ul>
+<li><a href="https://medium.com/@shelajev/6-tips-to-speed-up-your-gradle-build-3d98791d3df9#.3ait6jmd3" target="_blank" rel="external">6 tips to speed up your Gradle build</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:configuration_on_demand" target="_blank" rel="external">Configuration on demand</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/build_lifecycle.html#sec:build_phases" target="_blank" rel="external">Multi-project builds</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/gradle_daemon.html" target="_blank" rel="external">The Gradle Daemon</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="external">The Build Environment</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:decoupled_projects" target="_blank" rel="external">Decoupled Projects</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/" data-id="cik3ug1pb0000oit673nrn9ez" class="article-share-link">Share</a>
+      <a data-url="http://ohmerhe.com/2016/02/26/gradle_speed_up/" data-id="cil3fxiiq0000kst61sj3yu8r" class="article-share-link">Share</a>
       
-        <a href="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://ohmerhe.com/2016/02/26/gradle_speed_up/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/touchevent/">touchevent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件传递/">事件传递</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安卓/">安卓</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/编译优化/">编译优化</a></li></ul>
 
     </footer>
   </div>
@@ -211,19 +259,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/02/26/gradle_speed_up/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          提升gradle编译速度实践
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/18/how-to-work-weakhandler/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/02/01/android_event_pass_parsing/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">WeakHandler是怎么解决Handler的内存问题的</div>
+      <div class="article-nav-title">安卓事件传递机制分析</div>
     </a>
   
 </nav>
