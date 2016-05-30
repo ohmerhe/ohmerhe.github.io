@@ -3,22 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>安卓事件传递机制分析 | Ohmer&#39;s Blog</title>
+  <title>树莓派入手，无显示器远程操作 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+  <meta name="description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
+也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
+我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓事件传递机制分析">
-<meta property="og:url" content="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/index.html">
+<meta property="og:title" content="树莓派入手，无显示器远程操作">
+<meta property="og:url" content="http://ohmerhe.com/2016/05/31/raspberry_pi_init/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
-<meta property="og:image" content="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png">
-<meta property="og:updated_time" content="2016-02-01T10:47:28.000Z">
+<meta property="og:description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
+也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
+我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
+<meta property="og:updated_time" content="2016-05-30T16:17:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安卓事件传递机制分析">
-<meta name="twitter:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
-这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
+<meta name="twitter:title" content="树莓派入手，无显示器远程操作">
+<meta name="twitter:description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
+也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
+我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
   
   
     <link rel="icon" href="favicon.png">
@@ -134,12 +136,12 @@
 </aside>
 
       
-      <section id="main"><article id="post-android_event_pass_parsing" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-raspberry_pi_init" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/snow_bridge.jpg?imageView2/1/w/1024/h/460" class="article-banner">
 	
 
 
@@ -151,7 +153,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      安卓事件传递机制分析
+      树莓派入手，无显示器远程操作
     </h1>
   
 
@@ -159,8 +161,8 @@
           
   <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/02/01/android_event_pass_parsing/">
-      <time datetime="2016-02-01T10:38:00.000Z" itemprop="datePublished">2016-02-01</time>
+    <a href="/2016/05/31/raspberry_pi_init/">
+      <time datetime="2016-05-30T16:11:57.000Z" itemprop="datePublished">2016-05-31</time>
     </a>
   </div>
 
@@ -172,38 +174,60 @@
     <div class="article-entry" itemprop="articleBody">
       
                 
-        <p>这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。</p>
-<p>这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。</p>
+        <h2 id="u4E0B_u8F7D_u955C_u50CF_u6587_u4EF6"><a href="#u4E0B_u8F7D_u955C_u50CF_u6587_u4EF6" class="headerlink" title="下载镜像文件"></a>下载镜像文件</h2><p>官网下载相应的镜像文件：<a href="https://www.raspberrypi.org/downloads/" target="_blank" rel="external">https://www.raspberrypi.org/downloads/</a></p>
+<p>也可以下载Centos系统：<a href="http://mirror.centos.org/altarch/7/isos/armhfp/" target="_blank" rel="external">http://mirror.centos.org/altarch/7/isos/armhfp/</a></p>
+<p>我这里下载的是官网推荐的”RASPBIAN WHEEZY”</p>
 <a id="more"></a>
-<p>先贴一张个人总结的事件传递的流程图，如果可以将这张图清楚的理解，下面的文章就可以不用看了，因为这篇文章的主要内容也就是围绕这幅图展开。</p>
-<p><img src="https://gitlab.yeshj.com/uploads/android_demos/android_issues/ea9effbc2b/android_view_.png" alt="事件分发流程图"></p>
-<h2 id="ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406"><a href="#ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406" class="headerlink" title="ViewGroup中的事件处理"></a>ViewGroup中的事件处理</h2><p>在用户触碰屏幕后，经过系统一系列处理后，会分发到的View的dispatchTouchEvent方法中，事件将在这个方法中进行分发，决定该事件的去向。</p>
-<p>由于安卓的事件处理顺序是由外至里的，既外层视图最先拿到对应的事件，既事件会优先传递到ViewGroup的dispatchTouchEvent方法中。在自定义视图中可以重写dispatchTouchEvent这个方法定义事件的进一步分发，本文分析的是ViewGroup默认的分发机制。</p>
-<p>在ViewGroup中默认先将事件分发给onInterceptTouchEvent方法，通过该方法的返回来判断当前视图是否中断事件的进一步分发，如果onInterceptTouchEvent返回true，则该事件认为已经被消耗不会继续分发下去。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!disallowIntercept) &#123;  &#10;    intercepted = onInterceptTouchEvent(ev);  &#10;    ev.setAction(action); // restore action in case it was changed  &#10;    &#125; else &#123;  &#10;    intercepted = false;  &#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>ViewGroup默认并不会中断该事件，而是直接返回false。在自定义的视图中，可以通过重写onInterceptTouchEvent返回true而中断所有事件的分发。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public boolean onInterceptTouchEvent(MotionEvent ev) &#123;  &#10;    return false;  &#10;&#125; &#10;``` &#10;&#10;&#22914;&#26524;&#20107;&#20214;&#22312;&#24403;&#21069;&#35270;&#22270;&#27809;&#26377;&#34987;&#25130;&#21462;&#65292;ViewGroup&#20250;&#32487;&#32493;&#20998;&#21457;&#20107;&#20214;&#65292;&#21028;&#26029;&#33258;&#24049;&#26159;&#21542;&#26377;&#23376;&#35270;&#22270;&#31526;&#21512;&#25509;&#25910;&#35813;&#20107;&#20214;&#30340;&#26465;&#20214;&#65292;&#22914;&#26524;&#26377;&#30340;&#35805;&#65292;&#21017;&#30452;&#25509;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35813;&#23376;&#35270;&#22270;&#65292;&#24182;&#36820;&#22238;true&#20195;&#34920;&#22312;&#36825;&#23618;&#20107;&#20214;&#24050;&#32463;&#34987;&#20998;&#21457;&#20986;&#21435;&#12290;&#35813;&#35270;&#22270;&#30340;&#23376;&#35270;&#22270;&#21487;&#20197;&#26159;&#19968;&#20010;&#26222;&#36890;&#30340;view&#65292;&#20063;&#21487;&#20197;&#26159;&#19968;&#20010;Viewgroup&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;View&#30340;&#26102;&#20505;&#65292;&#35831;&#21442;&#32771;&#19979;&#38754;View&#30340;&#20107;&#20214;&#22788;&#29702;&#37096;&#20998;&#12290;&#24403;&#23376;&#35270;&#22270;&#26159;&#19968;&#20010;ViewGroup&#65292;&#21017;&#37325;&#22797;&#21069;&#38754;&#25551;&#36848;&#30340;&#20998;&#21457;&#36923;&#36753;&#12290;&#10;&#10;&#22914;&#26524;&#27809;&#26377;&#23376;&#35270;&#22270;&#28040;&#32791;&#25481;&#24403;&#21069;&#30340;&#20107;&#20214;&#65292;&#36825;&#20010;&#20107;&#20214;&#26368;&#32456;&#34987;&#20256;&#36882;&#21040;ViewGroup&#26412;&#36523;&#65292;&#36825;&#20010;&#26102;&#20505;ViewGroup&#23558;&#20316;&#20026;&#19968;&#20010;&#26222;&#36890;&#30340;View&#32487;&#32493;&#22788;&#29702;&#20107;&#20214;&#65288;&#35814;&#32454;&#21442;&#35265;&#21518;&#38754;&#30340;View&#22788;&#29702;&#20107;&#20214;&#37096;&#20998;&#65289;</span><br></pre></td></tr></table></figure>
-<p>if (!canViewReceivePointerEvents(child)|| !isTransformedTouchPointInView(x, y, child, null)) {<br>    continue;<br>}<br>newTouchTarget = getTouchTarget(child);<br>if (newTouchTarget != null) {<br>    // Child is already receiving touch within its bounds.<br>    // Give it the new pointer in addition to the ones it is handling.<br>    newTouchTarget.pointerIdBits |= idBitsToAssign;<br>    break;<br>}  </p>
-<p>resetCancelNextUpFlag(child);<br>if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {<br>    // Child wants to receive touch within its bounds.<br>    mLastTouchDownTime = ev.getDownTime();<br>    mLastTouchDownIndex = childIndex;<br>    mLastTouchDownX = ev.getX();<br>    mLastTouchDownY = ev.getY();<br>    newTouchTarget = addTouchTarget(child, idBitsToAssign);<br>    alreadyDispatchedToNewTouchTarget = true;<br>    break;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;## View&#20013;&#30340;&#20107;&#20214;&#22788;&#29702;&#10;&#10;View&#20013;&#30340;&#20107;&#20214;&#20998;&#21457;&#20173;&#28982;&#26159;&#20174;dispatchTouchEvent&#26041;&#27861;&#24320;&#22987;&#12290;&#35813;&#26041;&#27861;&#20013;&#39318;&#20808;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#32473;&#35843;&#29992;&#21040;mOnTouchListener&#65292;mOnTouchListener&#26159;&#25105;&#20204;&#22312;&#20351;&#29992;view&#30340;setOnTouchListener&#26041;&#27861;&#26102;&#27880;&#20876;&#36827;&#21435;&#30340;&#30417;&#21548;&#12290;&#22914;&#26524;&#25105;&#20204;&#22312;&#27880;&#20876;&#36827;&#21435;&#30417;&#21548;&#30340;onTouch&#26041;&#27861;&#20013;&#22788;&#29702;&#20102;&#35813;&#20107;&#20214;&#24182;&#19988;&#36820;&#22238;&#20102;true&#21017;&#20195;&#34920;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#65292;&#20107;&#20214;&#23558;&#19981;&#20250;&#22312;&#32487;&#32493;&#20256;&#36882;&#12290;</span><br></pre></td></tr></table></figure></p>
-<p>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnTouchListener != null &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED<br>    &amp;&amp; li.mOnTouchListener.onTouch(this, event)) {<br>    return true;<br>}if (onTouchEvent(event)) {<br>    return true;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#32780;&#22914;&#26524;&#27809;&#26377;&#35774;&#32622;&#30417;&#21548;&#25110;&#36820;&#22238;&#20026;false&#30340;&#35805;&#65292;&#35813;&#20107;&#20214;&#23558;&#20250;&#34987;&#20256;&#36882;&#21040;onTouchEvent&#26041;&#27861;&#12290;&#22312;View&#31867;&#40664;&#35748;&#30340;onTouchEvent&#26041;&#27861;&#20013;&#65292;&#20250;&#23558;&#20107;&#20214;&#20998;&#21457;&#21040;&#35270;&#22270;&#30340;click&#25110;&#32773;longClick&#20107;&#20214;&#12290;&#10;&#10;&#29992;&#25143;&#38656;&#29992;&#36890;&#36807;setOnClickListener&#25110;&#32773;setOnLongClickListener&#35774;&#32622;click&#30340;&#22788;&#29702;&#65292;&#22914;&#26524;&#25105;&#20204;&#35774;&#32622;&#20102;listener&#65292;&#21017;onTouchEvent&#20998;&#21457;&#23436;&#20107;&#20214;&#21518;&#20250;&#36820;&#22238;true&#36890;&#30693;&#35813;&#20107;&#20214;&#24050;&#32463;&#34987;&#28040;&#32791;&#12290;</span><br></pre></td></tr></table></figure></p>
-<p>if (mPerformClick == null) {<br>    mPerformClick = new PerformClick();<br>}<br>if (!post(mPerformClick)) {<br>    performClick();<br>}<br>ListenerInfo li = mListenerInfo;<br>if (li != null &amp;&amp; li.mOnClickListener != null) {<br>    playSoundEffect(SoundEffectConstants.CLICK);<br>    li.mOnClickListener.onClick(this);<br>    return true;<br>}<br>```</p>
-<p>ps: 从上面的代码指导view的click方法并不是直接调用执行的，而是通过post将click的处理延迟以保证视觉效果的优先执行。</p>
-<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>首先接收到事件的视图是最外层的视图，然后再往子视图上传递</li>
-<li>事件的传递是一个递归过程</li>
-<li>在上述每个环节都可以通过返回true的方法消耗该事件，结束事件的传递</li>
-<li>自定义视图的事件传递过程决定于其对应继承的方法，但应该遵守上述的规则</li>
+<h2 id="u70E7_u5F55_u955C_u50CF_u6587_u4EF6"><a href="#u70E7_u5F55_u955C_u50CF_u6587_u4EF6" class="headerlink" title="烧录镜像文件"></a>烧录镜像文件</h2><p>在mac下可以参考<a href="http://shumeipai.nxez.com/2014/05/18/raspberry-pi-under-mac-osx-to-install-raspbian-system.html" target="_blank" rel="external">Mac OSX下给树莓派安装Raspbian系统</a></p>
+<p>在Windows下面的话直接使用<code>Win32 Disk Imager</code>进行烧录。</p>
+<h2 id="u521D_u59CB_u5316_u7CFB_u7EDF_u64CD_u4F5C"><a href="#u521D_u59CB_u5316_u7CFB_u7EDF_u64CD_u4F5C" class="headerlink" title="初始化系统操作"></a>初始化系统操作</h2><h3 id="u6FC0_u6D3Broot_u7528_u6237"><a href="#u6FC0_u6D3Broot_u7528_u6237" class="headerlink" title="激活root用户"></a>激活root用户</h3><p>raspberrypi系统默认提供的用户为<code>pi</code>，密码为<code>raspberry</code>，so，第一步我们就是要激活<code>root</code>帐号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#35774;&#32622; root &#36134;&#21495;&#30340;&#23494;&#30721;&#10;sudo passwd root&#10;&#10;// &#21551;&#29992; root &#36134;&#21495;&#30331;&#24405;&#10;sudo passwd --unlock root</span><br></pre></td></tr></table></figure>
+<p>但是需要注意的是，root帐号启用后，默认不支持远程登录。</p>
+<h3 id="u914D_u7F6Essh_key_u8BC1_u4E66_u767B_u5F55"><a href="#u914D_u7F6Essh_key_u8BC1_u4E66_u767B_u5F55" class="headerlink" title="配置ssh key证书登录"></a>配置ssh key证书登录</h3><p>为了减去每次远程登录系统都需要手动输入密码，同样也更加安全，可以配置ssh key登录，ssh key的生成参考<a href="https://help.github.com/articles/generating-ssh-keys/" target="_blank" rel="external">generating-ssh-keys</a></p>
+<p>在服务端生成<code>.ssh/authorized_keys</code>文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .ssh&#10;touch .ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>将本地的公匙复制到<code>.ssh/authorized_keys</code>文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo XXXX &#62;&#62; .ssh/authorized_keys #XXXX&#26367;&#25442;&#25104;&#23545;&#24212;&#30340;&#20844;&#21273;</span><br></pre></td></tr></table></figure>
+<p>或者直接执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub | ssh pi@192.168.199.121 &#39;mkdir -p .ssh &#38;&#38; cat - &#62;&#62; ~/.ssh/authorized_keys&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="u7F51_u7EDC_u914D_u7F6E"><a href="#u7F51_u7EDC_u914D_u7F6E" class="headerlink" title="网络配置"></a>网络配置</h3><p>执行<code>ifconfig</code>命令,查看网卡物理地址，将该网址在路由器上绑定到固定的ip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth0      Link encap:Ethernet  HWaddr 38:22:db:e7:ed:0c // &#29289;&#29702;&#22320;&#22336;&#10;          UP BROADCAST MULTICAST  MTU:1500  Metric:1&#10;          RX packets:0 errors:0 dropped:0 overruns:0 frame:0&#10;          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0&#10;          collisions:0 txqueuelen:1000&#10;          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</span><br></pre></td></tr></table></figure>
+<p>然后执行<code>sudo nano /etc/network/interfaces</code>，将<code>manual</code>改为<code>dhcp</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iface eth0 inet dhcp</span><br></pre></td></tr></table></figure>
+<p>如果你有无线网卡的话，还要进行无线网络的配置，首先一样的需要将无线网络的网卡地址在路由器上绑定到一个固定ip。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wlan0     Link encap:Ethernet  HWaddr e2:42:06:3e:w5:4e  // &#29289;&#29702;&#22320;&#22336;</span><br></pre></td></tr></table></figure>
+<p>然后需要将无线网络的名称和密码设置一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iface wlan0 inet dhcp&#10;wpa-ssid &#32593;&#32476;&#21517;&#31216;&#10;wpa-psk &#32593;&#32476;&#23494;&#30721;&#10;#wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+<h3 id="u6269_u5927_u7CFB_u7EDF_u5BB9_u91CF"><a href="#u6269_u5927_u7CFB_u7EDF_u5BB9_u91CF" class="headerlink" title="扩大系统容量"></a>扩大系统容量</h3><p>树莓派默认并没有完全加载SD卡的内存容量，通过运行<code>sudo raspi-config</code>调出树莓派的配置界面</p>
+<p>选择第一项<code>Expand Filesystem</code>,确认重启后可以再执行<code>df -h</code>查看系统容量已经增大</p>
+<h3 id="u66FF_u6362_u8F6F_u4EF6_u6E90_u7684_u56FD_u5185_u955C_u50CF"><a href="#u66FF_u6362_u8F6F_u4EF6_u6E90_u7684_u56FD_u5185_u955C_u50CF" class="headerlink" title="替换软件源的国内镜像"></a>替换软件源的国内镜像</h3><p>国内有许多平台提供了树莓派的软件源的国内镜像，具体参考<a href="https://segmentfault.com/a/1190000000503041" target="_blank" rel="external">镜像列表</a>。这里选择阿里云的镜像地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak&#10;sudo vi /etc/apt/sources.list&#10;&#10;//&#23558;&#21407;&#26469;&#30340;&#27880;&#37322;&#25481;&#65292;&#26367;&#25442;&#25104;&#22914;&#19979;&#36719;&#20214;&#28304;&#22320;&#22336;&#10;deb http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib&#10;deb-src http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib</span><br></pre></td></tr></table></figure>
+<p>PS：有些库国内镜像并没有及时同步，如果安装软件出现问题时，可以尝试再把镜像地址换回官方镜像尝试一下</p>
+<h3 id="u5B89_u88C5_u5E38_u7528_u8F6F_u4EF6"><a href="#u5B89_u88C5_u5E38_u7528_u8F6F_u4EF6" class="headerlink" title="安装常用软件"></a>安装常用软件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim wget -y</span><br></pre></td></tr></table></figure>
+<h2 id="u5B89_u88C5samba"><a href="#u5B89_u88C5samba" class="headerlink" title="安装samba"></a>安装samba</h2><p>最后也来装个家庭内部NAS服务玩玩</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#26356;&#26032;&#28304;&#10;sudo apt-get update&#10;// &#23433;&#35013;samba&#10;sudo apt-get install samba samba-common-bin -y</span><br></pre></td></tr></table></figure>
+<p>创建samba文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /samba&#10;&#10;// &#20462;&#25913;samba&#30340;&#35775;&#38382;&#26435;&#38480;&#10;sudo chmod 777 /samba</span><br></pre></td></tr></table></figure>
+<p>安装好samba后，需要配置samba分享的信息，编辑<code>/etc/samba/smb.conf</code>文件，在文件的末尾添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[share]&#10;   comment = share folder&#10;   path = /samba&#10;   browseable = yes&#10;   valid users = root pi&#10;   public = yes&#10;   writable = yes</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Path to the directory you want scanned for media files.&#10;#&#10;# This option can be specified more than once if you want multiple directories&#10;# scanned.&#10;#&#10;# If you want to restrict a media_dir to a specific content type, you can&#10;# prepend the directory name with a letter representing the type (A, P or V),&#10;# followed by a comma, as so:&#10;#   * &#34;A&#34; for audio    (eg. media_dir=A,/var/lib/minidlna/music)&#10;#   * &#34;P&#34; for pictures (eg. media_dir=P,/var/lib/minidlna/pictures)&#10;#   * &#34;V&#34; for video    (eg. media_dir=V,/var/lib/minidlna/videos)&#10;#&#10;# WARNING: After changing this option, you need to rebuild the database. Either&#10;#          run minidlna with the &#39;-R&#39; option, or delete the &#39;files.db&#39; file&#10;#          from the db_dir directory (see below).&#10;#          On Debian, you can run, as root, &#39;service minidlna force-reload&#39; instead.&#10;media_dir=/samba/DLNA&#10;media_dir=A,/samba/DLNA/Music&#10;media_dir=P,/samba/DLNA/Picture&#10;media_dir=V,/samba/DLNA/Video&#10;&#10;# Path to the directory that should hold the database and album art cache.&#10;db_dir=/samba/DLNA/db&#10;&#10;# Path to the directory that should hold the log file.&#10;log_dir=/samba/DLNA/log</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/minidlna restart&#10;//&#26597;&#30475;&#29366;&#24577;&#10;$ sudo /etc/init.d/minidlna status &#10;[ ok ] minidlna is running.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/rc.local</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh -e&#10;#&#10;# rc.local&#10;#&#10;# This script is executed at the end of each multiuser runlevel.&#10;# Make sure that the script will &#34;exit 0&#34; on success or any other&#10;# value on error.&#10;#&#10;# In order to enable or disable this script just change the execution&#10;# bits.&#10;#&#10;# By default this script does nothing.&#10;&#10;# Print the IP address&#10;_IP=$(hostname -I) || true&#10;if [ &#34;$_IP&#34; ]; then&#10;  printf &#34;My IP address is %s&#10;&#34; &#34;$_IP&#34;&#10;fi&#10;&#10;#==============================&#10;sudo /etc/init.d/samba restart&#10;sudo /etc/init.d/minidlna restart&#10;#==============================&#10;&#10;exit 0</span><br></pre></td></tr></table></figure>
+<h2 id="u53C2_u8003_u5185_u5BB9"><a href="#u53C2_u8003_u5185_u5BB9" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
+<li><a href="https://segmentfault.com/a/1190000000503041" target="_blank" rel="external">树莓派及其他硬件平台国内外Linux镜像站全汇总</a></li>
+<li><a href="http://shumeipai.nxez.com/2014/05/18/raspberry-pi-under-mac-osx-to-install-raspbian-system.html" target="_blank" rel="external">Mac OSX下给树莓派安装Raspbian系统</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/" data-id="ciou7v1qd001dtu11jift2kb0" class="article-share-link">Share</a>
+      <a data-url="http://ohmerhe.com/2016/05/31/raspberry_pi_init/" data-id="ciou7v1pb0003tu11vz7moj18" class="article-share-link">Share</a>
       
-        <a href="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://ohmerhe.com/2016/05/31/raspberry_pi_init/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/touchevent/">touchevent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件传递/">事件传递</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NAS/">NAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/samba/">samba</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安装/">安装</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
 
     </footer>
   </div>
@@ -211,19 +235,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/02/26/gradle_speed_up/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          优化gradle编译速度实践
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/18/how-to-work-weakhandler/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/02/26/gradle_speed_up/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">WeakHandler是怎么解决Handler的内存问题的</div>
+      <div class="article-nav-title">优化gradle编译速度实践</div>
     </a>
   
 </nav>
