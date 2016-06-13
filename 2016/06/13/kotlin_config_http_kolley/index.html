@@ -3,23 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>树莓派安装Nginx和PHP | Ohmer&#39;s Blog</title>
+  <title>Kotlin实现配置化网络请求 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
+  <meta name="description" content="Kotlin官方提供一个DSL的典型应用场景，Anko致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而Anko让代码布局和XML一样简洁清晰。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="树莓派安装Nginx和PHP">
-<meta property="og:url" content="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/index.html">
+<meta property="og:title" content="Kotlin实现配置化网络请求">
+<meta property="og:url" content="http://ohmerhe.com/2016/06/13/kotlin_config_http_kolley/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_install_success.png">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_php_pass.png">
-<meta property="og:updated_time" content="2016-06-12T02:20:25.000Z">
+<meta property="og:description" content="Kotlin官方提供一个DSL的典型应用场景，Anko致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而Anko让代码布局和XML一样简洁清晰。">
+<meta property="og:updated_time" content="2016-06-13T12:27:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="树莓派安装Nginx和PHP">
-<meta name="twitter:description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
+<meta name="twitter:title" content="Kotlin实现配置化网络请求">
+<meta name="twitter:description" content="Kotlin官方提供一个DSL的典型应用场景，Anko致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而Anko让代码布局和XML一样简洁清晰。">
   
   
     <link rel="icon" href="favicon.png">
@@ -135,12 +130,12 @@
 </aside>
 
       
-      <section id="main"><article id="post-raspberry_pi_install_php_nginx" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-kotlin_config_http_kolley" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/1024/h/460" class="article-banner">
 	
 
 
@@ -152,7 +147,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      树莓派安装Nginx和PHP
+      Kotlin实现配置化网络请求
     </h1>
   
 
@@ -160,8 +155,8 @@
           
   <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/06/10/raspberry_pi_install_php_nginx/">
-      <time datetime="2016-06-10T12:56:08.000Z" itemprop="datePublished">2016-06-10</time>
+    <a href="/2016/06/13/kotlin_config_http_kolley/">
+      <time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time>
     </a>
   </div>
 
@@ -173,55 +168,52 @@
     <div class="article-entry" itemprop="articleBody">
       
                 
-        <h2 id="u5B89_u88C5Nginx"><a href="#u5B89_u88C5Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h2><p>先将系统更新到最新状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &#38;&#38; sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+        <p>Kotlin官方提供一个DSL的典型应用场景，<a href="https://github.com/Kotlin/anko" target="_blank" rel="external">Anko</a>致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而<code>Anko</code>让代码布局和XML一样简洁清晰。</p>
 <a id="more"></a>
-<p>安装Nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx -y</span><br></pre></td></tr></table></figure>
-<p>启动Nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/nginx start</span><br></pre></td></tr></table></figure>
-<p>如果启动成功的话，我们会得到类似的返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ sudo /etc/init.d/nginx start&#10;[ ok ] Starting nginx (via systemctl): nginx.service.</span><br></pre></td></tr></table></figure>
-<p>测试远程访问，在浏览器里输入树莓派的ip地址（如果你为你的树莓派配置了域名，也可以通过域名访问），可以看到如下的显示效果：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_install_success.png" alt="nginx_install_success"></p>
-<h2 id="u5B89_u88C5PHP"><a href="#u5B89_u88C5PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><p>配合Nginx使用时，PHP的安装包和Apache2配合使用稍微有些不同，PHP以FastCGI接口方式运行，因此我们需要安装<code>PHP FPM</code>包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install php5-fpm -y</span><br></pre></td></tr></table></figure>
-<p>安装完成后会自动启动PHP服务，或者我们可以通过下面的命令启动。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service php5-fpm start</span><br></pre></td></tr></table></figure>
-<h2 id="u914D_u7F6ENginx_u548CPHP"><a href="#u914D_u7F6ENginx_u548CPHP" class="headerlink" title="配置Nginx和PHP"></a>配置Nginx和PHP</h2><p>在Nginx和PHP都安装完成以后，我们需要进行一些简单的配置。默认Nginx的配置信息是放在<code>/etc/nginx/sites-available/default</code>中，我们可以将这个默认文件先备份一下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak</span><br></pre></td></tr></table></figure>
-<p>然后，然后重新创建一个<code>/etc/nginx/sites-available/default</code>文件，将下面的配置信息添加到该文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server &#123;&#10;    listen 80;&#10;    server_name www.myserver.com;&#10;    root /var/www;&#10;    index index.html index.htm index.php;&#10;    access_log /var/log/nginx/myserver.log;&#10;&#10;    location ~ \.php$ &#123;&#10;        include snippets/fastcgi-php.conf;&#10;&#10;        # With php5-cgi alone:&#10;        #fastcgi_pass 127.0.0.1:9000;&#10;        # With php5-fpm:&#10;        fastcgi_pass unix:/var/run/php5-fpm.sock;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="u521B_u5EFAindex-php"><a href="#u521B_u5EFAindex-php" class="headerlink" title="创建index.php"></a>创建index.php</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /var/www/index.php</span><br></pre></td></tr></table></figure>
-<p>将下面的信息添加到文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?php phpinfo(); ?&#62;</span><br></pre></td></tr></table></figure>
-<h3 id="u91CD_u542F_u670D_u52A1"><a href="#u91CD_u542F_u670D_u52A1" class="headerlink" title="重启服务"></a>重启服务</h3><p>在上面的配置都完成后，重启Nginx服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
-<p>服务启动后，可以在浏览器访问该服务，看到如下的效果。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_php_pass.png" alt=""></p>
-<p>PS： 如果在Nginx启动过程中出现问题，可以通过<code>nginx -t</code>查看是什么配置出了问题</p>
-<h3 id="PHP_u914D_u7F6E"><a href="#PHP_u914D_u7F6E" class="headerlink" title="PHP配置"></a>PHP配置</h3><p>我们需要编辑<code>/etc/php5/fpm/php.ini</code>（为了安全性）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/php5/fpm/php.ini</span><br></pre></td></tr></table></figure>
-<p>然后找到<code>cgi.fix_pathinfo=1</code>这一行，并将其改成<code>cgi.fix_pathinfo=0</code>。</p>
-<p>重启PHP服务和Nginx服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service php5-fpm restart</span><br></pre></td></tr></table></figure>
-<h2 id="5B_u53C2_u8003_u8D44_u6599_5D"><a href="#5B_u53C2_u8003_u8D44_u6599_5D" class="headerlink" title="[参考资料]"></a>[参考资料]</h2><ul>
-<li><a href="https://www.stewright.me/2014/06/tutorial-install-nginx-and-php-on-raspbian/" target="_blank" rel="external">Tutorial – Install Nginx and PHP on Raspbian</a></li>
-<li><a href="https://kevindekoninck.com/raspberry-pi-install-nginx-mysql-php/" target="_blank" rel="external">Raspberry Pi – Install nginx, MySQL &amp; PHP</a></li>
-<li><a href="http://workshop.botter.ventures/2013/09/05/how-to-setup-a-web-server-with-nginxphp-on-raspberry-pi/" target="_blank" rel="external">How to setup a web server with Nginx/PHP on Raspberry Pi</a></li>
-<li><a href="https://www.digitalocean.com/community/questions/can-t-start-nginx-job-for-nginx-service-failed" target="_blank" rel="external">Can’t start Nginx - Job for nginx.service failed</a></li>
+<p>受到<code>Anko</code>的启发，让我萌生了把<code>Android</code>中网络请求纷繁复杂配置信息也封装成配置化方式，实现如下方式的网络请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Http.get &#123;&#10;&#10;    url = &#34;http://api.openweathermap.org/data/2.5/weather&#34;&#10;&#10;    headers &#123;&#10;        &#34;Content-Type&#34; - &#39;application/json&#39;&#10;        &#34;pragma-token&#34; - &#39;33162acxxxxxx5032ad21e0e79ff70d&#39;&#10;    &#125;&#10;&#10;    params &#123;&#10;        &#34;q&#34; - &#34;shanghai&#34;&#10;        &#34;appid&#34; - &#34;d7a98cf22463b1c0c3df4adfe5abbc77&#34;&#10;    &#125;&#10;&#10;    onSuccess &#123; bytes -&#62;&#10;        // handle data&#10;    &#125;&#10;&#10;    onFail &#123; error -&#62;&#10;        // handle error&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>目前该框架已经完成，后面还会继续完善，项目地址<a href="https://github.com/ohmerhe/Kolley" target="_blank" rel="external">Kolley</a></p>
+<p>奔着这个目标，我把之前自己简单封装的Volley库翻出来，用Kotlin重新封装一下。经过分析总体过程大概如下：</p>
+<ul>
+<li>基础代码转Kotlin</li>
+<li>重定义原子Request</li>
+<li>Request构造配置化</li>
+<li>提供RESTful方法</li>
+</ul>
+<h2 id="u57FA_u7840_u4EE3_u7801_u8F6CKotlin"><a href="#u57FA_u7840_u4EE3_u7801_u8F6CKotlin" class="headerlink" title="基础代码转Kotlin"></a>基础代码转Kotlin</h2><p>之前的框架是参考<a href="https://github.com/loopj/android-async-http" target="_blank" rel="external">android-async-http</a>做的封装，用<code>okhttp</code>作为网络请求引擎，图片请求缓存模块使用的<code>jakewharton</code>提供的<code>disklrucache</code>，这两块都可以复用，先将这部分代码直接转成<code>Kotlin</code>实现。</p>
+<p>这不需要花太多的功夫，将java代码复制过来以后，直接使用Android Studio的快速转换功能，转换后可能会有一些语法上的错误，稍微处理一下就可以了，得到类似的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class OkHttpStack @JvmOverloads constructor(client: OkHttpClient = OkHttpClient()) : HurlStack() &#123;&#10;    private val mFactory: OkUrlFactory&#10;&#10;    init &#123;&#10;        mFactory = OkUrlFactory(client)&#10;    &#125;&#10;&#10;    @Throws(IOException::class)&#10;    override fun createConnection(url: URL): HttpURLConnection &#123;&#10;        return mFactory.open(url)&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u91CD_u5B9A_u4E49_u539F_u5B50Request"><a href="#u91CD_u5B9A_u4E49_u539F_u5B50Request" class="headerlink" title="重定义原子Request"></a>重定义原子Request</h2><p>需要在Volley提供的<code>Request</code>基础上继承一个<code>BaseRequest</code>预处理一些信息，如params。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class ByteRequest(method: Int, url: String, errorListener: Response.ErrorListener? = Response.ErrorListener &#123;&#125;)&#10;: BaseRequest&#60;ByteArray&#62;(method, url, errorListener) &#123;&#10;    override fun parseNetworkResponse(response: NetworkResponse?): Response&#60;ByteArray&#62;? &#123;&#10;        return Response.success(response?.data, HttpHeaderParser.parseCacheHeaders(response))&#10;    &#125;&#10;&#125;&#10;&#10;abstract class BaseRequest&#60;D&#62;(method: Int, url: String, errorListener: Response.ErrorListener? = Response.ErrorListener &#123;&#125;)&#10;: Request&#60;D&#62;(method, url, errorListener) &#123;&#10;    protected val DEFAULT_CHARSET = &#34;UTF-8&#34;&#10;&#10;    internal var _listener: Response.Listener&#60;D&#62;? = null&#10;    protected val _params: MutableMap&#60;String, String&#62; = HashMap() // used for a POST or PUT request.&#10;&#10;    /**&#10;     * Returns a Map of parameters to be used for a POST or PUT request.&#10;     * @return&#10;     */&#10;    public override fun getParams(): MutableMap&#60;String, String&#62; &#123;&#10;        return _params&#10;    &#125;&#10;&#10;    override fun deliverResponse(response: D?) &#123;&#10;        _listener?.onResponse(response)&#10;    &#125;&#10;&#10;    protected fun log(msg: String) &#123;&#10;        if (BuildConfig.DEBUG) &#123;&#10;            Log.d(this.javaClass.simpleName, msg)&#10;        &#125;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Request_u6784_u9020_u914D_u7F6E_u5316"><a href="#Request_u6784_u9020_u914D_u7F6E_u5316" class="headerlink" title="Request构造配置化"></a>Request构造配置化</h2><p>上一步封装的<code>Request</code>必须在构造器中提供一些参数，并且像<code>Listener</code>这样的参数不能直接传递表达式，为配置化调用的封装提供了一定的困难。需要重新封装一个<code>Request</code>构造器，再在最后交给执行队列的时候创建真正的<code>Request</code>传递给它，这样让所有网络请求需要的配置信息都可以很方便的构造。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open class BaseRequestWapper() &#123;&#10;    internal lateinit var _request: ByteRequest&#10;    var url: String = &#34;&#34;&#10;    var method: Int = Request.Method.GET&#10;    private var _start: (() -&#62; Unit) = &#123;&#125;&#10;    private var _success: (ByteArray) -&#62; Unit = &#123;&#125;&#10;    private var _fail: (VolleyError) -&#62; Unit = &#123;&#125;&#10;    private var _finish: (() -&#62; Unit) = &#123;&#125;&#10;    protected val _params: MutableMap&#60;String, String&#62; = HashMap() // used for a POST or PUT request.&#10;&#10;    protected val _headers: MutableMap&#60;String, String&#62; = HashMap()&#10;    var tag: Any? = null&#10;&#10;    fun onStart(onStart: () -&#62; Unit) &#123;&#10;        _start = onStart&#10;    &#125;&#10;&#10;    fun onFail(onError: (VolleyError) -&#62; Unit) &#123;&#10;        _fail = onError&#10;    &#125;&#10;&#10;    fun onSuccess(onSuccess: (ByteArray) -&#62; Unit) &#123;&#10;        _success = onSuccess&#10;    &#125;&#10;&#10;    fun onFinish(onFinish: () -&#62; Unit) &#123;&#10;        _finish = onFinish&#10;    &#125;&#10;&#10;    fun params(makeParam: RequestPairs.() -&#62; Unit) &#123;&#10;        val requestPair = RequestPairs()&#10;        requestPair.makeParam()&#10;        _params.putAll(requestPair.pairs)&#10;    &#125;&#10;&#10;    fun headers(makeHeader: RequestPairs.() -&#62; Unit) &#123;&#10;        val requestPair = RequestPairs()&#10;        requestPair.makeHeader()&#10;        _headers.putAll(requestPair.pairs)&#10;    &#125;&#10;&#10;    fun excute() &#123;&#10;        var url = url&#10;        if (Request.Method.GET == method) &#123;&#10;            url = getGetUrl(url, _params) &#123; it.toQueryString() &#125;&#10;        &#125;&#10;        _request = ByteRequest(method, url, Response.ErrorListener &#123;&#10;            _fail(it)&#10;            _finish()&#10;        &#125;)&#10;        _request._listener = Response.Listener &#123;&#10;            _success(it)&#10;            _finish()&#10;        &#125;&#10;        if (tag != null) &#123;&#10;            _request.tag = tag&#10;        &#125;&#10;        Http.getRequestQueue().add(_request)&#10;        _start()&#10;    &#125;&#10;&#10;    private fun getGetUrl(url: String, params: MutableMap&#60;String, String&#62;, toQueryString: (map: Map&#60;String, String&#62;) -&#62;&#10;    String): String &#123;&#10;        return if (params == null || params.isEmpty()) url else &#34;$url?$&#123;toQueryString(params)&#125;&#34;&#10;    &#125;&#10;&#10;    private fun &#60;K, V&#62; Map&#60;K, V&#62;.toQueryString(): String = this.map &#123; &#34;$&#123;it.key&#125;=$&#123;it.value&#125;&#34; &#125;.joinToString(&#34;&#38;&#34;)&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中将网络请求需要的所有信息全部包装了一层，这样在调用的时候就可以很方便的逐个设置每个参数（当然会有一些默认值），最后在<code>excute()</code>方法中全部设置给真正的<code>Request</code>。这个封装保证了下面的调用方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url = &#34;http://api.openweathermap.org/data/2.5/weather&#34;&#10;params &#123;&#10;    &#34;q&#34; - &#34;shanghai&#34;&#10;    &#34;appid&#34; - &#34;d7a98cf22463b1c0c3df4adfe5abbc77&#34;&#10;&#125;&#10;onSuccess &#123; bytes -&#62;&#10;    // handle data&#10;&#125;&#10;...</span><br></pre></td></tr></table></figure>
+<p>PS：上面<code>params</code>是的书写方式，使用了<code>Kotlin</code>的操作符重载功能，具体实现可以下载<a href="https://github.com/ohmerhe/Kolley" target="_blank" rel="external">源码</a>看下。</p>
+<h2 id="u63D0_u4F9BRESTful_u65B9_u6CD5"><a href="#u63D0_u4F9BRESTful_u65B9_u6CD5" class="headerlink" title="提供RESTful方法"></a>提供RESTful方法</h2><p>实现到上一步，已经准备的差不多了，接下来还需要最后一步，提供RESTful请求方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object Http &#123;&#10;    private var mRequestQueue: RequestQueue? = null&#10;    fun init(context: Context) &#123;&#10;        // Set up the network to use OKHttpURLConnection as the HTTP client.&#10;        // getApplicationContext() is key, it keeps you from leaking the&#10;        // Activity or BroadcastReceiver if someone passes one in.&#10;        mRequestQueue = Volley.newRequestQueue(context.applicationContext, OkHttpStack(OkHttpClient()))&#10;    &#125;&#10;&#10;    fun getRequestQueue(): RequestQueue &#123;&#10;        return mRequestQueue!!&#10;    &#125;&#10;&#10;    val request: (Int, BaseRequestWapper.() -&#62; Unit) -&#62; Request&#60;ByteArray&#62; = &#123; method, request -&#62;&#10;        val baseRequest = BaseRequestWapper()&#10;        baseRequest.method = method&#10;        baseRequest.request()&#10;        baseRequest.excute()&#10;        baseRequest._request&#10;    &#125;&#10;&#10;    &#10;    val post = request.partially1(Request.Method.POST)&#10;    val put = request.partially1(Request.Method.PUT)&#10;    val delete = request.partially1(Request.Method.DELETE)&#10;    val head = request.partially1(Request.Method.HEAD)&#10;    val options = request.partially1(Request.Method.OPTIONS)&#10;    val trace = request.partially1(Request.Method.TRACE)&#10;    val patch = request.partially1(Request.Method.PATCH)&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的<code>request: (Int, BaseRequestWapper.() -&gt; Unit) -&gt; Request&lt;ByteArray&gt;</code>方法为网络请求提供了入口、保证了配置化代码都可以在<code>{}</code>中调用、完成了真正网络请求添加到执行队列。用户可以通过<code>http.requset(method){}</code>方式发起各种请求。</p>
+<p><code>val get = request.partially1(Request.Method.GET)</code>等提供了RESTful方法的封装，实现<code>Http.get{}</code>的方便调用。</p>
+<h2 id="u540E_u7EED"><a href="#u540E_u7EED" class="headerlink" title="后续"></a>后续</h2><p>关于图片请求模块的实现，其实也是异曲同工，虽然更加复杂一点，但是具体思路是一样的。有兴趣的可以下载<a href="https://github.com/ohmerhe/Kolley" target="_blank" rel="external">源码</a>查看实现，也欢迎提交代码。</p>
+<p>图片请求的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Image.display &#123;&#10;    url = &#34;http://7xpox6.com1.z0.glb.clouddn.com/android_bg.jpg&#34;&#10;    imageView = mImageView&#10;    options &#123;&#10;        // these values are all default value , you do not need specific them if you do not want to custom&#10;        imageResOnLoading = R.drawable.default_image&#10;        imageResOnLoading = R.drawable.default_image&#10;        imageResOnFail = R.drawable.default_image&#10;        decodeConfig = Bitmap.Config.RGB_565&#10;        scaleType = ImageView.ScaleType.CENTER_CROP&#10;        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX&#10;        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Image.load &#123;&#10;    url = &#34;http://7xpox6.com1.z0.glb.clouddn.com/android_bg.jpg&#34;&#10;    options &#123;&#10;        scaleType = ImageView.ScaleType.CENTER_CROP&#10;        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX&#10;        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX&#10;    &#125;&#10;    onSuccess &#123; bitmap -&#62;&#10;        _imageView2?.setImageBitmap(bitmap)&#10;    &#125;&#10;    onFail &#123; error -&#62;&#10;        log(error.toString())&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/Kotlin/anko" target="_blank" rel="external">Anko</a></li>
+<li><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">Kotlin Refrence</a></li>
+<li><a href="https://developer.android.com/training/volley/index.html" target="_blank" rel="external">Volley</a></li>
+<li><a href="http://square.github.io/okhttp" target="_blank" rel="external">OKHttp</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/" data-id="cip9qq9yr0000p711768m13iu" class="article-share-link">Share</a>
+      <a data-url="http://ohmerhe.com/2016/06/13/kotlin_config_http_kolley/" data-id="cipdzuj940000qw11wgbqruw6" class="article-share-link">Share</a>
       
-        <a href="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://ohmerhe.com/2016/06/13/kotlin_config_http_kolley/#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DSL/">DSL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kolley/">Kolley</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OKHttp/">OKHttp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Volley/">Volley</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络请求/">网络请求</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/配置化/">配置化</a></li></ul>
 
     </footer>
   </div>
@@ -229,19 +221,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/06/13/kotlin_config_http_kolley/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Kotlin实现配置化网络请求
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/06/04/raspberry_install_mysql/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/06/10/raspberry_pi_install_php_nginx/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">树莓派安装MySQL</div>
+      <div class="article-nav-title">树莓派安装Nginx和PHP</div>
     </a>
   
 </nav>

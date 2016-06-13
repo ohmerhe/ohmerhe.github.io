@@ -3,23 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>树莓派安装Nginx和PHP | Ohmer&#39;s Blog</title>
+  <title>Tag: OKHttp | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
-<meta property="og:type" content="article">
-<meta property="og:title" content="树莓派安装Nginx和PHP">
-<meta property="og:url" content="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ohmer's Blog">
+<meta property="og:url" content="http://ohmerhe.com/tags/OKHttp/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_install_success.png">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_php_pass.png">
-<meta property="og:updated_time" content="2016-06-12T02:20:25.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="树莓派安装Nginx和PHP">
-<meta name="twitter:description" content="安装Nginx先将系统更新到最新状态
-1sudo apt-get update &amp;#38;&amp;#38; sudo apt-get upgrade">
+<meta name="twitter:title" content="Ohmer's Blog">
+<meta name="twitter:description">
   
   
     <link rel="icon" href="favicon.png">
@@ -135,129 +129,49 @@
 </aside>
 
       
-      <section id="main"><article id="post-raspberry_pi_install_php_nginx" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
+      <section id="main">
+    <section class="archives-wrap">
+    <div class="archive-tag-wrap">
+      <span class="archive-tag">#OKHttp</span>
+    </div>
+    <div class="archives">
     
-      
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/1024/h/460" class="article-banner">
-	
-
-
-
+      <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
     
-    
-    
-      <header class="article-header">
-        
+    <div class="archive-article-thumbnail">
+      <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
   
-    <h1 class="article-title" itemprop="name">
-      树莓派安装Nginx和PHP
+    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin实现配置化网络请求" class="thumbnail-image"></span>
+  
+</a>
+    </div>
+    
+    <header class="archive-article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/06/13/kotlin_config_http_kolley/">Kotlin实现配置化网络请求</a>
     </h1>
   
 
-        <div class="article-meta">
-          
-  <div class="article-date">
+      
+        
+  <div class="archive-article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/06/10/raspberry_pi_install_php_nginx/">
-      <time datetime="2016-06-10T12:56:08.000Z" itemprop="datePublished">2016-06-10</time>
+    <a href="/2016/06/13/kotlin_config_http_kolley/">
+      <time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016 Jun 13</time>
     </a>
   </div>
 
 
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
       
-                
-        <h2 id="u5B89_u88C5Nginx"><a href="#u5B89_u88C5Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h2><p>先将系统更新到最新状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &#38;&#38; sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>安装Nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx -y</span><br></pre></td></tr></table></figure>
-<p>启动Nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/nginx start</span><br></pre></td></tr></table></figure>
-<p>如果启动成功的话，我们会得到类似的返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ sudo /etc/init.d/nginx start&#10;[ ok ] Starting nginx (via systemctl): nginx.service.</span><br></pre></td></tr></table></figure>
-<p>测试远程访问，在浏览器里输入树莓派的ip地址（如果你为你的树莓派配置了域名，也可以通过域名访问），可以看到如下的显示效果：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_install_success.png" alt="nginx_install_success"></p>
-<h2 id="u5B89_u88C5PHP"><a href="#u5B89_u88C5PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><p>配合Nginx使用时，PHP的安装包和Apache2配合使用稍微有些不同，PHP以FastCGI接口方式运行，因此我们需要安装<code>PHP FPM</code>包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install php5-fpm -y</span><br></pre></td></tr></table></figure>
-<p>安装完成后会自动启动PHP服务，或者我们可以通过下面的命令启动。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service php5-fpm start</span><br></pre></td></tr></table></figure>
-<h2 id="u914D_u7F6ENginx_u548CPHP"><a href="#u914D_u7F6ENginx_u548CPHP" class="headerlink" title="配置Nginx和PHP"></a>配置Nginx和PHP</h2><p>在Nginx和PHP都安装完成以后，我们需要进行一些简单的配置。默认Nginx的配置信息是放在<code>/etc/nginx/sites-available/default</code>中，我们可以将这个默认文件先备份一下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak</span><br></pre></td></tr></table></figure>
-<p>然后，然后重新创建一个<code>/etc/nginx/sites-available/default</code>文件，将下面的配置信息添加到该文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server &#123;&#10;    listen 80;&#10;    server_name www.myserver.com;&#10;    root /var/www;&#10;    index index.html index.htm index.php;&#10;    access_log /var/log/nginx/myserver.log;&#10;&#10;    location ~ \.php$ &#123;&#10;        include snippets/fastcgi-php.conf;&#10;&#10;        # With php5-cgi alone:&#10;        #fastcgi_pass 127.0.0.1:9000;&#10;        # With php5-fpm:&#10;        fastcgi_pass unix:/var/run/php5-fpm.sock;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="u521B_u5EFAindex-php"><a href="#u521B_u5EFAindex-php" class="headerlink" title="创建index.php"></a>创建index.php</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /var/www/index.php</span><br></pre></td></tr></table></figure>
-<p>将下面的信息添加到文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;?php phpinfo(); ?&#62;</span><br></pre></td></tr></table></figure>
-<h3 id="u91CD_u542F_u670D_u52A1"><a href="#u91CD_u542F_u670D_u52A1" class="headerlink" title="重启服务"></a>重启服务</h3><p>在上面的配置都完成后，重启Nginx服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
-<p>服务启动后，可以在浏览器访问该服务，看到如下的效果。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_php_pass.png" alt=""></p>
-<p>PS： 如果在Nginx启动过程中出现问题，可以通过<code>nginx -t</code>查看是什么配置出了问题</p>
-<h3 id="PHP_u914D_u7F6E"><a href="#PHP_u914D_u7F6E" class="headerlink" title="PHP配置"></a>PHP配置</h3><p>我们需要编辑<code>/etc/php5/fpm/php.ini</code>（为了安全性）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/php5/fpm/php.ini</span><br></pre></td></tr></table></figure>
-<p>然后找到<code>cgi.fix_pathinfo=1</code>这一行，并将其改成<code>cgi.fix_pathinfo=0</code>。</p>
-<p>重启PHP服务和Nginx服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service php5-fpm restart</span><br></pre></td></tr></table></figure>
-<h2 id="5B_u53C2_u8003_u8D44_u6599_5D"><a href="#5B_u53C2_u8003_u8D44_u6599_5D" class="headerlink" title="[参考资料]"></a>[参考资料]</h2><ul>
-<li><a href="https://www.stewright.me/2014/06/tutorial-install-nginx-and-php-on-raspbian/" target="_blank" rel="external">Tutorial – Install Nginx and PHP on Raspbian</a></li>
-<li><a href="https://kevindekoninck.com/raspberry-pi-install-nginx-mysql-php/" target="_blank" rel="external">Raspberry Pi – Install nginx, MySQL &amp; PHP</a></li>
-<li><a href="http://workshop.botter.ventures/2013/09/05/how-to-setup-a-web-server-with-nginxphp-on-raspberry-pi/" target="_blank" rel="external">How to setup a web server with Nginx/PHP on Raspberry Pi</a></li>
-<li><a href="https://www.digitalocean.com/community/questions/can-t-start-nginx-job-for-nginx-service-failed" target="_blank" rel="external">Can’t start Nginx - Job for nginx.service failed</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/" data-id="cip9qq9yr0000p711768m13iu" class="article-share-link">Share</a>
-      
-        <a href="http://ohmerhe.com/2016/06/10/raspberry_pi_install_php_nginx/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Php/">Php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/06/13/kotlin_config_http_kolley/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Kotlin实现配置化网络请求
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/06/04/raspberry_install_mysql/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">树莓派安装MySQL</div>
-    </a>
-  
-</nav>
-
-
-  
 </article>
-
-
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-
-</section>
+    
+    </div></section>
+    </section>
       
         <aside id="sidebar">
   
@@ -407,7 +321,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
