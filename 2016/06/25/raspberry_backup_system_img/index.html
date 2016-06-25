@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Nginx | Ohmer&#39;s Blog</title>
+  <title>用U盘为树莓派备份镜像 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="http://ohmerhe.com/tags/Nginx/index.html">
+  <meta name="description" content="树莓派使用了一段时间以后，已经为树莓派装了好多东西，也做了好多配置。有必要为系统做一次备份，就不用每次都重头开始了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用U盘为树莓派备份镜像">
+<meta property="og:url" content="http://ohmerhe.com/2016/06/25/raspberry_backup_system_img/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="树莓派使用了一段时间以后，已经为树莓派装了好多东西，也做了好多配置。有必要为系统做一次备份，就不用每次都重头开始了。">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_1.png">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_2.png">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_3.png">
+<meta property="og:updated_time" content="2016-06-25T13:05:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="用U盘为树莓派备份镜像">
+<meta name="twitter:description" content="树莓派使用了一段时间以后，已经为树莓派装了好多东西，也做了好多配置。有必要为系统做一次备份，就不用每次都重头开始了。">
   
   
     <link rel="icon" href="favicon.png">
@@ -129,49 +133,116 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#Nginx</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-raspberry_backup_system_img" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2016/06/10/raspberry_pi_install_php_nginx/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/200)" alt="树莓派安装Nginx和PHP" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/10/raspberry_pi_install_php_nginx/">树莓派安装Nginx和PHP</a>
+    <h1 class="article-title" itemprop="name">
+      用U盘为树莓派备份镜像
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/06/10/raspberry_pi_install_php_nginx/">
-      <time datetime="2016-06-10T12:56:08.000Z" itemprop="datePublished">2016 Jun 10</time>
+    <a href="/2016/06/25/raspberry_backup_system_img/">
+      <time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time>
     </a>
   </div>
 
 
-      
-    </header>
-  </div>
-</article>
+          
+        </div>
+      </header>
     
-    </div></section>
-    </section>
+    <div class="article-entry" itemprop="articleBody">
+      
+                
+        <p>树莓派使用了一段时间以后，已经为树莓派装了好多东西，也做了好多配置。有必要为系统做一次备份，就不用每次都重头开始了。</p>
+<a id="more"></a>
+<p>准备工作：</p>
+<ul>
+<li>空白U盘（最好是8G以上，也可以是sd卡+读卡器）</li>
+<li>可以上网的树莓派</li>
+</ul>
+<h2 id="u4E0B_u8F7D_u811A_u672C"><a href="#u4E0B_u8F7D_u811A_u672C" class="headerlink" title="下载脚本"></a>下载脚本</h2><p>进入树莓派系统，下载脚本文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/billw2/rpi-clone/master/rpi-clone</span><br></pre></td></tr></table></figure>
+<p>为脚本设置执行权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x rpi-clone</span><br></pre></td></tr></table></figure>
+<h2 id="U_u76D8_u51C6_u5907"><a href="#U_u76D8_u51C6_u5907" class="headerlink" title="U盘准备"></a>U盘准备</h2><p>在插入u盘前，先运行<code>sudo fdisk -l</code>查看树莓派的磁盘。SD卡插槽上正在运行系统的SD卡应该显示为/dev/mmcblk0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Device         Boot  Start      End  Sectors  Size Id Type&#10;/dev/mmcblk0p1        8192   137215   129024   63M  c W95 FAT32 (LBA)&#10;/dev/mmcblk0p2      137216 31116287 30979072 14.8G 83 Linux</span><br></pre></td></tr></table></figure>
+<p>插入U盘，再运行上面的命令，可以看到增加了下面的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Device     Boot Start      End  Sectors  Size Id Type&#10;/dev/sda1  *       64 15771647 15771584  7.5G  b W95 FAT32</span><br></pre></td></tr></table></figure>
+<p>/dev/sda1（或者是/dev/sdb1）就是我们插入的空白U盘。</p>
+<h2 id="u5907_u4EFD_u955C_u50CF"><a href="#u5907_u4EFD_u955C_u50CF" class="headerlink" title="备份镜像"></a>备份镜像</h2><p>运行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./rpi-clone sda -f</span><br></pre></td></tr></table></figure>
+<p>这里，第一个参数是SD卡的名字，这里是<code>sda</code>。<code>-f</code>告诉脚本完整格式化SD卡。</p>
+<p>脚本会提示你是否初始化目标SD卡。输入<code>yes</code>然后按一下回车。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_1.png" alt=""></p>
+<p>接着，会提示你是否想给你的备份镜像指定一个标签，你可以设置一个标签，或者直接回车跳过。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_2.png" alt=""></p>
+<p>最后，会有一次最终确认，输入<code>yes</code>回车，等待一段时间。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/raspberry_backup_3.png" alt=""></p>
+<p>备份完成后，会提示你是否卸载(unmount)这个新系统卡，输入<code>yes</code>回车完成备份。</p>
+<p>到这里整个备份已经完成</p>
+<h2 id="u955C_u50CF_u8FD8_u539F"><a href="#u955C_u50CF_u8FD8_u539F" class="headerlink" title="镜像还原"></a>镜像还原</h2><p>树莓派本身不支持从U盘启动，所以经过上面的步骤备份好的系统要还原使用，还需要进一步处理。</p>
+<p>一种方式是让你的树莓派支持从U盘启动，具体可以参考<a href="http://www.geekfan.net/5244/" target="_blank" rel="external">树莓派支持多系统启动</a>。</p>
+<p>另外就是先将系统还原到sd卡中使用。</p>
+<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://shumeipai.nxez.com/2014/06/01/do-system-backup-image-of-raspberry-pi-for-linux-or-mac.html" target="_blank" rel="external">为树莓派做系统备份镜像</a></li>
+<li><a href="http://blog.lxx1.com/1450" target="_blank" rel="external">制作树苺派SD卡备份镜像——树苺派系统备份与还原指南</a></li>
+<li><a href="http://www.geekfan.net/5244/" target="_blank" rel="external">如何使用BerryBoot来使树莓派支持多系统启动</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ohmerhe.com/2016/06/25/raspberry_backup_system_img/" data-id="cipv6itu600004u11n96pzp75" class="article-share-link">Share</a>
+      
+        <a href="http://ohmerhe.com/2016/06/25/raspberry_backup_system_img/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/13/kotlin_config_http_kolley/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Kotlin实现配置化网络请求</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
       
         <aside id="sidebar">
   
@@ -321,7 +392,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
