@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 类与对象 | Ohmer&#39;s Blog</title>
+  <title>树莓派安装Node | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="http://ohmerhe.com/tags/类与对象/index.html">
+  <meta name="description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派安装Node">
+<meta property="og:url" content="http://ohmerhe.com/2016/06/26/raspberry_install_node/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
+<meta property="og:updated_time" content="2016-06-26T08:35:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="树莓派安装Node">
+<meta name="twitter:description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
   
   
     <link rel="icon" href="favicon.png">
@@ -129,49 +130,112 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#类与对象</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-raspberry_install_node" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2015/12/22/class-object-generic/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/sunrise.jpg?imageView2/1/w/200)" alt="kotlin类与对象 —— 泛型" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/12/22/class-object-generic/">kotlin类与对象 —— 泛型</a>
+    <h1 class="article-title" itemprop="name">
+      树莓派安装Node
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2015/12/22/class-object-generic/">
-      <time datetime="2015-12-22T15:08:50.000Z" itemprop="datePublished">2015 Dec 22</time>
+    <a href="/2016/06/26/raspberry_install_node/">
+      <time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time>
     </a>
   </div>
 
 
-      
-    </header>
-  </div>
-</article>
+          
+        </div>
+      </header>
     
-    </div></section>
-    </section>
+    <div class="article-entry" itemprop="articleBody">
+      
+                
+        <h2 id="u5B89_u88C5Node"><a href="#u5B89_u88C5Node" class="headerlink" title="安装Node"></a>安装Node</h2><h3 id="u5FEB_u901F_u5B89_u88C5"><a href="#u5FEB_u901F_u5B89_u88C5" class="headerlink" title="快速安装"></a>快速安装</h3><p>国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://node-arm.herokuapp.com/node_latest_armhf.deb &#10;sudo dpkg -i node_latest_armhf.deb</span><br></pre></td></tr></table></figure>
+<h3 id="u5B98_u65B9_u6E20_u9053_u5B89_u88C5"><a href="#u5B98_u65B9_u6E20_u9053_u5B89_u88C5" class="headerlink" title="官方渠道安装"></a>官方渠道安装</h3><p>官方有两个版本可以选择，LTS版和Current版，选择官方推荐LTS版。然后该选择那个平台的包呢。</p>
+<p>运行查看本机的CPU信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+<p>可以得到类似下面的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">processor&#9;: 0&#10;model name&#9;: ARMv7 Processor rev 5 (v7l)&#10;BogoMIPS&#9;: 38.40&#10;Features&#9;: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm&#10;CPU implementer&#9;: 0x41&#10;CPU architecture: 7&#10;CPU variant&#9;: 0x0&#10;CPU part&#9;: 0xc07&#10;CPU revision&#9;: 5&#10;&#10;processor&#9;: 1&#10;model name&#9;: ARMv7 Processor rev 5 (v7l)&#10;BogoMIPS&#9;: 38.40&#10;Features&#9;: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm&#10;CPU implementer&#9;: 0x41&#10;CPU architecture: 7&#10;CPU variant&#9;: 0x0&#10;CPU part&#9;: 0xc07&#10;CPU revision&#9;: 5&#10;&#10;...</span><br></pre></td></tr></table></figure>
+<p>根据输出可以确定我们该选择<code>armv7</code>的包。下载相应的包(当前LTS版最新为4.4.5)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://nodejs.org/dist/v4.4.5/node-v4.4.5-linux-armv7l.tar.gz</span><br></pre></td></tr></table></figure>
+<p>下载完成后直接将包解压到对应的目录，并且重命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -xzf node-v4.4.5-linux-armv7l.tar.gz -C /usr/local/&#10;mv /usr/local/node-v4.4.5-linux-armv7l /usr/local/node</span><br></pre></td></tr></table></figure>
+<p>PS： 如果你下载的是老版本的话，可能需要自行编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure&#10;make&#10;sudo make install</span><br></pre></td></tr></table></figure>
+<p>添加到系统路径中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>在最后一行加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=$PATH:/usr/local/node/bin</span><br></pre></td></tr></table></figure>
+<p>保存以后运行<code>source ~/.bashrc</code>更新命令行</p>
+<h3 id="u68C0_u6D4B_u5B89_u88C5"><a href="#u68C0_u6D4B_u5B89_u88C5" class="headerlink" title="检测安装"></a>检测安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ node -v&#10;v4.4.5&#10;pi@raspberrypi:~ $ npm -v&#10;2.15.5</span><br></pre></td></tr></table></figure>
+<h2 id="u5B89_u88C5cnpm"><a href="#u5B89_u88C5cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cnpm -g --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h2 id="u5B89_u88C5LoopBack"><a href="#u5B89_u88C5LoopBack" class="headerlink" title="安装LoopBack"></a>安装LoopBack</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g strongloop</span><br></pre></td></tr></table></figure>
+<p>安装失败，原因不明，试试<code>npm</code>，安装成功。（对于cnpm和npm的差别不是很了解，不过自己平时在安装的时候可以先用<code>cnpm</code>安装，不行的话再尝试<code>npm</code>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g strongloop</span><br></pre></td></tr></table></figure>
+<p>安装以后，就可以根据官方提供的<a href="http://loopback.io/getting-started/" target="_blank" rel="external">文档</a>创建Hello World</p>
+<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://node-arm.herokuapp.com/" target="_blank" rel="external">http://node-arm.herokuapp.com/</a></li>
+<li><a href="http://joshondesign.com/2013/10/23/noderpi" target="_blank" rel="external">Install Node on the Raspberry Pi in 5 minutes</a></li>
+<li><a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a></li>
+<li><a href="https://npm.taobao.org/" target="_blank" rel="external">淘宝 NPM 镜像</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ohmerhe.com/2016/06/26/raspberry_install_node/" data-id="cipwbxsud0000rl11786iarmd" class="article-share-link">Share</a>
+      
+        <a href="http://ohmerhe.com/2016/06/26/raspberry_install_node/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node/">Node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/25/raspberry_backup_system_img/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用U盘为树莓派备份镜像</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
       
         <aside id="sidebar">
   
@@ -321,7 +385,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
