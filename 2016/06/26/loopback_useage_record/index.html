@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 继承 | Ohmer&#39;s Blog</title>
+  <title>LoopBack操作记录 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="http://ohmerhe.com/tags/继承/index.html">
+  <meta name="description" content="tags: loopback, mysql
+什么是LoopBack请看官方文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LoopBack操作记录">
+<meta property="og:url" content="http://ohmerhe.com/2016/06/26/loopback_useage_record/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="tags: loopback, mysql
+什么是LoopBack请看官方文档">
+<meta property="og:updated_time" content="2016-06-26T11:02:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="LoopBack操作记录">
+<meta name="twitter:description" content="tags: loopback, mysql
+什么是LoopBack请看官方文档">
   
   
     <link rel="icon" href="favicon.png">
@@ -129,49 +133,169 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#继承</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-loopback_useage_record" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2016/01/02/object-class-class/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/ski_evening.jpg?imageView2/1/w/200)" alt="kotlin类与对象 —— 类（一）" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/02/object-class-class/">kotlin类与对象 —— 类（一）</a>
+    <h1 class="article-title" itemprop="name">
+      LoopBack操作记录
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/01/02/object-class-class/">
-      <time datetime="2016-01-02T08:01:28.000Z" itemprop="datePublished">2016 Jan 2</time>
+    <a href="/2016/06/26/loopback_useage_record/">
+      <time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time>
     </a>
   </div>
 
 
-      
-    </header>
-  </div>
-</article>
+          
+        </div>
+      </header>
     
-    </div></section>
-    </section>
+    <div class="article-entry" itemprop="articleBody">
+      
+                
+        <p>tags: loopback, mysql</p>
+<h2 id="u4EC0_u4E48_u662FLoopBack"><a href="#u4EC0_u4E48_u662FLoopBack" class="headerlink" title="什么是LoopBack"></a>什么是LoopBack</h2><p>请看<a href="https://loopback.io/" target="_blank" rel="external">官方文档</a></p>
+<a id="more"></a>
+<h2 id="Get_Started"><a href="#Get_Started" class="headerlink" title="Get Started"></a>Get Started</h2><p>继续查看<a href="http://loopback.io/getting-started/" target="_blank" rel="external">Getting started</a></p>
+<h2 id="u81EA_u5B9A_u4E49MySql_u8FDE_u63A5"><a href="#u81EA_u5B9A_u4E49MySql_u8FDE_u63A5" class="headerlink" title="自定义MySql连接"></a>自定义MySql连接</h2><h3 id="u81EA_u5B9A_u4E49table_u540D_u5B57"><a href="#u81EA_u5B9A_u4E49table_u540D_u5B57" class="headerlink" title="自定义table名字"></a>自定义table名字</h3><p>在模型的json文件中<code>common/model/category.json</code>添加Mysql的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;name&#34;: &#34;Category&#34;,&#10;  ...&#10;  &#34;mysql&#34;: &#123;&#10;    &#34;table&#34;: &#34;custom_category&#34; // &#33258;&#23450;&#20041;&#30340;&#34920;&#21517;&#10;  &#125;&#10;  ...&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>更多Model的Json定义参考<a href="https://docs.strongloop.com/display/public/LB/Model+definition+JSON+file" target="_blank" rel="external">Model definition JSON file</a></p>
+<h3 id="u81EA_u5B9A_u4E49table_u5217_u540D"><a href="#u81EA_u5B9A_u4E49table_u5217_u540D" class="headerlink" title="自定义table列名"></a>自定义table列名</h3><p>同样在模型定义的json文件中，<code>common/model/category.json</code>找到<code>properties</code>模块的配置，为需要自定义表列名的属性下添加<code>msql</code>配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;name&#34;: &#34;category&#34;,&#10;  ...&#10;  &#34;properties&#34;: &#123;&#10;    ...&#10;    &#34;title&#34;: &#123;&#10;      &#34;type&#34;: &#34;String&#34;,&#10;      &#34;required&#34;: true,&#10;      &#34;mysql&#34;:&#123;&#10;        &#34;columnName&#34;:&#34;question_content&#34;,&#10;        &#34;dataType&#34;:&#34;VARCHAR&#34;&#10;      &#125;&#10;    &#125;,&#10;    ...&#10;  &#125;,&#10;  ...&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>还有其他类型类型的对应关系，可以看<a href="https://docs.strongloop.com/display/public/LB/MySQL+connector" target="_blank" rel="external">MySQL connector</a></p>
+<h2 id="u81EA_u5B9A_u4E49_u8BF7_u6C42_u65B9_u6CD5_28Remote_Method_29"><a href="#u81EA_u5B9A_u4E49_u8BF7_u6C42_u65B9_u6CD5_28Remote_Method_29" class="headerlink" title="自定义请求方法(Remote Method)"></a>自定义请求方法(Remote Method)</h2><p>loopback默认提供了许多方法，可以方便的访问到服务端的资源，这里列出一些常用的，更多的方法可以参考<a href="http://apidocs.strongloop.com/loopback/#persistedmodel" target="_blank" rel="external">文档</a>。</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>path</th>
+<th>verb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>find</td>
+<td>/</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>findById</td>
+<td>/:id</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>findOne</td>
+<td>/findOne</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>deleteById</td>
+<td>/:id</td>
+<td>DELETE</td>
+</tr>
+<tr>
+<td>count</td>
+<td>/count</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>/:id/exists</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>/:id</td>
+<td>HEAD</td>
+</tr>
+<tr>
+<td>create</td>
+<td>/</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>upsert</td>
+<td>/</td>
+<td>PUT</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>/exists</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>/exists</td>
+<td>GET</td>
+</tr>
+</tbody>
+</table>
+<p>这些方法的定义和注册都可以在<code>/node_modules/loopback/lib/persisted-model.js</code>文件中看到。如<code>find</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;PersistedModel.find = function find(filter, cb) &#123;&#10;  throwNotAttached(this.modelName, &#39;find&#39;);&#10;&#125;;&#10;&#10; setRemoting(PersistedModel, &#39;find&#39;, &#123;&#10;  description: &#39;Find all instances of the model matched by filter from the data source.&#39;,&#10;  accessType: &#39;READ&#39;,&#10;  accepts: &#123;arg: &#39;filter&#39;, type: &#39;object&#39;, description: &#39;Filter defining fields, where, include, order, offset, and limit&#39;&#125;,&#10;  returns: &#123;arg: &#39;data&#39;, type: [typeName], root: true&#125;,&#10;  http: &#123;verb: &#39;get&#39;, path: &#39;/&#39;&#125;&#10;&#125;);</span><br></pre></td></tr></table></figure>
+<p>参照上面的方法我们可以自定义一些需要的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = function(Person)&#123;&#10;     &#10;    Person.greet = function(msg, cb) &#123;&#10;      cb(null, &#39;Greetings... &#39; + msg);&#10;    &#125;&#10;     &#10;    Person.remoteMethod(&#10;        &#39;greet&#39;, &#10;        &#123;&#10;          accepts: &#123;arg: &#39;msg&#39;, type: &#39;string&#39;&#125;,&#10;          http: &#123;verb: &#39;get&#39;, path: &#39;/greet&#39;&#125;,&#10;          returns: &#123;arg: &#39;greeting&#39;, type: &#39;string&#39;&#125;&#10;        &#125;&#10;    );&#10;&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们可以通过<code>GET /api/persons/greet?msg=John</code>获得如下的返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Greetings... John</span><br></pre></td></tr></table></figure>
+<p>关于自定义方法的参数说明可以参考<a href="https://docs.strongloop.com/display/public/LB/Remote+methods" target="_blank" rel="external">详细描述</a></p>
+<h2 id="u81EA_u5B9A_u4E49_u8FD4_u56DE_u6570_u636E"><a href="#u81EA_u5B9A_u4E49_u8FD4_u56DE_u6570_u636E" class="headerlink" title="自定义返回数据"></a>自定义返回数据</h2><p>loopback提供了一系列方法可以改变资源返回，比如我需要将请求到的资源列表包装在一个对象的<code>list</code>下返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  Category.afterRemote(&#39;find&#39;, function(ctx, remoteMethodOutput, next) &#123;&#10;    if (ctx.result &#38;&#38; Array.isArray(remoteMethodOutput)) &#123;&#10;      ctx.result = &#123;&#10;        &#34;list&#34;: remoteMethodOutput&#10;      &#125;&#10;    &#125;&#10;    next();&#10;  &#125;);&#10;&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#33258;&#23450;&#20041;&#36820;&#22238;&#32467;&#26524;&#21069;&#10;[&#10;&#9;&#123;...&#125;,&#10;&#9;&#123;...&#125;,&#10;&#9;&#123;...&#125;,&#10;&#9;&#123;...&#125;&#10;]&#10;&#10;&#33258;&#23450;&#20041;&#36820;&#22238;&#32467;&#26524;&#21518;&#10;&#123;&#10;&#9;&#34;list&#34; : [&#10;&#9;&#9;&#123;...&#125;,&#10;&#9;&#9;&#123;...&#125;,&#10;&#9;&#9;&#123;...&#125;,&#10;&#9;&#9;&#123;...&#125;&#10;&#9;]&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>更多关于请求资源的逻辑控制，请参考<a href="https://docs.strongloop.com/display/public/LB/Adding+logic+to+models" target="_blank" rel="external">Adding logic to models</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ohmerhe.com/2016/06/26/loopback_useage_record/" data-id="cipwhkdm80000dt11xlk226op" class="article-share-link">Share</a>
+      
+        <a href="http://ohmerhe.com/2016/06/26/loopback_useage_record/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/loopback/">loopback</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/26/raspberry_install_node/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">树莓派安装Node</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
       
         <aside id="sidebar">
   
@@ -321,7 +445,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
