@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 继承 | Ohmer&#39;s Blog</title>
+  <title>Kotlin函数式编程三板斧 | Ohmer&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ohmer's Blog">
-<meta property="og:url" content="http://ohmerhe.com/tags/继承/index.html">
+  <meta name="description" content="tags: kotlin, 函数式编程, map, filter, reduce
+每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲Kotlin中提供的函数式编程三板斧filter、map、reduce。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin函数式编程三板斧">
+<meta property="og:url" content="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description">
+<meta property="og:description" content="tags: kotlin, 函数式编程, map, filter, reduce
+每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲Kotlin中提供的函数式编程三板斧filter、map、reduce。">
+<meta property="og:updated_time" content="2016-07-05T14:09:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ohmer's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Kotlin函数式编程三板斧">
+<meta name="twitter:description" content="tags: kotlin, 函数式编程, map, filter, reduce
+每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲Kotlin中提供的函数式编程三板斧filter、map、reduce。">
   
   
     <link rel="icon" href="favicon.png">
@@ -129,49 +133,109 @@
 </aside>
 
       
-      <section id="main">
-    <section class="archives-wrap">
-    <div class="archive-tag-wrap">
-      <span class="archive-tag">#继承</span>
-    </div>
-    <div class="archives">
+      <section id="main"><article id="post-kotlin_function_three_common_methods" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    
-    <div class="archive-article-thumbnail">
-      <a href="/2016/01/02/object-class-class/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/ski_evening.jpg?imageView2/1/w/200)" alt="kotlin类与对象 —— 类（一）" class="thumbnail-image"></span>
-  
-</a>
-    </div>
-    
-    <header class="archive-article-header">
       
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/1024/h/460" class="article-banner">
+	
+
+
+
+    
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/02/object-class-class/">kotlin类与对象 —— 类（一）</a>
+    <h1 class="article-title" itemprop="name">
+      Kotlin函数式编程三板斧
     </h1>
   
 
-      
-        
-  <div class="archive-article-date">
+        <div class="article-meta">
+          
+  <div class="article-date">
     <i class="fa fa-calendar"></i>
-    <a href="/2016/01/02/object-class-class/">
-      <time datetime="2016-01-02T08:01:28.000Z" itemprop="datePublished">2016 Jan 2</time>
+    <a href="/2016/07/05/kotlin_function_three_common_methods/">
+      <time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time>
     </a>
   </div>
 
 
-      
-    </header>
-  </div>
-</article>
+          
+        </div>
+      </header>
     
-    </div></section>
-    </section>
+    <div class="article-entry" itemprop="articleBody">
+      
+                
+        <p>tags: kotlin, 函数式编程, map, filter, reduce</p>
+<p>每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲<code>Kotlin</code>中提供的函数式编程三板斧<code>filter</code>、<code>map</code>、<code>reduce</code>。</p>
+<a id="more"></a>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>筛选函数将用户给定的布尔逻辑作用于集合，返回由原集合中符合条件的元素组合的一个子集。假设一个逻辑，将数组中是3的倍数的数筛选出来，和<code>java</code>做一个简单的对比。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//java &#20195;&#30721;&#10;int[] all = &#123;1, 2, 3, 4, 5, 6, 7, 8, 9&#125;;&#10;List&#60;Integer&#62; filters = new ArrayList&#60;&#62;();&#10;for (int a : all) &#123;&#10;    if (a % 3 == 0) &#123;&#10;        filters.add(a);&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// kotlin &#20195;&#30721;&#10;val all = arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)&#10;val filters = all.filter &#123; it % 3 == 0 &#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin还提供一系列类似的过滤函数：</p>
+<p>-<code>filterIndexed</code>, 同<code>filter</code>，不过在逻辑判断的方法块中可以拿到当前item的index<br>-<code>filterNot</code>，与<code>filter</code>相反，只返回不符合条件的元素组合</p>
+<p>针对<code>Map</code>类型数据集合，提供了<code>filterKeys</code>和<code>filterValues</code>方法，方便只做key或者value的判断。</p>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>映射函数也是一个高阶函数，将一个集合经过一个传入的变换函数映射成另外一种集合。</p>
+<p>假设我们现在需要将一系列的名字的长度保存到另一个数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// java &#20195;&#30721;&#10;String[] names = &#123;&#34;James&#34;, &#34;Tom&#34;, &#34;Jack&#34;, &#34;Kobe&#34;&#125;;&#10;int[] namesLength = new int[names.length];&#10;for (int i = 0; i &#60; names.length ; i ++) &#123;&#10;    namesLength[i] = names[i].length();&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// kotlin &#20195;&#30721;&#10;val names = arrayOf(&#34;James&#34;, &#34;Tom&#34;, &#34;Jack&#34;, &#34;Kobe&#34;);&#10;val namesLength = names.map &#123; it.length &#125;</span><br></pre></td></tr></table></figure>
+<p>同<code>filter</code>相似，kotlin也提供的<code>mapIndexed</code>的类似方法方便使用，针对<code>Map</code>类型的集合也有<code>mapKeys</code>和<code>mapValues</code>的封装。</p>
+<h2 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h2><p>归纳函数将一个数据集合的所有元素通过传入的操作函数实现数据集合的积累叠加效果。</p>
+<p>假设我们需要将一首藏头诗的每句诗的第一句拿出来拼成一句话。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// java &#20195;&#30721;&#10;String[] texts = &#123;&#34;&#33446;&#33457;&#19995;&#20013;&#19968;&#25153;&#33311;&#34;, &#34;&#20426;&#26480;&#20420;&#20174;&#27492;&#22320;&#28216;&#34;, &#34;&#20041;&#22763;&#33509;&#33021;&#30693;&#27492;&#29702;&#34;, &#34;&#21453;&#36524;&#38590;&#36867;&#21487;&#26080;&#24551;&#34;&#125;;&#10;StringBuffer sb = new StringBuffer();&#10;for (int i = 0; i &#60; texts.length ; i ++) &#123;&#10;    sb.append(texts[i].substring(0, 1));&#10;&#125;&#10;String result = sb.toString();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// kotlin &#20195;&#30721;&#10;val texts = arrayOf(&#34;&#33446;&#33457;&#19995;&#20013;&#19968;&#25153;&#33311;&#34;, &#34;&#20426;&#26480;&#20420;&#20174;&#27492;&#22320;&#28216;&#34;, &#34;&#20041;&#22763;&#33509;&#33021;&#30693;&#27492;&#29702;&#34;, &#34;&#21453;&#36524;&#38590;&#36867;&#21487;&#26080;&#24551;&#34;)&#10;val result = texts.map &#123; it.substring(0,1) &#125;.reduce &#123; r, s -&#62; &#34;$r$s&#34;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u51FD_u6570_u5F0F_u7F16_u7A0B"><a href="#u51FD_u6570_u5F0F_u7F16_u7A0B" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>函数式编程的精髓在于函数本身。在函数式编程中函数是第一等公民，与其他数据类型一样，处于平等地位，可以赋值给其他变量，也可以作为参数，传入另一个函数，或者作为别的函数的返回值。</p>
+<p>函数式编程好的实践在于对运算过程的高度抽象和没有”副作用”（既保持函数的独立性），函数式编程三板斧是函数式编程的典型范式，在编程中被大量使用，即使人们不关注函数式编程，在使用函数式编程语言的时候，也会不自觉的使用这些函数。</p>
+<p>函数式编程是一种思维方式，函数式编程鼓励放弃对状态的维持（是命令式编程的基础），将所有的操作都交给运行时去执行。当然为了保证程序运行的效率，这需要提供一些辅助性的手段（缓存、缓求值等）。</p>
+<p>[参考资料]</p>
+<ul>
+<li><a href="https://book.douban.com/subject/26587213/" target="_blank" rel="external">函数式编程思维</a></li>
+<li><a href="http://baike.baidu.com/view/1711147.htm" target="_blank" rel="external">函数式编程</a></li>
+<li><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">kotlin doc</a></li>
+<li><a href="https://kotlinlang.org/api/latest/jvm/stdlib/" target="_blank" rel="external">kotlin api doc</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/" data-id="ciq9j4vpv0000fh11rklr9myw" class="article-share-link">Share</a>
+      
+        <a href="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/filter/">filter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kotlin/">kotlin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/map/">map</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reduce/">reduce</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数式编程/">函数式编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/26/loopback_useage_record/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LoopBack操作记录</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
       
         <aside id="sidebar">
   
@@ -321,7 +385,7 @@
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
