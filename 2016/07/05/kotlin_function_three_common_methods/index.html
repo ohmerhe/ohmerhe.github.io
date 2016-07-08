@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Ohmer's Blog">
 <meta property="og:description" content="tags: kotlin, 函数式编程, map, filter, reduce
 每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲Kotlin中提供的函数式编程三板斧filter、map、reduce。">
-<meta property="og:updated_time" content="2016-07-08T08:03:17.000Z">
+<meta property="og:updated_time" content="2016-07-08T08:18:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin函数式编程三板斧">
 <meta name="twitter:description" content="tags: kotlin, 函数式编程, map, filter, reduce
@@ -185,7 +185,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// java &#20195;&#30721;&#10;String[] names = &#123;&#34;James&#34;, &#34;Tom&#34;, &#34;Jack&#34;, &#34;Kobe&#34;&#125;;&#10;int[] namesLength = new int[names.length];&#10;for (int i = 0; i &#60; names.length ; i ++) &#123;&#10;    namesLength[i] = names[i].length();&#10;&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// kotlin &#20195;&#30721;&#10;val names = arrayOf(&#34;James&#34;, &#34;Tom&#34;, &#34;Jack&#34;, &#34;Kobe&#34;);&#10;val namesLength = names.map &#123; it.length &#125;</span><br></pre></td></tr></table></figure>
 <p>映射函数是将一个集合映射成另外一种集合，所以当你需要见一个HaspMap映射成一个List的时候，会非常方便。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val params = mapOf(Pair(&#34;limit&#34;,&#34;10&#34;), Pair(&#34;offset&#34;,&#34;20&#34;), Pair(&#34;order&#34;, &#34;asc&#34;))&#10;val s = params.map &#123; &#34;$&#123;it.key&#125;=$&#123;it.value&#125;&#34; &#125;.joinToString(&#34;&#38;&#34;)&#10;// s = limit=10&#38;offset=20&#38;order=asc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val params = mapOf(&#34;limit&#34; to &#34;10&#34;, &#34;offset&#34; to &#34;20&#34;, &#34;order&#34; to &#34;asc&#34;)&#10;val s = params.map &#123; &#34;$&#123;it.key&#125;=$&#123;it.value&#125;&#34; &#125;.joinToString(&#34;&#38;&#34;)&#10;// s = limit=10&#38;offset=20&#38;order=asc</span><br></pre></td></tr></table></figure>
 <p>同<code>filter</code>相似，kotlin也提供的<code>mapIndexed</code>的类似方法方便使用，针对<code>Map</code>类型的集合也有<code>mapKeys</code>和<code>mapValues</code>的封装。</p>
 <h2 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h2><p>归纳函数将一个数据集合的所有元素通过传入的操作函数实现数据集合的积累叠加效果。</p>
 <p>假设我们需要将一首藏头诗的每句诗的第一句拿出来拼成一句话。</p>
