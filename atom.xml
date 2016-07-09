@@ -339,9 +339,9 @@
     </summary>
     
     
-      <category term="Android" scheme="http://ohmerhe.com/tags/Android/"/>
-    
       <category term="Kotlin" scheme="http://ohmerhe.com/tags/Kotlin/"/>
+    
+      <category term="Android" scheme="http://ohmerhe.com/tags/Android/"/>
     
       <category term="网络请求" scheme="http://ohmerhe.com/tags/%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82/"/>
     
