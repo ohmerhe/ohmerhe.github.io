@@ -1,419 +1,528 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>树莓派安装 Node | Ohmer&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
+    <meta charset="utf-8">
+    
+    <title>树莓派安装 Node | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="树莓派安装 Node">
 <meta property="og:url" content="http://ohmerhe.com/2016/06/26/raspberry_install_node/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
 <meta property="og:description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
-<meta property="og:updated_time" content="2016-07-09T08:05:31.000Z">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-07-09T14:26:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派安装 Node">
 <meta name="twitter:description" content="安装Node快速安装国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。">
-  
-  
-    <link rel="icon" href="favicon.png">
-  
-  
- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
- <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200">
 
+    
 
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
-  
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
 
-  
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
 
-  
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+    
+    
+
 </head>
 <body>
-  <div id="container">
-    <header id="header">
-  <div id="header-main" class="header-inner">
-    <div class="outer">
-      <a href="/" id="logo"><span class="site-title">Ohmer&#39;s Blog</span></a>
-      <nav id="main-nav">
-        
-          <a class="main-nav-link" href="/.">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/categories">Categories</a>
-        
-          <a class="main-nav-link" href="/tags">Tags</a>
-        
-          <a class="main-nav-link" href="/about">About</a>
-        
-      </nav>
-      
-        <nav id="sub-nav">
-          <div class="profile" id="profile-nav">
-            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.jpg"><i class="fa fa-caret-down"></i></a>
-          </div>
-        </nav>
-      
-      <div id="search-form-wrap">
-        
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-        
-      </div>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
     </div>
-  </div>
-  <div id="main-nav-mobile" class="header-sub header-inner">
-    <table class="menu outer">
-      <tr>
-        
-          <td><a class="main-nav-link" href="/.">Home</a></td>
-        
-          <td><a class="main-nav-link" href="/archives">Archives</a></td>
-        
-          <td><a class="main-nav-link" href="/categories">Categories</a></td>
-        
-          <td><a class="main-nav-link" href="/tags">Tags</a></td>
-        
-          <td><a class="main-nav-link" href="/about">About</a></td>
-        
-        <td>
-          
-            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-          
-        </td>
-      </tr>
-    </table>
-  </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
 </header>
 
-    <div class="outer">
-      
-        <aside id="profile">
-  <div class="inner profile-inner">
-    <div class="base-info profile-block">
-      <img id="avatar" src="/css/images/avatar.jpg">
-      <h2 id="name">Ohmer</h2>
-      <h3 id="title">Android Developer</h3>
-      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
-      <a id="follow" href="https://github.com/ohmerhe/">FOLLOW</a>
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                15
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                13
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
     </div>
-    <div class="article-info profile-block">
-      <div class="article-info-block">
-        15
-        <span>posts</span>
-      </div>
-      <div class="article-info-block">
-        53
-        <span>tags</span>
-      </div>
-    </div>
-    
-    <div class="contact-info profile-block">
-      <table class="contact-list">
-        <tr>
-          
-          <td><a href="http://github.com/ohmerhe" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
-          
-          <td><a href="https://twitter.com/ohmerhe" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
-          
-          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
-          
-        </tr>
-      </table>
-    </div>
-    
-    
-  </div>
 </aside>
 
-      
-      <section id="main"><article id="post-raspberry_install_node" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/1024/h/460" class="article-banner">
-	
-
-
-
-    
-    
-    
-      <header class="article-header">
+            
+            <section id="main"><article id="post-raspberry_install_node" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-  
-    <h1 class="article-title" itemprop="name">
-      树莓派安装 Node
-    </h1>
-  
-
-        <div class="article-meta">
-          
-  <div class="article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2016/06/26/raspberry_install_node/">
-      <time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time>
-    </a>
-  </div>
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
 
 
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+
+        
+        
+        
+            <header class="article-header">
                 
-        <h2 id="u5B89_u88C5Node"><a href="#u5B89_u88C5Node" class="headerlink" title="安装Node"></a>安装Node</h2><h3 id="u5FEB_u901F_u5B89_u88C5"><a href="#u5FEB_u901F_u5B89_u88C5" class="headerlink" title="快速安装"></a>快速安装</h3><p>国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。</p>
+    
+        <h1 class="article-title" itemprop="name">
+            树莓派安装 Node
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/06/26/raspberry_install_node/">
+            <time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Node-js/">Node.js</a>, <a class="tag-link" href="/tags/树莓派/">树莓派</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="安装Node"><a href="#安装Node" class="headerlink" title="安装Node"></a>安装Node</h2><h3 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h3><p>国外有个哥们为树莓派的Node.js制作了一个安装包，可以非常方便的安装，但是有一个缺点是版本不是最新。</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://node-arm.herokuapp.com/node_latest_armhf.deb &#10;sudo dpkg -i node_latest_armhf.deb</span><br></pre></td></tr></table></figure>
-<h3 id="u5B98_u65B9_u6E20_u9053_u5B89_u88C5"><a href="#u5B98_u65B9_u6E20_u9053_u5B89_u88C5" class="headerlink" title="官方渠道安装"></a>官方渠道安装</h3><p>官方有两个版本可以选择，LTS版和Current版，选择官方推荐LTS版。然后该选择那个平台的包呢。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://node-arm.herokuapp.com/node_latest_armhf.deb </div><div class="line">sudo dpkg -i node_latest_armhf.deb</div></pre></td></tr></table></figure>
+<h3 id="官方渠道安装"><a href="#官方渠道安装" class="headerlink" title="官方渠道安装"></a>官方渠道安装</h3><p>官方有两个版本可以选择，LTS版和Current版，选择官方推荐LTS版。然后该选择那个平台的包呢。</p>
 <p>运行查看本机的CPU信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/cpuinfo</div></pre></td></tr></table></figure>
 <p>可以得到类似下面的输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">processor&#9;: 0&#10;model name&#9;: ARMv7 Processor rev 5 (v7l)&#10;BogoMIPS&#9;: 38.40&#10;Features&#9;: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm&#10;CPU implementer&#9;: 0x41&#10;CPU architecture: 7&#10;CPU variant&#9;: 0x0&#10;CPU part&#9;: 0xc07&#10;CPU revision&#9;: 5&#10;&#10;processor&#9;: 1&#10;model name&#9;: ARMv7 Processor rev 5 (v7l)&#10;BogoMIPS&#9;: 38.40&#10;Features&#9;: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm&#10;CPU implementer&#9;: 0x41&#10;CPU architecture: 7&#10;CPU variant&#9;: 0x0&#10;CPU part&#9;: 0xc07&#10;CPU revision&#9;: 5&#10;&#10;...</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">processor	: 0</div><div class="line">model name	: ARMv7 Processor rev 5 (v7l)</div><div class="line">BogoMIPS	: 38.40</div><div class="line">Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm</div><div class="line">CPU implementer	: 0x41</div><div class="line">CPU architecture: 7</div><div class="line">CPU variant	: 0x0</div><div class="line">CPU part	: 0xc07</div><div class="line">CPU revision	: 5</div><div class="line"></div><div class="line">processor	: 1</div><div class="line">model name	: ARMv7 Processor rev 5 (v7l)</div><div class="line">BogoMIPS	: 38.40</div><div class="line">Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm</div><div class="line">CPU implementer	: 0x41</div><div class="line">CPU architecture: 7</div><div class="line">CPU variant	: 0x0</div><div class="line">CPU part	: 0xc07</div><div class="line">CPU revision	: 5</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>根据输出可以确定我们该选择<code>armv7</code>的包。下载相应的包(当前LTS版最新为4.4.5)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://nodejs.org/dist/v4.4.5/node-v4.4.5-linux-armv7l.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://nodejs.org/dist/v4.4.5/node-v4.4.5-linux-armv7l.tar.gz</div></pre></td></tr></table></figure>
 <p>下载完成后直接将包解压到对应的目录，并且重命名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -xzf node-v4.4.5-linux-armv7l.tar.gz -C /usr/local/&#10;mv /usr/local/node-v4.4.5-linux-armv7l /usr/local/node</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo tar -xzf node-v4.4.5-linux-armv7l.tar.gz -C /usr/<span class="built_in">local</span>/</div><div class="line">mv /usr/<span class="built_in">local</span>/node-v4.4.5-linux-armv7l /usr/<span class="built_in">local</span>/node</div></pre></td></tr></table></figure>
 <p>PS： 如果你下载的是老版本的话，可能需要自行编译</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure&#10;make&#10;sudo make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">./configure</div><div class="line">make</div><div class="line">sudo make install</div></pre></td></tr></table></figure>
 <p>添加到系统路径中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim ~/.bashrc</div></pre></td></tr></table></figure>
 <p>在最后一行加上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=$PATH:/usr/local/node/bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/node/bin</div></pre></td></tr></table></figure>
 <p>保存以后运行<code>source ~/.bashrc</code>更新命令行</p>
-<h3 id="u68C0_u6D4B_u5B89_u88C5"><a href="#u68C0_u6D4B_u5B89_u88C5" class="headerlink" title="检测安装"></a>检测安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ node -v&#10;v4.4.5&#10;pi@raspberrypi:~ $ npm -v&#10;2.15.5</span><br></pre></td></tr></table></figure>
-<h2 id="u5B89_u88C5cnpm"><a href="#u5B89_u88C5cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install cnpm -g --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-<h2 id="u5B89_u88C5LoopBack"><a href="#u5B89_u88C5LoopBack" class="headerlink" title="安装LoopBack"></a>安装LoopBack</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g strongloop</span><br></pre></td></tr></table></figure>
+<h3 id="检测安装"><a href="#检测安装" class="headerlink" title="检测安装"></a>检测安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pi@raspberrypi:~ $ node -v</div><div class="line">v4.4.5</div><div class="line">pi@raspberrypi:~ $ npm -v</div><div class="line">2.15.5</div></pre></td></tr></table></figure>
+<h2 id="安装cnpm"><a href="#安装cnpm" class="headerlink" title="安装cnpm"></a>安装cnpm</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install cnpm -g --registry=https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+<h2 id="安装LoopBack"><a href="#安装LoopBack" class="headerlink" title="安装LoopBack"></a>安装LoopBack</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cnpm install -g strongloop</div></pre></td></tr></table></figure>
 <p>安装失败，原因不明，试试<code>npm</code>，安装成功。（对于cnpm和npm的差别不是很了解，不过自己平时在安装的时候可以先用<code>cnpm</code>安装，不行的话再尝试<code>npm</code>）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g strongloop</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g strongloop</div></pre></td></tr></table></figure>
 <p>安装以后，就可以根据官方提供的<a href="http://loopback.io/getting-started/" target="_blank" rel="external">文档</a>创建Hello World</p>
-<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="http://node-arm.herokuapp.com/" target="_blank" rel="external">http://node-arm.herokuapp.com/</a></li>
 <li><a href="http://joshondesign.com/2013/10/23/noderpi" target="_blank" rel="external">Install Node on the Raspberry Pi in 5 minutes</a></li>
 <li><a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a></li>
 <li><a href="https://npm.taobao.org/" target="_blank" rel="external">淘宝 NPM 镜像</a></li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/06/26/raspberry_install_node/" data-id="cipwbxsud0000rl11786iarmd" class="article-share-link">Share</a>
-      
-        <a href="http://ohmerhe.com/2016/06/26/raspberry_install_node/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
-    </footer>
-  </div>
-  
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
     
+        <a href="http://ohmerhe.com/2016/06/26/raspberry_install_node/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/06/26/raspberry_install_node/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
 <nav id="article-nav">
-  
-    <a href="/2016/06/26/loopback_useage_record/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          LoopBack 操作记录
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/06/25/raspberry_backup_system_img/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">用 U 盘为树莓派备份镜像</div>
-    </a>
-  
+    
+        <a href="/2016/06/26/loopback_useage_record/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    LoopBack 操作记录
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/06/25/raspberry_backup_system_img/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">用 U 盘为树莓派备份镜像</div>
+        </a>
+    
 </nav>
 
 
-  
+    
 </article>
 
 
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
 </section>
-
-</section>
-      
-        <aside id="sidebar">
-  
+            
+                <aside id="sidebar">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">recents</h3>
-    <div class="widget">
-      <ul id="recent-post" class="">
         
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
-  
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
-              <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
+                            <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
-              <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
-              <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
-              <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
+                            <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
-              <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
-            </div>
-          </li>
-        
-      </ul>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
+                            <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">tag cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
-  <div id="toTop" class="fa fa-chevron-up"></div>
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
 </aside>
-      
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2015 - 2016 Ohmer<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
-    </div>
-  </div>
 </footer>
+        
     
-
-<script>
-  var disqus_shortname = 'ohmersblog';
-  (function(){
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2016/06/26/raspberry_install_node/';
+    
+    (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+    })();
+    </script>
 
 
 
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
 
 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
-
-
-<script src="/js/script.js" type="text/javascript"></script>
-
-  </div>
+    </div>
 </body>
 </html>

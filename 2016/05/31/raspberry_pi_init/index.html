@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>树莓派入手，无显示器远程操作 | Ohmer&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
+    <meta charset="utf-8">
+    
+    <title>树莓派入手，无显示器远程操作 | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
 也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
 我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
 <meta property="og:type" content="article">
@@ -15,424 +15,533 @@
 <meta property="og:description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
 也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
 我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
-<meta property="og:updated_time" content="2016-07-09T07:42:54.000Z">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/lake_forest.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-07-09T14:28:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派入手，无显示器远程操作">
 <meta name="twitter:description" content="下载镜像文件官网下载相应的镜像文件：https://www.raspberrypi.org/downloads/
 也可以下载Centos系统：http://mirror.centos.org/altarch/7/isos/armhfp/
 我这里下载的是官网推荐的”RASPBIAN WHEEZY”">
-  
-  
-    <link rel="icon" href="favicon.png">
-  
-  
- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
- <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/lake_forest.jpg?imageView2/1/w/200">
 
+    
 
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
-  
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
 
-  
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
 
-  
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+    
+    
+
 </head>
 <body>
-  <div id="container">
-    <header id="header">
-  <div id="header-main" class="header-inner">
-    <div class="outer">
-      <a href="/" id="logo"><span class="site-title">Ohmer&#39;s Blog</span></a>
-      <nav id="main-nav">
-        
-          <a class="main-nav-link" href="/.">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/categories">Categories</a>
-        
-          <a class="main-nav-link" href="/tags">Tags</a>
-        
-          <a class="main-nav-link" href="/about">About</a>
-        
-      </nav>
-      
-        <nav id="sub-nav">
-          <div class="profile" id="profile-nav">
-            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.jpg"><i class="fa fa-caret-down"></i></a>
-          </div>
-        </nav>
-      
-      <div id="search-form-wrap">
-        
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-        
-      </div>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
     </div>
-  </div>
-  <div id="main-nav-mobile" class="header-sub header-inner">
-    <table class="menu outer">
-      <tr>
-        
-          <td><a class="main-nav-link" href="/.">Home</a></td>
-        
-          <td><a class="main-nav-link" href="/archives">Archives</a></td>
-        
-          <td><a class="main-nav-link" href="/categories">Categories</a></td>
-        
-          <td><a class="main-nav-link" href="/tags">Tags</a></td>
-        
-          <td><a class="main-nav-link" href="/about">About</a></td>
-        
-        <td>
-          
-            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-          
-        </td>
-      </tr>
-    </table>
-  </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
 </header>
 
-    <div class="outer">
-      
-        <aside id="profile">
-  <div class="inner profile-inner">
-    <div class="base-info profile-block">
-      <img id="avatar" src="/css/images/avatar.jpg">
-      <h2 id="name">Ohmer</h2>
-      <h3 id="title">Android Developer</h3>
-      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
-      <a id="follow" href="https://github.com/ohmerhe/">FOLLOW</a>
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                15
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                13
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
     </div>
-    <div class="article-info profile-block">
-      <div class="article-info-block">
-        15
-        <span>posts</span>
-      </div>
-      <div class="article-info-block">
-        53
-        <span>tags</span>
-      </div>
-    </div>
-    
-    <div class="contact-info profile-block">
-      <table class="contact-list">
-        <tr>
-          
-          <td><a href="http://github.com/ohmerhe" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
-          
-          <td><a href="https://twitter.com/ohmerhe" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
-          
-          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
-          
-        </tr>
-      </table>
-    </div>
-    
-    
-  </div>
 </aside>
 
-      
-      <section id="main"><article id="post-raspberry_pi_init" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/lake_forest.jpg?imageView2/1/w/1024/h/460" class="article-banner">
-	
-
-
-
-    
-    
-    
-      <header class="article-header">
+            
+            <section id="main"><article id="post-raspberry_pi_init" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-  
-    <h1 class="article-title" itemprop="name">
-      树莓派入手，无显示器远程操作
-    </h1>
-  
-
-        <div class="article-meta">
-          
-  <div class="article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2016/05/31/raspberry_pi_init/">
-      <time datetime="2016-05-30T16:11:57.000Z" itemprop="datePublished">2016-05-31</time>
-    </a>
-  </div>
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/lake_forest.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
 
 
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+
+        
+        
+        
+            <header class="article-header">
                 
-        <h2 id="u4E0B_u8F7D_u955C_u50CF_u6587_u4EF6"><a href="#u4E0B_u8F7D_u955C_u50CF_u6587_u4EF6" class="headerlink" title="下载镜像文件"></a>下载镜像文件</h2><p>官网下载相应的镜像文件：<a href="https://www.raspberrypi.org/downloads/" target="_blank" rel="external">https://www.raspberrypi.org/downloads/</a></p>
+    
+        <h1 class="article-title" itemprop="name">
+            树莓派入手，无显示器远程操作
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/05/31/raspberry_pi_init/">
+            <time datetime="2016-05-30T16:11:57.000Z" itemprop="datePublished">2016-05-31</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/树莓派/">树莓派</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="下载镜像文件"><a href="#下载镜像文件" class="headerlink" title="下载镜像文件"></a>下载镜像文件</h2><p>官网下载相应的镜像文件：<a href="https://www.raspberrypi.org/downloads/" target="_blank" rel="external">https://www.raspberrypi.org/downloads/</a></p>
 <p>也可以下载Centos系统：<a href="http://mirror.centos.org/altarch/7/isos/armhfp/" target="_blank" rel="external">http://mirror.centos.org/altarch/7/isos/armhfp/</a></p>
 <p>我这里下载的是官网推荐的”RASPBIAN WHEEZY”</p>
 <a id="more"></a>
-<h2 id="u70E7_u5F55_u955C_u50CF_u6587_u4EF6"><a href="#u70E7_u5F55_u955C_u50CF_u6587_u4EF6" class="headerlink" title="烧录镜像文件"></a>烧录镜像文件</h2><p>在mac下可以参考<a href="http://shumeipai.nxez.com/2014/05/18/raspberry-pi-under-mac-osx-to-install-raspbian-system.html" target="_blank" rel="external">Mac OSX下给树莓派安装Raspbian系统</a></p>
+<h2 id="烧录镜像文件"><a href="#烧录镜像文件" class="headerlink" title="烧录镜像文件"></a>烧录镜像文件</h2><p>在mac下可以参考<a href="http://shumeipai.nxez.com/2014/05/18/raspberry-pi-under-mac-osx-to-install-raspbian-system.html" target="_blank" rel="external">Mac OSX下给树莓派安装Raspbian系统</a></p>
 <p>在Windows下面的话直接使用<code>Win32 Disk Imager</code>进行烧录。</p>
-<h2 id="u521D_u59CB_u5316_u7CFB_u7EDF_u64CD_u4F5C"><a href="#u521D_u59CB_u5316_u7CFB_u7EDF_u64CD_u4F5C" class="headerlink" title="初始化系统操作"></a>初始化系统操作</h2><h3 id="u6FC0_u6D3Broot_u7528_u6237"><a href="#u6FC0_u6D3Broot_u7528_u6237" class="headerlink" title="激活root用户"></a>激活root用户</h3><p>raspberrypi系统默认提供的用户为<code>pi</code>，密码为<code>raspberry</code>，so，第一步我们就是要激活<code>root</code>帐号：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#35774;&#32622; root &#36134;&#21495;&#30340;&#23494;&#30721;&#10;sudo passwd root&#10;&#10;// &#21551;&#29992; root &#36134;&#21495;&#30331;&#24405;&#10;sudo passwd --unlock root</span><br></pre></td></tr></table></figure>
+<h2 id="初始化系统操作"><a href="#初始化系统操作" class="headerlink" title="初始化系统操作"></a>初始化系统操作</h2><h3 id="激活root用户"><a href="#激活root用户" class="headerlink" title="激活root用户"></a>激活root用户</h3><p>raspberrypi系统默认提供的用户为<code>pi</code>，密码为<code>raspberry</code>，so，第一步我们就是要激活<code>root</code>帐号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 设置 root 账号的密码</div><div class="line">sudo passwd root</div><div class="line">// 启用 root 账号登录</div><div class="line">sudo passwd --unlock root</div></pre></td></tr></table></figure>
 <p>但是需要注意的是，root帐号启用后，默认不支持远程登录。</p>
-<h3 id="u914D_u7F6Essh_key_u8BC1_u4E66_u767B_u5F55"><a href="#u914D_u7F6Essh_key_u8BC1_u4E66_u767B_u5F55" class="headerlink" title="配置ssh key证书登录"></a>配置ssh key证书登录</h3><p>为了减去每次远程登录系统都需要手动输入密码，同样也更加安全，可以配置ssh key登录，ssh key的生成参考<a href="https://help.github.com/articles/generating-ssh-keys/" target="_blank" rel="external">generating-ssh-keys</a></p>
+<h3 id="配置ssh-key证书登录"><a href="#配置ssh-key证书登录" class="headerlink" title="配置ssh key证书登录"></a>配置ssh key证书登录</h3><p>为了减去每次远程登录系统都需要手动输入密码，同样也更加安全，可以配置ssh key登录，ssh key的生成参考<a href="https://help.github.com/articles/generating-ssh-keys/" target="_blank" rel="external">generating-ssh-keys</a></p>
 <p>在服务端生成<code>.ssh/authorized_keys</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .ssh&#10;touch .ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir .ssh</div><div class="line">touch .ssh/authorized_keys</div></pre></td></tr></table></figure>
 <p>将本地的公匙复制到<code>.ssh/authorized_keys</code>文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo XXXX &#62;&#62; .ssh/authorized_keys #XXXX&#26367;&#25442;&#25104;&#23545;&#24212;&#30340;&#20844;&#21273;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> XXXX &gt;&gt; .ssh/authorized_keys <span class="comment">#XXXX替换成对应的公匙</span></div></pre></td></tr></table></figure>
 <p>或者直接执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub | ssh pi@192.168.199.121 &#39;mkdir -p .ssh &#38;&#38; cat - &#62;&#62; ~/.ssh/authorized_keys&#39;</span><br></pre></td></tr></table></figure>
-<h3 id="u7F51_u7EDC_u914D_u7F6E"><a href="#u7F51_u7EDC_u914D_u7F6E" class="headerlink" title="网络配置"></a>网络配置</h3><p>执行<code>ifconfig</code>命令,查看网卡物理地址，将该网址在路由器上绑定到固定的ip</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth0      Link encap:Ethernet  HWaddr 38:22:db:e7:ed:0c // &#29289;&#29702;&#22320;&#22336;&#10;          UP BROADCAST MULTICAST  MTU:1500  Metric:1&#10;          RX packets:0 errors:0 dropped:0 overruns:0 frame:0&#10;          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0&#10;          collisions:0 txqueuelen:1000&#10;          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/.ssh/id_rsa.pub | ssh pi@192.168.199.121 <span class="string">'mkdir -p .ssh &amp;&amp; cat - &gt;&gt; ~/.ssh/authorized_keys'</span></div></pre></td></tr></table></figure>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>执行<code>ifconfig</code>命令,查看网卡物理地址，将该网址在路由器上绑定到固定的ip</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">eth0      Link encap:Ethernet  HWaddr 38:22:db:e7:ed:0c // 物理地址</div><div class="line">          UP BROADCAST MULTICAST  MTU:1500  Metric:1</div><div class="line">          RX packets:0 errors:0 dropped:0 overruns:0 frame:0</div><div class="line">          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0</div><div class="line">          collisions:0 txqueuelen:1000</div><div class="line">          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)</div></pre></td></tr></table></figure>
 <p>然后执行<code>sudo nano /etc/network/interfaces</code>，将<code>manual</code>改为<code>dhcp</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iface eth0 inet dhcp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iface eth0 inet dhcp</div></pre></td></tr></table></figure>
 <p>如果你有无线网卡的话，还要进行无线网络的配置，首先一样的需要将无线网络的网卡地址在路由器上绑定到一个固定ip。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wlan0     Link encap:Ethernet  HWaddr e2:42:06:3e:w5:4e  // &#29289;&#29702;&#22320;&#22336;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wlan0     Link encap:Ethernet  HWaddr e2:42:06:3e:w5:4e  // 物理地址</div></pre></td></tr></table></figure>
 <p>然后需要将无线网络的名称和密码设置一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iface wlan0 inet dhcp&#10;wpa-ssid &#32593;&#32476;&#21517;&#31216;&#10;wpa-psk &#32593;&#32476;&#23494;&#30721;&#10;#wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
-<h3 id="u6269_u5927_u7CFB_u7EDF_u5BB9_u91CF"><a href="#u6269_u5927_u7CFB_u7EDF_u5BB9_u91CF" class="headerlink" title="扩大系统容量"></a>扩大系统容量</h3><p>树莓派默认并没有完全加载SD卡的内存容量，通过运行<code>sudo raspi-config</code>调出树莓派的配置界面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iface wlan0 inet dhcp</div><div class="line">wpa-ssid 网络名称</div><div class="line">wpa-psk 网络密码</div><div class="line"><span class="comment">#wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf</span></div></pre></td></tr></table></figure>
+<h3 id="扩大系统容量"><a href="#扩大系统容量" class="headerlink" title="扩大系统容量"></a>扩大系统容量</h3><p>树莓派默认并没有完全加载SD卡的内存容量，通过运行<code>sudo raspi-config</code>调出树莓派的配置界面</p>
 <p>选择第一项<code>Expand Filesystem</code>,确认重启后可以再执行<code>df -h</code>查看系统容量已经增大</p>
-<h3 id="u66FF_u6362_u8F6F_u4EF6_u6E90_u7684_u56FD_u5185_u955C_u50CF"><a href="#u66FF_u6362_u8F6F_u4EF6_u6E90_u7684_u56FD_u5185_u955C_u50CF" class="headerlink" title="替换软件源的国内镜像"></a>替换软件源的国内镜像</h3><p>国内有许多平台提供了树莓派的软件源的国内镜像，具体参考<a href="https://segmentfault.com/a/1190000000503041" target="_blank" rel="external">镜像列表</a>。这里选择阿里云的镜像地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak&#10;sudo vi /etc/apt/sources.list&#10;&#10;//&#23558;&#21407;&#26469;&#30340;&#27880;&#37322;&#25481;&#65292;&#26367;&#25442;&#25104;&#22914;&#19979;&#36719;&#20214;&#28304;&#22320;&#22336;&#10;deb http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib&#10;deb-src http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib</span><br></pre></td></tr></table></figure>
+<h3 id="替换软件源的国内镜像"><a href="#替换软件源的国内镜像" class="headerlink" title="替换软件源的国内镜像"></a>替换软件源的国内镜像</h3><p>国内有许多平台提供了树莓派的软件源的国内镜像，具体参考<a href="https://segmentfault.com/a/1190000000503041" target="_blank" rel="external">镜像列表</a>。这里选择阿里云的镜像地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak</div><div class="line">sudo vi /etc/apt/sources.list</div><div class="line">//将原来的注释掉，替换成如下软件源地址</div><div class="line">deb http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib</div><div class="line">deb-src http://mirrors.aliyun.com/raspbian/raspbian/ jessie main non-free contrib</div></pre></td></tr></table></figure>
 <p>PS：有些库国内镜像并没有及时同步，如果安装软件出现问题时，可以尝试再把镜像地址换回官方镜像尝试一下</p>
-<h3 id="u5B89_u88C5_u5E38_u7528_u8F6F_u4EF6"><a href="#u5B89_u88C5_u5E38_u7528_u8F6F_u4EF6" class="headerlink" title="安装常用软件"></a>安装常用软件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim wget -y</span><br></pre></td></tr></table></figure>
-<h2 id="u5B89_u88C5samba"><a href="#u5B89_u88C5samba" class="headerlink" title="安装samba"></a>安装samba</h2><p>最后也来装个家庭内部NAS服务玩玩</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#26356;&#26032;&#28304;&#10;sudo apt-get update&#10;// &#23433;&#35013;samba&#10;sudo apt-get install samba samba-common-bin -y</span><br></pre></td></tr></table></figure>
+<h3 id="安装常用软件"><a href="#安装常用软件" class="headerlink" title="安装常用软件"></a>安装常用软件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install vim wget -y</div></pre></td></tr></table></figure>
+<h2 id="安装samba"><a href="#安装samba" class="headerlink" title="安装samba"></a>安装samba</h2><p>最后也来装个家庭内部NAS服务玩玩</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 更新源</div><div class="line">sudo apt-get update</div><div class="line">// 安装samba</div><div class="line">sudo apt-get install samba samba-common-bin -y</div></pre></td></tr></table></figure>
 <p>创建samba文件夹</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /samba&#10;&#10;// &#20462;&#25913;samba&#30340;&#35775;&#38382;&#26435;&#38480;&#10;sudo chmod 777 /samba</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir /samba</div><div class="line"></div><div class="line">// 修改samba的访问权限</div><div class="line">sudo chmod 777 /samba</div></pre></td></tr></table></figure>
 <p>安装好samba后，需要配置samba分享的信息，编辑<code>/etc/samba/smb.conf</code>文件，在文件的末尾添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[share]&#10;   comment = share folder&#10;   path = /samba&#10;   browseable = yes&#10;   valid users = root pi&#10;   public = yes&#10;   writable = yes</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Path to the directory you want scanned for media files.&#10;#&#10;# This option can be specified more than once if you want multiple directories&#10;# scanned.&#10;#&#10;# If you want to restrict a media_dir to a specific content type, you can&#10;# prepend the directory name with a letter representing the type (A, P or V),&#10;# followed by a comma, as so:&#10;#   * &#34;A&#34; for audio    (eg. media_dir=A,/var/lib/minidlna/music)&#10;#   * &#34;P&#34; for pictures (eg. media_dir=P,/var/lib/minidlna/pictures)&#10;#   * &#34;V&#34; for video    (eg. media_dir=V,/var/lib/minidlna/videos)&#10;#&#10;# WARNING: After changing this option, you need to rebuild the database. Either&#10;#          run minidlna with the &#39;-R&#39; option, or delete the &#39;files.db&#39; file&#10;#          from the db_dir directory (see below).&#10;#          On Debian, you can run, as root, &#39;service minidlna force-reload&#39; instead.&#10;media_dir=/samba/DLNA&#10;media_dir=A,/samba/DLNA/Music&#10;media_dir=P,/samba/DLNA/Picture&#10;media_dir=V,/samba/DLNA/Video&#10;&#10;# Path to the directory that should hold the database and album art cache.&#10;db_dir=/samba/DLNA/db&#10;&#10;# Path to the directory that should hold the log file.&#10;log_dir=/samba/DLNA/log</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/minidlna restart&#10;//&#26597;&#30475;&#29366;&#24577;&#10;$ sudo /etc/init.d/minidlna status &#10;[ ok ] minidlna is running.</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/rc.local</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh -e&#10;#&#10;# rc.local&#10;#&#10;# This script is executed at the end of each multiuser runlevel.&#10;# Make sure that the script will &#34;exit 0&#34; on success or any other&#10;# value on error.&#10;#&#10;# In order to enable or disable this script just change the execution&#10;# bits.&#10;#&#10;# By default this script does nothing.&#10;&#10;# Print the IP address&#10;_IP=$(hostname -I) || true&#10;if [ &#34;$_IP&#34; ]; then&#10;  printf &#34;My IP address is %s&#10;&#34; &#34;$_IP&#34;&#10;fi&#10;&#10;#==============================&#10;sudo /etc/init.d/samba restart&#10;sudo /etc/init.d/minidlna restart&#10;#==============================&#10;&#10;exit 0</span><br></pre></td></tr></table></figure>
-<h2 id="u53C2_u8003_u5185_u5BB9"><a href="#u53C2_u8003_u5185_u5BB9" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[share]</div><div class="line">   comment = share folder</div><div class="line">   path = /samba</div><div class="line">   browseable = yes</div><div class="line">   valid users = root pi</div><div class="line">   public = yes</div><div class="line">   writable = yes</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Path to the directory you want scanned for media files.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># This option can be specified more than once if you want multiple directories</span></div><div class="line"><span class="comment"># scanned.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># If you want to restrict a media_dir to a specific content type, you can</span></div><div class="line"><span class="comment"># prepend the directory name with a letter representing the type (A, P or V),</span></div><div class="line"><span class="comment"># followed by a comma, as so:</span></div><div class="line"><span class="comment">#   * "A" for audio    (eg. media_dir=A,/var/lib/minidlna/music)</span></div><div class="line"><span class="comment">#   * "P" for pictures (eg. media_dir=P,/var/lib/minidlna/pictures)</span></div><div class="line"><span class="comment">#   * "V" for video    (eg. media_dir=V,/var/lib/minidlna/videos)</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># WARNING: After changing this option, you need to rebuild the database. Either</span></div><div class="line"><span class="comment">#          run minidlna with the '-R' option, or delete the 'files.db' file</span></div><div class="line"><span class="comment">#          from the db_dir directory (see below).</span></div><div class="line"><span class="comment">#          On Debian, you can run, as root, 'service minidlna force-reload' instead.</span></div><div class="line">media_dir=/samba/DLNA</div><div class="line">media_dir=A,/samba/DLNA/Music</div><div class="line">media_dir=P,/samba/DLNA/Picture</div><div class="line">media_dir=V,/samba/DLNA/Video</div><div class="line"></div><div class="line"><span class="comment"># Path to the directory that should hold the database and album art cache.</span></div><div class="line">db_dir=/samba/DLNA/db</div><div class="line"></div><div class="line"><span class="comment"># Path to the directory that should hold the log file.</span></div><div class="line"><span class="built_in">log</span>_dir=/samba/DLNA/<span class="built_in">log</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo /etc/init.d/minidlna restart</div><div class="line">//查看状态</div><div class="line">$ sudo /etc/init.d/minidlna status </div><div class="line">[ ok ] minidlna is running.</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/rc.local</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/bin/sh -e</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># rc.local</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></div><div class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></div><div class="line"><span class="comment"># value on error.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></div><div class="line"><span class="comment"># bits.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># By default this script does nothing.</span></div><div class="line"></div><div class="line"><span class="comment"># Print the IP address</span></div><div class="line">_IP=$(hostname -I) || <span class="literal">true</span></div><div class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$_IP</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  <span class="built_in">printf</span> <span class="string">"My IP address is %s</span></div><div class="line">" <span class="string">"<span class="variable">$_IP</span>"</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment">#==============================</span></div><div class="line">sudo /etc/init.d/samba restart</div><div class="line">sudo /etc/init.d/minidlna restart</div><div class="line"><span class="comment">#==============================</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure>
+<h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
 <li><a href="https://segmentfault.com/a/1190000000503041" target="_blank" rel="external">树莓派及其他硬件平台国内外Linux镜像站全汇总</a></li>
 <li><a href="http://shumeipai.nxez.com/2014/05/18/raspberry-pi-under-mac-osx-to-install-raspbian-system.html" target="_blank" rel="external">Mac OSX下给树莓派安装Raspbian系统</a></li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/05/31/raspberry_pi_init/" data-id="ciou7v1pb0003tu11vz7moj18" class="article-share-link">Share</a>
-      
-        <a href="http://ohmerhe.com/2016/05/31/raspberry_pi_init/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
-    </footer>
-  </div>
-  
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
     
+        <a href="http://ohmerhe.com/2016/05/31/raspberry_pi_init/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/05/31/raspberry_pi_init/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
 <nav id="article-nav">
-  
-    <a href="/2016/06/04/raspberry_install_mysql/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          树莓派安装 MySQL
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/02/26/gradle_speed_up/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">优化 Gradle 编译速度实践</div>
-    </a>
-  
+    
+        <a href="/2016/06/04/raspberry_install_mysql/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    树莓派安装 MySQL
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/02/26/gradle_speed_up/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">优化 Gradle 编译速度实践</div>
+        </a>
+    
 </nav>
 
 
-  
+    
 </article>
 
 
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
 </section>
-
-</section>
-      
-        <aside id="sidebar">
-  
+            
+                <aside id="sidebar">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">recents</h3>
-    <div class="widget">
-      <ul id="recent-post" class="">
         
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
-  
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
-              <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
+                            <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
-              <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
-              <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
-              <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
+                            <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
-              <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
-            </div>
-          </li>
-        
-      </ul>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
+                            <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">tag cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
-  <div id="toTop" class="fa fa-chevron-up"></div>
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
 </aside>
-      
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2015 - 2016 Ohmer<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
-    </div>
-  </div>
 </footer>
+        
     
-
-<script>
-  var disqus_shortname = 'ohmersblog';
-  (function(){
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2016/05/31/raspberry_pi_init/';
+    
+    (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+    })();
+    </script>
 
 
 
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
 
 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
-
-
-<script src="/js/script.js" type="text/javascript"></script>
-
-  </div>
+    </div>
 </body>
 </html>

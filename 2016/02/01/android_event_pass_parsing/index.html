@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>安卓事件传递机制分析 | Ohmer&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
+    <meta charset="utf-8">
+    
+    <title>安卓事件传递机制分析 | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
 这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安卓事件传递机制分析">
@@ -13,406 +13,514 @@
 <meta property="og:site_name" content="Ohmer's Blog">
 <meta property="og:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
 这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/android_view_event_pass.jpg">
-<meta property="og:updated_time" content="2016-07-09T07:56:49.000Z">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-07-09T09:50:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安卓事件传递机制分析">
 <meta name="twitter:description" content="这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。
 这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。">
-  
-  
-    <link rel="icon" href="favicon.png">
-  
-  
- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
- <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/200">
 
+    
 
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
-  
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
 
-  
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
 
-  
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+    
+    
+
 </head>
 <body>
-  <div id="container">
-    <header id="header">
-  <div id="header-main" class="header-inner">
-    <div class="outer">
-      <a href="/" id="logo"><span class="site-title">Ohmer&#39;s Blog</span></a>
-      <nav id="main-nav">
-        
-          <a class="main-nav-link" href="/.">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/categories">Categories</a>
-        
-          <a class="main-nav-link" href="/tags">Tags</a>
-        
-          <a class="main-nav-link" href="/about">About</a>
-        
-      </nav>
-      
-        <nav id="sub-nav">
-          <div class="profile" id="profile-nav">
-            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.jpg"><i class="fa fa-caret-down"></i></a>
-          </div>
-        </nav>
-      
-      <div id="search-form-wrap">
-        
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-        
-      </div>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
     </div>
-  </div>
-  <div id="main-nav-mobile" class="header-sub header-inner">
-    <table class="menu outer">
-      <tr>
-        
-          <td><a class="main-nav-link" href="/.">Home</a></td>
-        
-          <td><a class="main-nav-link" href="/archives">Archives</a></td>
-        
-          <td><a class="main-nav-link" href="/categories">Categories</a></td>
-        
-          <td><a class="main-nav-link" href="/tags">Tags</a></td>
-        
-          <td><a class="main-nav-link" href="/about">About</a></td>
-        
-        <td>
-          
-            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-          
-        </td>
-      </tr>
-    </table>
-  </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
 </header>
 
-    <div class="outer">
-      
-        <aside id="profile">
-  <div class="inner profile-inner">
-    <div class="base-info profile-block">
-      <img id="avatar" src="/css/images/avatar.jpg">
-      <h2 id="name">Ohmer</h2>
-      <h3 id="title">Android Developer</h3>
-      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
-      <a id="follow" href="https://github.com/ohmerhe/">FOLLOW</a>
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                15
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                13
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
     </div>
-    <div class="article-info profile-block">
-      <div class="article-info-block">
-        15
-        <span>posts</span>
-      </div>
-      <div class="article-info-block">
-        53
-        <span>tags</span>
-      </div>
-    </div>
-    
-    <div class="contact-info profile-block">
-      <table class="contact-list">
-        <tr>
-          
-          <td><a href="http://github.com/ohmerhe" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
-          
-          <td><a href="https://twitter.com/ohmerhe" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
-          
-          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
-          
-        </tr>
-      </table>
-    </div>
-    
-    
-  </div>
 </aside>
 
-      
-      <section id="main"><article id="post-android_event_pass_parsing" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/1024/h/460" class="article-banner">
-	
-
-
-
-    
-    
-    
-      <header class="article-header">
+            
+            <section id="main"><article id="post-android_event_pass_parsing" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-  
-    <h1 class="article-title" itemprop="name">
-      安卓事件传递机制分析
-    </h1>
-  
-
-        <div class="article-meta">
-          
-  <div class="article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2016/02/01/android_event_pass_parsing/">
-      <time datetime="2016-02-01T10:38:00.000Z" itemprop="datePublished">2016-02-01</time>
-    </a>
-  </div>
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-137723945.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
 
 
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+
+        
+        
+        
+            <header class="article-header">
                 
-        <p>这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。</p>
+    
+        <h1 class="article-title" itemprop="name">
+            安卓事件传递机制分析
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/02/01/android_event_pass_parsing/">
+            <time datetime="2016-02-01T10:38:00.000Z" itemprop="datePublished">2016-02-01</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>这篇文章基于Android4.2的源码分析得出，写的比较早，拿出来晒晒。</p>
 <p>这片文章讲解的事件传递的起源从dispatchTouchEvent(event)开始，根据事件的处理流程逐渐展开，直至事件被可预料的处理掉结束。</p>
 <a id="more"></a>
 <p>先贴一张个人总结的事件传递的流程图，如果可以将这张图清楚的理解，下面的文章就可以不用看了，因为这篇文章的主要内容也就是围绕这幅图展开。</p>
 <p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/android_view_event_pass.jpg" alt="事件分发流程图"></p>
-<h2 id="ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406"><a href="#ViewGroup_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406" class="headerlink" title="ViewGroup中的事件处理"></a>ViewGroup中的事件处理</h2><p>在用户触碰屏幕后，经过系统一系列处理后，会分发到的View的dispatchTouchEvent方法中，事件将在这个方法中进行分发，决定该事件的去向。</p>
+<h2 id="ViewGroup中的事件处理"><a href="#ViewGroup中的事件处理" class="headerlink" title="ViewGroup中的事件处理"></a>ViewGroup中的事件处理</h2><p>在用户触碰屏幕后，经过系统一系列处理后，会分发到的View的dispatchTouchEvent方法中，事件将在这个方法中进行分发，决定该事件的去向。</p>
 <p>由于安卓的事件处理顺序是由外至里的，既外层视图最先拿到对应的事件，既事件会优先传递到ViewGroup的dispatchTouchEvent方法中。在自定义视图中可以重写dispatchTouchEvent这个方法定义事件的进一步分发，本文分析的是ViewGroup默认的分发机制。</p>
 <p>在ViewGroup中默认先将事件分发给onInterceptTouchEvent方法，通过该方法的返回来判断当前视图是否中断事件的进一步分发，如果onInterceptTouchEvent返回true，则该事件认为已经被消耗不会继续分发下去。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!disallowIntercept) &#123;  &#10;    intercepted = onInterceptTouchEvent(ev);  &#10;    ev.setAction(action); // restore action in case it was changed  &#10;    &#125; else &#123;  &#10;    intercepted = false;  &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!disallowIntercept) &#123;  </div><div class="line">    intercepted = onInterceptTouchEvent(ev);  </div><div class="line">    ev.setAction(action); <span class="comment">// restore action in case it was changed  </span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;  </div><div class="line">    intercepted = <span class="keyword">false</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ViewGroup默认并不会中断该事件，而是直接返回false。在自定义的视图中，可以通过重写onInterceptTouchEvent返回true而中断所有事件的分发。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public boolean onInterceptTouchEvent(MotionEvent ev) &#123;  &#10;    return false;  &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;  </div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>如果事件在当前视图没有被截取，ViewGroup会继续分发事件，判断自己是否有子视图符合接收该事件的条件，如果有的话，则直接将事件分发给该子视图，并返回true代表在这层事件已经被分发出去。该视图的子视图可以是一个普通的view，也可以是一个Viewgroup。当子视图是一个View的时候，请参考下面View的事件处理部分。当子视图是一个ViewGroup，则重复前面描述的分发逻辑。</p>
 <p>如果没有子视图消耗掉当前的事件，这个事件最终被传递到ViewGroup本身，这个时候ViewGroup将作为一个普通的View继续处理事件（详细参见后面的View处理事件部分）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (!canViewReceivePointerEvents(child)|| !isTransformedTouchPointInView(x, y, child, null)) &#123;  &#10;    continue;  &#10;&#125;&#10;newTouchTarget = getTouchTarget(child);  &#10;if (newTouchTarget != null) &#123;  &#10;    // Child is already receiving touch within its bounds.  &#10;    // Give it the new pointer in addition to the ones it is handling.  &#10;    newTouchTarget.pointerIdBits |= idBitsToAssign;  &#10;    break;  &#10;&#125;  &#10;  &#10;resetCancelNextUpFlag(child);  &#10;if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) &#123;  &#10;    // Child wants to receive touch within its bounds.  &#10;    mLastTouchDownTime = ev.getDownTime();  &#10;    mLastTouchDownIndex = childIndex;  &#10;    mLastTouchDownX = ev.getX();  &#10;    mLastTouchDownY = ev.getY();  &#10;    newTouchTarget = addTouchTarget(child, idBitsToAssign);  &#10;    alreadyDispatchedToNewTouchTarget = true;  &#10;    break;  &#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="View_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406"><a href="#View_u4E2D_u7684_u4E8B_u4EF6_u5904_u7406" class="headerlink" title="View中的事件处理"></a>View中的事件处理</h2><p>View中的事件分发仍然是从dispatchTouchEvent方法开始。该方法中首先会将事件分发给调用到mOnTouchListener，mOnTouchListener是我们在使用view的setOnTouchListener方法时注册进去的监听。如果我们在注册进去监听的onTouch方法中处理了该事件并且返回了true则代表该事件已经被消耗，事件将不会在继续传递。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ListenerInfo li = mListenerInfo;  &#10;if (li != null &#38;&#38; li.mOnTouchListener != null &#38;&#38; (mViewFlags &#38; ENABLED_MASK) == ENABLED  &#10;    &#38;&#38; li.mOnTouchListener.onTouch(this, event)) &#123;  &#10;    return true;  &#10;&#125;if (onTouchEvent(event)) &#123;  &#10;    return true;  &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!canViewReceivePointerEvents(child)|| !isTransformedTouchPointInView(x, y, child, <span class="keyword">null</span>)) &#123;  </div><div class="line">    <span class="keyword">continue</span>;  </div><div class="line">&#125;</div><div class="line">newTouchTarget = getTouchTarget(child);  </div><div class="line"><span class="keyword">if</span> (newTouchTarget != <span class="keyword">null</span>) &#123;  </div><div class="line">    <span class="comment">// Child is already receiving touch within its bounds.  </span></div><div class="line">    <span class="comment">// Give it the new pointer in addition to the ones it is handling.  </span></div><div class="line">    newTouchTarget.pointerIdBits |= idBitsToAssign;  </div><div class="line">    <span class="keyword">break</span>;  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">resetCancelNextUpFlag(child);  </div><div class="line"><span class="keyword">if</span> (dispatchTransformedTouchEvent(ev, <span class="keyword">false</span>, child, idBitsToAssign)) &#123;  </div><div class="line">    <span class="comment">// Child wants to receive touch within its bounds.  </span></div><div class="line">    mLastTouchDownTime = ev.getDownTime();  </div><div class="line">    mLastTouchDownIndex = childIndex;  </div><div class="line">    mLastTouchDownX = ev.getX();  </div><div class="line">    mLastTouchDownY = ev.getY();  </div><div class="line">    newTouchTarget = addTouchTarget(child, idBitsToAssign);  </div><div class="line">    alreadyDispatchedToNewTouchTarget = <span class="keyword">true</span>;  </div><div class="line">    <span class="keyword">break</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="View中的事件处理"><a href="#View中的事件处理" class="headerlink" title="View中的事件处理"></a>View中的事件处理</h2><p>View中的事件分发仍然是从dispatchTouchEvent方法开始。该方法中首先会将事件分发给调用到mOnTouchListener，mOnTouchListener是我们在使用view的setOnTouchListener方法时注册进去的监听。如果我们在注册进去监听的onTouch方法中处理了该事件并且返回了true则代表该事件已经被消耗，事件将不会在继续传递。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ListenerInfo li = mListenerInfo;  </div><div class="line"><span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnTouchListener != <span class="keyword">null</span> &amp;&amp; (mViewFlags &amp; ENABLED_MASK) == ENABLED  </div><div class="line">    &amp;&amp; li.mOnTouchListener.onTouch(<span class="keyword">this</span>, event)) &#123;  </div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;  </div><div class="line">&#125;<span class="keyword">if</span> (onTouchEvent(event)) &#123;  </div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>而如果没有设置监听或返回为false的话，该事件将会被传递到onTouchEvent方法。在View类默认的onTouchEvent方法中，会将事件分发到视图的click或者longClick事件。</p>
 <p>用户需用通过setOnClickListener或者setOnLongClickListener设置click的处理，如果我们设置了listener，则onTouchEvent分发完事件后会返回true通知该事件已经被消耗。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (mPerformClick == null) &#123;  &#10;    mPerformClick = new PerformClick();  &#10;&#125;  &#10;if (!post(mPerformClick)) &#123;  &#10;    performClick();  &#10;&#125;&#10;ListenerInfo li = mListenerInfo;  &#10;if (li != null &#38;&#38; li.mOnClickListener != null) &#123;  &#10;    playSoundEffect(SoundEffectConstants.CLICK);  &#10;    li.mOnClickListener.onClick(this);  &#10;    return true;  &#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (mPerformClick == <span class="keyword">null</span>) &#123;  </div><div class="line">    mPerformClick = <span class="keyword">new</span> PerformClick();  </div><div class="line">&#125;  </div><div class="line"><span class="keyword">if</span> (!post(mPerformClick)) &#123;  </div><div class="line">    performClick();  </div><div class="line">&#125;</div><div class="line">ListenerInfo li = mListenerInfo;  </div><div class="line"><span class="keyword">if</span> (li != <span class="keyword">null</span> &amp;&amp; li.mOnClickListener != <span class="keyword">null</span>) &#123;  </div><div class="line">    playSoundEffect(SoundEffectConstants.CLICK);  </div><div class="line">    li.mOnClickListener.onClick(<span class="keyword">this</span>);  </div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ps: 从上面的代码指导view的click方法并不是直接调用执行的，而是通过post将click的处理延迟以保证视觉效果的优先执行。</p>
-<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>首先接收到事件的视图是最外层的视图，然后再往子视图上传递</li>
 <li>事件的传递是一个递归过程</li>
 <li>在上述每个环节都可以通过返回true的方法消耗该事件，结束事件的传递</li>
 <li>自定义视图的事件传递过程决定于其对应继承的方法，但应该遵守上述的规则</li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/" data-id="ciou7v1qd001dtu11jift2kb0" class="article-share-link">Share</a>
-      
-        <a href="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
-    </footer>
-  </div>
-  
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
     
+        <a href="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/02/01/android_event_pass_parsing/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
 <nav id="article-nav">
-  
-    <a href="/2016/02/26/gradle_speed_up/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          优化 Gradle 编译速度实践
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/01/18/how-to-work-weakhandler/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">WeakHandler 是怎么解决 Handler 的内存问题的</div>
-    </a>
-  
+    
+        <a href="/2016/02/26/gradle_speed_up/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    优化 Gradle 编译速度实践
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/01/18/how-to-work-weakhandler/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">WeakHandler 是怎么解决 Handler 的内存问题的</div>
+        </a>
+    
 </nav>
 
 
-  
+    
 </article>
 
 
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
 </section>
-
-</section>
-      
-        <aside id="sidebar">
-  
+            
+                <aside id="sidebar">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">recents</h3>
-    <div class="widget">
-      <ul id="recent-post" class="">
         
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
-  
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
-              <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
+                            <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
-              <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
-              <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
-              <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
+                            <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
-              <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
-            </div>
-          </li>
-        
-      </ul>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
+                            <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">tag cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
-  <div id="toTop" class="fa fa-chevron-up"></div>
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
 </aside>
-      
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2015 - 2016 Ohmer<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
-    </div>
-  </div>
 </footer>
+        
     
-
-<script>
-  var disqus_shortname = 'ohmersblog';
-  (function(){
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2016/02/01/android_event_pass_parsing/';
+    
+    (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+    })();
+    </script>
 
 
 
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
 
 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
-
-
-<script src="/js/script.js" type="text/javascript"></script>
-
-  </div>
+    </div>
 </body>
 </html>

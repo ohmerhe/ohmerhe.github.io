@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>Kotlin 类与对象 —— object | Ohmer&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对象（object）表达式和对象声明Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考java-interop），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明
+    <meta charset="utf-8">
+    
+    <title>Kotlin 类与对象 —— object | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="对象（object）表达式和对象声明Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考java-interop），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明
 对象表达式通过对象表达式可以越过类的定义直接得到一个对象：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kotlin 类与对象 —— object">
@@ -13,406 +13,515 @@
 <meta property="og:site_name" content="Ohmer's Blog">
 <meta property="og:description" content="对象（object）表达式和对象声明Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考java-interop），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明
 对象表达式通过对象表达式可以越过类的定义直接得到一个对象：">
-<meta property="og:updated_time" content="2016-07-09T08:03:57.000Z">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-07-09T14:22:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 类与对象 —— object">
 <meta name="twitter:description" content="对象（object）表达式和对象声明Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考java-interop），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明
 对象表达式通过对象表达式可以越过类的定义直接得到一个对象：">
-  
-  
-    <link rel="icon" href="favicon.png">
-  
-  
- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
- <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/200">
 
+    
 
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
-  
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
 
-  
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
 
-  
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+    
+    
+
 </head>
 <body>
-  <div id="container">
-    <header id="header">
-  <div id="header-main" class="header-inner">
-    <div class="outer">
-      <a href="/" id="logo"><span class="site-title">Ohmer&#39;s Blog</span></a>
-      <nav id="main-nav">
-        
-          <a class="main-nav-link" href="/.">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-          <a class="main-nav-link" href="/categories">Categories</a>
-        
-          <a class="main-nav-link" href="/tags">Tags</a>
-        
-          <a class="main-nav-link" href="/about">About</a>
-        
-      </nav>
-      
-        <nav id="sub-nav">
-          <div class="profile" id="profile-nav">
-            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="/css/images/avatar.jpg"><i class="fa fa-caret-down"></i></a>
-          </div>
-        </nav>
-      
-      <div id="search-form-wrap">
-        
-          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-        
-      </div>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
     </div>
-  </div>
-  <div id="main-nav-mobile" class="header-sub header-inner">
-    <table class="menu outer">
-      <tr>
-        
-          <td><a class="main-nav-link" href="/.">Home</a></td>
-        
-          <td><a class="main-nav-link" href="/archives">Archives</a></td>
-        
-          <td><a class="main-nav-link" href="/categories">Categories</a></td>
-        
-          <td><a class="main-nav-link" href="/tags">Tags</a></td>
-        
-          <td><a class="main-nav-link" href="/about">About</a></td>
-        
-        <td>
-          
-            <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
-          
-        </td>
-      </tr>
-    </table>
-  </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
 </header>
 
-    <div class="outer">
-      
-        <aside id="profile">
-  <div class="inner profile-inner">
-    <div class="base-info profile-block">
-      <img id="avatar" src="/css/images/avatar.jpg">
-      <h2 id="name">Ohmer</h2>
-      <h3 id="title">Android Developer</h3>
-      <span id="location"><i class="fa fa-map-marker"></i>Shanghai, China</span>
-      <a id="follow" href="https://github.com/ohmerhe/">FOLLOW</a>
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                15
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                13
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></td>
+                    
+                    <td><a href="/" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
     </div>
-    <div class="article-info profile-block">
-      <div class="article-info-block">
-        15
-        <span>posts</span>
-      </div>
-      <div class="article-info-block">
-        53
-        <span>tags</span>
-      </div>
-    </div>
-    
-    <div class="contact-info profile-block">
-      <table class="contact-list">
-        <tr>
-          
-          <td><a href="http://github.com/ohmerhe" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
-          
-          <td><a href="https://twitter.com/ohmerhe" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
-          
-          <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
-          
-        </tr>
-      </table>
-    </div>
-    
-    
-  </div>
 </aside>
 
-      
-      <section id="main"><article id="post-class-object-object" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/1024/h/460" class="article-banner">
-	
-
-
-
-    
-    
-    
-      <header class="article-header">
+            
+            <section id="main"><article id="post-class-object-object" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-  
-    <h1 class="article-title" itemprop="name">
-      Kotlin 类与对象 —— object
-    </h1>
-  
-
-        <div class="article-meta">
-          
-  <div class="article-date">
-    <i class="fa fa-calendar"></i>
-    <a href="/2015/12/19/class-object-object/">
-      <time datetime="2015-12-19T11:02:38.000Z" itemprop="datePublished">2015-12-19</time>
-    </a>
-  </div>
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
 
 
-          
-        </div>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+
+        
+        
+        
+            <header class="article-header">
                 
-        <h2 id="u5BF9_u8C61_uFF08object_uFF09_u8868_u8FBE_u5F0F_u548C_u5BF9_u8C61_u58F0_u660E"><a href="#u5BF9_u8C61_uFF08object_uFF09_u8868_u8FBE_u5F0F_u548C_u5BF9_u8C61_u58F0_u660E" class="headerlink" title="对象（object）表达式和对象声明"></a>对象（object）表达式和对象声明</h2><p>Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考<a href="https://kotlinlang.org/docs/reference/java-interop.html#mapped-types" target="_blank" rel="external">java-interop</a>），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明</p>
-<h3 id="u5BF9_u8C61_u8868_u8FBE_u5F0F"><a href="#u5BF9_u8C61_u8868_u8FBE_u5F0F" class="headerlink" title="对象表达式"></a>对象表达式</h3><p>通过对象表达式可以越过类的定义直接得到一个对象：</p>
+    
+        <h1 class="article-title" itemprop="name">
+            Kotlin 类与对象 —— object
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/12/19/class-object-object/">
+            <time datetime="2015-12-19T11:02:38.000Z" itemprop="datePublished">2015-12-19</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Kotlin/">Kotlin</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="对象（object）表达式和对象声明"><a href="#对象（object）表达式和对象声明" class="headerlink" title="对象（object）表达式和对象声明"></a>对象（object）表达式和对象声明</h2><p>Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考<a href="https://kotlinlang.org/docs/reference/java-interop.html#mapped-types" target="_blank" rel="external">java-interop</a>），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明</p>
+<h3 id="对象表达式"><a href="#对象表达式" class="headerlink" title="对象表达式"></a>对象表达式</h3><p>通过对象表达式可以越过类的定义直接得到一个对象：</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val point = object &#123;&#10;&#9;var x: Int = 0&#10;&#9;var y: Int = 0&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> point = <span class="keyword">object</span> &#123;</div><div class="line">	<span class="keyword">var</span> x: <span class="built_in">Int</span> = <span class="number">0</span></div><div class="line">	<span class="keyword">var</span> y: <span class="built_in">Int</span> = <span class="number">0</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这个对象可以继承于某个基类，或者实现其他接口:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open class Device(var name: String) &#123;&#10;&#125;&#10;&#10;interface Vedio &#123;&#10;    fun play()&#123;&#125;&#10;&#125;&#10;&#10;var television = object : Device(&#34;Sony&#34;), Vedio&#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Device</span></span>(<span class="keyword">var</span> name: String) &#123;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Vedio</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">play</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> television = <span class="keyword">object</span> : Device(<span class="string">"Sony"</span>), Vedio&#123;&#125;</div></pre></td></tr></table></figure>
 <p>这可以方便的实现一个匿名内部类的对象用于方法的参数中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.addMouseListener(object : MouseAdapter() &#123;&#10;    override fun mouseClicked(e: MouseEvent) &#123;&#10;        // ...&#10;    &#125;&#10;&#10;    override fun mouseEntered(e: MouseEvent) &#123;&#10;        // ...&#10;    &#125;&#10;&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">window.addMouseListener(<span class="keyword">object</span> : MouseAdapter() &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">mouseClicked</span><span class="params">(e: <span class="type">MouseEvent</span>)</span></span> &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">mouseEntered</span><span class="params">(e: <span class="type">MouseEvent</span>)</span></span> &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
 <p>在对象表达中可以方便的访问到作用域中的其他变量，及时这个变量并不是<code>final</code>的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun countClicks(window: JComponent) &#123;&#10;    var clickCount = 0&#10;    var enterCount = 0&#10;&#10;    window.addMouseListener(object : MouseAdapter() &#123;&#10;        override fun mouseClicked(e: MouseEvent) &#123;&#10;            clickCount++&#10;        &#125;&#10;&#10;        override fun mouseEntered(e: MouseEvent) &#123;&#10;            enterCount++&#10;        &#125;&#10;    &#125;)&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="u5BF9_u8C61_u58F0_u660E"><a href="#u5BF9_u8C61_u58F0_u660E" class="headerlink" title="对象声明"></a>对象声明</h3><p>对象声明可类似定义一个类一样定义一个对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object RCtrl : Device(&#34;Remote Control&#34;), Infrared &#123;&#10;    override fun send(command: Int) &#123;&#10;        // send command&#10;    &#125;&#10;&#125;&#10;&#10;object RCtrl : Device(&#34;Remote Control&#34;), Infrared &#123;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">countClicks</span><span class="params">(window: <span class="type">JComponent</span>)</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> clickCount = <span class="number">0</span></div><div class="line">    <span class="keyword">var</span> enterCount = <span class="number">0</span></div><div class="line">    window.addMouseListener(<span class="keyword">object</span> : MouseAdapter() &#123;</div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">mouseClicked</span><span class="params">(e: <span class="type">MouseEvent</span>)</span></span> &#123;</div><div class="line">            clickCount++</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">mouseEntered</span><span class="params">(e: <span class="type">MouseEvent</span>)</span></span> &#123;</div><div class="line">            enterCount++</div><div class="line">        &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="对象声明"><a href="#对象声明" class="headerlink" title="对象声明"></a>对象声明</h3><p>对象声明可类似定义一个类一样定义一个对象：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">object</span> RCtrl : Device(<span class="string">"Remote Control"</span>), Infrared &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">send</span><span class="params">(command: <span class="type">Int</span>)</span></span> &#123;</div><div class="line">        <span class="comment">// send command</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">object</span> RCtrl : Device(<span class="string">"Remote Control"</span>), Infrared &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在使用的时候可以直接使用定义的对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun main(args: Array&#60;String&#62;) &#123;&#10;    RCtrl.send(1)&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</div><div class="line">    RCtrl.send(<span class="number">1</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>当然你也可以定义一个变量来获取获取这个对象，当时当你定义两个不同的变量来获取这个对象时，你会发现你并不能得到两个不同的变量。也就是说通过这种方式，我们获得一个<strong><em>单例</em></strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var rCtrl1 = RCtrl&#10;var rCtrl2 = RCtrl&#10;rCtrl1.name = &#34;TV Control&#34;&#10;print(&#34;rCtrl2 name = $&#123;rCtrl2.name&#125;&#34;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> rCtrl1 = RCtrl</div><div class="line"><span class="keyword">var</span> rCtrl2 = RCtrl</div><div class="line">rCtrl1.name = <span class="string">"TV Control"</span></div><div class="line">print(<span class="string">"rCtrl2 name = <span class="subst">$&#123;rCtrl2.name&#125;</span>"</span>)</div></pre></td></tr></table></figure>
 <p>在Kotlin中我们可以方便的通过对象声明来获得一个单例。</p>
 <p>不过需要注意的是，对象声明不能直接定义在一个函数中。</p>
 <p>与对象表达式不同，当对象声明在另一个类的内部时，这个对象并不能通过外部类的实例访问到该对象，而只能通过类名来访问，同样该对象也不能直接访问到外部类的方法和变量。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Desk&#123;&#10;&#9;var legCount = 4&#10;&#9;object DeskTop&#123;&#10;       var area = 0&#10;       fun showLegs()&#123;&#10;       &#9;print&#123;&#34;desk legs $legCount&#34;&#125; // error, compile complain&#10;       &#125;&#10;   &#125;&#10;&#125;&#10;&#10;fun main(args: Array&#60;String&#62;) &#123;&#10;&#9;var desk = Desk()&#10;   &#9;desk.DeskTop.area // error, compile complain&#10;   &#9;Desk.DeskTop.area // right&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="companion_u5BF9_u8C61"><a href="#companion_u5BF9_u8C61" class="headerlink" title="companion对象"></a>companion对象</h3><p>当对象声明在另一个对象中时，我们可以通过关键字<code>companion</code>将对象与外部类关联在一起，这样我们就可以直接通过外部类访问到对象的内部元素。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class MyClass &#123;&#10;    companion object Factory &#123;&#10;        fun create(): MyClass = MyClass()&#10;    &#125;&#10;&#125;&#10;&#10;val instance = MyClass.create()</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Desk</span></span>&#123;</div><div class="line">	<span class="keyword">var</span> legCount = <span class="number">4</span></div><div class="line">	<span class="keyword">object</span> DeskTop&#123;</div><div class="line">       <span class="keyword">var</span> area = <span class="number">0</span></div><div class="line">       <span class="function"><span class="keyword">fun</span> <span class="title">showLegs</span><span class="params">()</span></span>&#123;</div><div class="line">       	print&#123;<span class="string">"desk legs <span class="subst">$legCount</span>"</span>&#125; <span class="comment">// error, compile complain</span></div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> desk = Desk()</div><div class="line">   	desk.DeskTop.area <span class="comment">// error, compile complain</span></div><div class="line">   	Desk.DeskTop.area <span class="comment">// right</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="companion对象"><a href="#companion对象" class="headerlink" title="companion对象"></a>companion对象</h3><p>当对象声明在另一个对象中时，我们可以通过关键字<code>companion</code>将对象与外部类关联在一起，这样我们就可以直接通过外部类访问到对象的内部元素。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> Factory &#123;</div><div class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">create</span><span class="params">()</span></span>: MyClass = MyClass()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">val</span> instance = MyClass.create()</div></pre></td></tr></table></figure>
 <p>我们甚至可以省略掉该对象的对象名，然后使用<code>Companion</code>替代需要声明的对象名：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class MyClass &#123;&#10;    companion object &#123;&#10;    &#125;&#10;&#125;&#10;&#10;val x = MyClass.Companion</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">val</span> x = MyClass.Companion</div></pre></td></tr></table></figure>
 <p>看到上面的例子我们我们就会思考如果我们定义两个内部关联对象怎么办，答案当然是不行，不管是否声明对象名，一个类里面只能声明一个内部关联对象。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Desk&#123;&#10;    companion object DeskTop &#123;&#10;        var area = 0;&#10;    &#125;&#10;&#10;    companion object Leg&#123;  // error, compile complain&#10;        var lenght = 80&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://kotlinlang.org" target="_blank" rel="external">kotlin</a></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Desk</span></span>&#123;</div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> DeskTop &#123;</div><div class="line">        <span class="keyword">var</span> area = <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> Leg&#123;  <span class="comment">// error, compile complain</span></div><div class="line">        <span class="keyword">var</span> lenght = <span class="number">80</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://kotlinlang.org" target="_blank" rel="external">kotlin</a></p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://ohmerhe.com/2015/12/19/class-object-object/" data-id="ciou7v1q1000vtu11mzeeprva" class="article-share-link">Share</a>
-      
-        <a href="http://ohmerhe.com/2015/12/19/class-object-object/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
-    </footer>
-  </div>
-  
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
     
+        <a href="http://ohmerhe.com/2015/12/19/class-object-object/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2015/12/19/class-object-object/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
 <nav id="article-nav">
-  
-    <a href="/2015/12/22/class-object-generic/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Kotlin 类与对象 —— 泛型
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/12/19/first-blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">天王盖地虎</div>
-    </a>
-  
+    
+        <a href="/2015/12/22/class-object-generic/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Kotlin 类与对象 —— 泛型
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/12/19/first-blog/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">天王盖地虎</div>
+        </a>
+    
 </nav>
 
 
-  
+    
 </article>
 
 
-<section id="comments">
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
 </section>
-
-</section>
-      
-        <aside id="sidebar">
-  
+            
+                <aside id="sidebar">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">recents</h3>
-    <div class="widget">
-      <ul id="recent-post" class="">
         
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
-  
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/07/05/kotlin_function_three_common_methods/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/uploadPic?imageView2/1/w/200)" alt="Kotlin 函数式编程三板斧" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
-              <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/07/05/kotlin_function_three_common_methods/" class="title">Kotlin 函数式编程三板斧</a></p>
+                            <p class="item-date"><time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
-              <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/26/raspberry_install_node/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138112499.jpg?imageView2/1/w/200)" alt="树莓派安装 Node" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
-              <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/26/raspberry_install_node/" class="title">树莓派安装 Node</a></p>
+                            <p class="item-date"><time datetime="2016-06-26T08:23:04.000Z" itemprop="datePublished">2016-06-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/25/raspberry_backup_system_img/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156596865.jpg?imageView2/1/w/200)" alt="用 U 盘为树莓派备份镜像" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
-              <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
-            </div>
-          </li>
-        
-          <li>
-            
-            <div class="item-thumbnail">
-              <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
-  
-    <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
-  
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/25/raspberry_backup_system_img/" class="title">用 U 盘为树莓派备份镜像</a></p>
+                            <p class="item-date"><time datetime="2016-06-25T13:02:22.000Z" itemprop="datePublished">2016-06-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/13/kotlin_config_http_kolley/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200)" alt="Kotlin 实现配置化网络请求" class="thumbnail-image"></span>
+    
 </a>
-            </div>
-            
-            <div class="item-inner">
-              <p class="item-category"></p>
-              <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
-              <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
-            </div>
-          </li>
-        
-      </ul>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/06/13/kotlin_config_http_kolley/" class="title">Kotlin 实现配置化网络请求</a></p>
+                            <p class="item-date"><time datetime="2016-06-13T12:23:05.000Z" itemprop="datePublished">2016-06-13</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">tag cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 16.67px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 20px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
     </div>
-  </div>
 
-  
-  <div id="toTop" class="fa fa-chevron-up"></div>
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
 </aside>
-      
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2015 - 2016 Ohmer<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
-    </div>
-  </div>
 </footer>
+        
     
-
-<script>
-  var disqus_shortname = 'ohmersblog';
-  (function(){
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2015/12/19/class-object-object/';
+    
+    (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+    })();
+    </script>
 
 
 
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
 
 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
-
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
-
-
-<script src="/js/script.js" type="text/javascript"></script>
-
-  </div>
+    </div>
 </body>
 </html>
