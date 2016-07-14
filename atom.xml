@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ohmerhe.com/"/>
-  <updated>2016-07-09T10:54:19.000Z</updated>
+  <updated>2016-07-14T10:52:57.000Z</updated>
   <id>http://ohmerhe.com/</id>
   
   <author>
@@ -14,6 +14,80 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NullPointException 利器 Kotlin 可选型</title>
+    <link href="http://ohmerhe.com/2016/07/14/kotlin-type-option/"/>
+    <id>http://ohmerhe.com/2016/07/14/kotlin-type-option/</id>
+    <published>2016-07-14T10:52:57.000Z</published>
+    <updated>2016-07-14T10:52:57.000Z</updated>
+    
+    <content type="html">&lt;p&gt;tags: Kotlin&lt;/p&gt;
+&lt;p&gt;NullPointException (简称 NPE ) 被称作 &lt;a href=&quot;https://en.wikipedia.org/wiki/Tony_Hoare#Apologies_and_retractions&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;The Billion Dollar Mistake&lt;/a&gt; 一直困扰着Java 和 Android 开发者。Kotlin 的类型系统中提供可选类型用于减少 NPE 问题带来的风险。&lt;/p&gt;
+&lt;p&gt;虽然，Kotlin 提供了可选类型用于减少 NPE 问题的风险，但是并没有办法完全消除 NPE 带来的隐患，本问将探讨如何巧妙地使用「可选型」更好的规避 NPE 的发生。&lt;/p&gt;
+&lt;h2 id=&quot;可选型定义&quot;&gt;&lt;a href=&quot;#可选型定义&quot; class=&quot;headerlink&quot; title=&quot;可选型定义&quot;&gt;&lt;/a&gt;可选型定义&lt;/h2&gt;&lt;h3 id=&quot;非空类型&quot;&gt;&lt;a href=&quot;#非空类型&quot; class=&quot;headerlink&quot; title=&quot;非空类型&quot;&gt;&lt;/a&gt;非空类型&lt;/h3&gt;&lt;p&gt;我们先从可选型的定义开始，当我们在 Kotlin 中定义一个变量时，默认就是非空类型的，当你将一个非空类型置空的时候，编译器会告诉你这不可行。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; a: String = &lt;span class=&quot;string&quot;&gt;&quot;abc&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;a = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;// compilation error&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;因此，如果你后面任何时候使用该变量时，都可以放心的使用而不用担心会发生 NPE。所以要想远离 NPE，首先需要&lt;strong&gt;「尽可能的使用非空类型的定义」&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;可选型（可空类型）&quot;&gt;&lt;a href=&quot;#可选型（可空类型）&quot; class=&quot;headerlink&quot; title=&quot;可选型（可空类型）&quot;&gt;&lt;/a&gt;可选型（可空类型）&lt;/h3&gt;&lt;p&gt;虽然「非空类型」能够有效避免 NPE 的问题，但是有时候我们总不可避免的需要使用「可选类型」。在定义可选型的时候，我们只要在非空类型的后面添加一个 &lt;code&gt;?&lt;/code&gt; 就可以了。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; b: String? = &lt;span class=&quot;string&quot;&gt;&quot;abc&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;b = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;// ok&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在使用可选型变量的时候，这个变量就有可能为空，所以在使用前我们应该对其进行空判断（在 Java 中我们经常这样做），这样往往带来带来大量的工作，这些空判断代码本身没有什么实际意义，并且让代码的可读性和简洁性带来了巨大的挑战。在网上可以看到许多人针对如何减少 NPE 提出了自己的建议，有的的确很不错，但成本依然很大。除此之外，还有一个最可恶的场景「我们会忘记」。&lt;/p&gt;
+&lt;p&gt;Kotlin 为了解决这个问题，它并不允许我们直接使用一个可选型的变量去调用方法或者属性。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; l = b.length &lt;span class=&quot;comment&quot;&gt;// compilation error&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;你可以和 Java 中一样，在使用变量之前先进行空判断，然后再去调用。如果使用这种方法，那么空判断是必须的。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; l = &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (b != &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;) b.length &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;注意： 如果你定义的变量是全局变量，即使你做了空判断，依然不能使用变量去调用方法或者属性。&lt;/strong&gt;这个时候你需要考虑使用下面的介绍的方法。&lt;/p&gt;
+&lt;p&gt;Kotlin 为可选型提供了一个安全调用操作符 &lt;code&gt;?.&lt;/code&gt;，使用该操作符可以方便调用可选型的方法或者属性。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; l = b?.length&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里 &lt;code&gt;l&lt;/code&gt; 得到的返回依然是一个可选型 &lt;code&gt;Int?&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Kotlin 还提供了一个强转的操作符 &lt;code&gt;!!&lt;/code&gt;，这个操作符能够强行调用变量的方法或者属性，而不管这个变量是否为空，如果这个时候该变量为空时，那么就会发生 NPE。所以如果不想继续陷入 NPE 的困境无法自拔，请不要该操作符走的太近。&lt;/p&gt;
+&lt;h2 id=&quot;Elvis-操作符&quot;&gt;&lt;a href=&quot;#Elvis-操作符&quot; class=&quot;headerlink&quot; title=&quot;Elvis 操作符&quot;&gt;&lt;/a&gt;&lt;code&gt;Elvis&lt;/code&gt; 操作符&lt;/h2&gt;&lt;p&gt;上面有提到一种情况，当 &lt;code&gt;b&lt;/code&gt; 为空时，返回它的长度值给一个默认值 -1。要实现这样的逻辑当然可以用 &lt;code&gt;ifelse&lt;/code&gt; 的逻辑判断实现，但 Kotlin 提供了一个更优雅的书写方式 &lt;code&gt;?:&lt;/code&gt;。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; l = b?.length ?: &lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;b?.length ?: -1&lt;/code&gt; 和 &lt;code&gt;if (b != null) b.length else -1&lt;/code&gt; 完全等价的。&lt;/p&gt;
+&lt;p&gt;其实你还可以在 &lt;code&gt;?:&lt;/code&gt; 后面添加任何表达式，比如你可以在后面会用 &lt;code&gt;return&lt;/code&gt; 和 &lt;code&gt;throw&lt;/code&gt;（在 Kotlin 中它们都是表达式）。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;fun&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(node: &lt;span class=&quot;type&quot;&gt;Node&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;: String? &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; parent = node.getParent() ?: &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; name = node.getName() ?: &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; IllegalArgumentException(&lt;span class=&quot;string&quot;&gt;&quot;name expected&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;let-函数&quot;&gt;&lt;a href=&quot;#let-函数&quot; class=&quot;headerlink&quot; title=&quot;let 函数&quot;&gt;&lt;/a&gt;&lt;code&gt;let&lt;/code&gt; 函数&lt;/h2&gt;&lt;p&gt;&lt;code&gt;let&lt;/code&gt; 是官方 &lt;code&gt;stdlib&lt;/code&gt; 提供的标准函数库里面的函数，这个函数巧妙的利用的 Kotlin 语言的特性让 &lt;code&gt;let&lt;/code&gt; 接受的表达式参数中的调用方是非空的。&lt;/p&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; listWithNulls: List&amp;lt;String?&amp;gt; = listOf(&lt;span class=&quot;string&quot;&gt;&quot;A&quot;&lt;/span&gt;, &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (item &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; listWithNulls) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    item?.let &amp;#123; println(it) &amp;#125; &lt;span class=&quot;comment&quot;&gt;// prints A and ignores null&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;上面代码的只会输出 &lt;code&gt;A&lt;/code&gt;，而不会输出 &lt;code&gt;null&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;需要注意的是，这个方法调用的时候必须要使用 &lt;code&gt;?.&lt;/code&gt; 操作符调用才能生效哦。&lt;/strong&gt;如果你的部分代码依赖于一个可选型变量为非空的时候，就可以使用 &lt;code&gt;let&lt;/code&gt; 函数。&lt;/p&gt;
+&lt;p&gt;参考这个函数的实现，下面我尝试提供几个自己定义的方法。&lt;/p&gt;
+&lt;h2 id=&quot;自定义处理&quot;&gt;&lt;a href=&quot;#自定义处理&quot; class=&quot;headerlink&quot; title=&quot;自定义处理&quot;&gt;&lt;/a&gt;自定义处理&lt;/h2&gt;&lt;p&gt;这里定义的两个方法是参考 &lt;code&gt;Swift&lt;/code&gt; 里面的 &lt;code&gt;if let&lt;/code&gt; 和 &lt;code&gt;guard&lt;/code&gt; 进行的抽象。&lt;/p&gt;
+&lt;h3 id=&quot;orElse-函数&quot;&gt;&lt;a href=&quot;#orElse-函数&quot; class=&quot;headerlink&quot; title=&quot;orElse 函数&quot;&gt;&lt;/a&gt;&lt;code&gt;orElse&lt;/code&gt; 函数&lt;/h3&gt;&lt;p&gt;&lt;code&gt;orElse&lt;/code&gt; 是和 &lt;code&gt;Elvis&lt;/code&gt; 函数结合使用的，默认 &lt;code&gt;Elvis&lt;/code&gt; 后面只能直接或者执行一个表达式获取返回值或者直接通过 &lt;code&gt;return&lt;/code&gt; 或者 &lt;code&gt;throw&lt;/code&gt; 结束当前函数的执行。结合 &lt;code&gt;orElse&lt;/code&gt; 函数，你能够更加灵活的处理前面的 &lt;code&gt;null&lt;/code&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;你可以处理一些逻辑以后，再返回一个可用的值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; a:String? = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; b = a ?: orElse &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 做任何事&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;@orElse&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;s&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;也可以处理一些逻辑后， 通过&lt;code&gt;return&lt;/code&gt; 或者 &lt;code&gt;throw&lt;/code&gt; 结束当前函数的执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight kotlin&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; a:String? = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; b = a ?: orElse &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 做任何事&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;guard-函数&quot;&gt;&lt;a href=&quot;#guard-函数&quot; class=&quot;headerlink&quot; title=&quot;guard 函数&quot;&gt;&lt;/a&gt;&lt;code&gt;guard&lt;/code&gt; 函数&lt;/h3&gt;&lt;p&gt;&lt;code&gt;Elvis&lt;/code&gt; 默认只能对单个变量或表达式是否为空进行处理，当碰到多个变量需要一起判断时，就会束手无策，&lt;code&gt;guard&lt;/code&gt; 就是为了解决这个问题。&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;fun testGuard(a: String?, b: String?, c: String?)&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	guard(a, b, c) ?: orElse &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        print(&quot;a or b or c is null &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&quot;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        return&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    // 现在 `a`，`b`，`c` 都是不为空&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于没有编译器的支持，所以暂时还不能实现 &lt;a href=&quot;https://kotlinlang.org/docs/reference/null-safety.html#checking-for-null-keyword--in-conditions&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;空屏蔽&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;这里定义的两个函数的实现，你可以自己尝试去实现一下，就当是个练习（鬼笑）。&lt;a href=&quot;https://github.com/KotlinThree/AndroidExtension&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndroidExtension&lt;/a&gt;有具体的实现代码。&lt;/p&gt;
+&lt;h2 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h2&gt;&lt;p&gt;经过一系列分析以后，我们已经对怎么使用好 Kotlin 可选型有一定的了解，如果不想 NPE 问题不断困扰，可以参考这里总结的几条。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;尽可能的使用非空类型的定义&lt;/li&gt;
+&lt;li&gt;远离 &lt;code&gt;!!&lt;/code&gt;，如果非要用，请调用代码在前面「三行之内」进行非空判断&lt;/li&gt;
+&lt;li&gt;熟练使用 &lt;code&gt;Elvis&lt;/code&gt; 操作符&lt;/li&gt;
+&lt;li&gt;自定义一些常用的函数，让自己的代码更流畅&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;&lt;a href=&quot;#参考资料&quot; class=&quot;headerlink&quot; title=&quot;参考资料&quot;&gt;&lt;/a&gt;参考资料&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/docs/reference/null-safety.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;null-safety&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/apple/swift-evolution/blob/master/proposals/0056-trailing-closures-in-guard.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;trailing-closures-in-guard&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;tags: Kotlin&lt;/p&gt;
+&lt;p&gt;NullPointException (简称 NPE ) 被称作 &lt;a href=&quot;https://en.wikipedia.org/wiki/Tony_Hoare#Apologies_and_retractions&quot; target=
+    
+    </summary>
+    
+    
+      <category term="Kotlin" scheme="http://ohmerhe.com/tags/Kotlin/"/>
+    
+  </entry>
   
   <entry>
     <title>Kotlin 函数式编程三板斧</title>
