@@ -95,7 +95,7 @@
     <link href="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/"/>
     <id>http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/</id>
     <published>2016-07-05T14:06:41.000Z</published>
-    <updated>2016-07-09T10:54:19.000Z</updated>
+    <updated>2016-07-15T03:53:26.000Z</updated>
     
     <content type="html">&lt;p&gt;tags: kotlin, 函数式编程, map, filter, reduce&lt;/p&gt;
 &lt;p&gt;每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲&lt;code&gt;Kotlin&lt;/code&gt;中提供的函数式编程三板斧&lt;code&gt;filter&lt;/code&gt;、&lt;code&gt;map&lt;/code&gt;、&lt;code&gt;reduce&lt;/code&gt;。&lt;/p&gt;
