@@ -3,23 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>LoopBack 操作记录 | Ohmer&#39;s Blog</title>
+    <title>Kotlin 一个扩展函数，从此丢掉 ViewHolder | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: LoopBack, MySQL
-什么是LoopBack请看官方文档">
+    <meta name="description" content="tags: Android, Kotlin
+ViewHolder作为一名 Android 开发者，对 ViewHolder 应该再熟悉不过了。ViewHolder 一开始并不是 Android 原生提供的（现在已经是 RecycleView 的默认实现了），而是 Google 为了提高 ListView 的使用性能，为开发者提供的一种最佳实践，具体可以参考 ViewHolder。
+Google 提">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LoopBack 操作记录">
-<meta property="og:url" content="http://ohmerhe.com/2016/06/26/loopback_useage_record/index.html">
+<meta property="og:title" content="Kotlin 一个扩展函数，从此丢掉 ViewHolder">
+<meta property="og:url" content="http://ohmerhe.com/2016/08/02/kotlin_one_method_no_viewholder/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: LoopBack, MySQL
-什么是LoopBack请看官方文档">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-07-09T10:57:08.000Z">
+<meta property="og:description" content="tags: Android, Kotlin
+ViewHolder作为一名 Android 开发者，对 ViewHolder 应该再熟悉不过了。ViewHolder 一开始并不是 Android 原生提供的（现在已经是 RecycleView 的默认实现了），而是 Google 为了提高 ListView 的使用性能，为开发者提供的一种最佳实践，具体可以参考 ViewHolder。
+Google 提">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160624845.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-08-02T15:59:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LoopBack 操作记录">
-<meta name="twitter:description" content="tags: LoopBack, MySQL
-什么是LoopBack请看官方文档">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200">
+<meta name="twitter:title" content="Kotlin 一个扩展函数，从此丢掉 ViewHolder">
+<meta name="twitter:description" content="tags: Android, Kotlin
+ViewHolder作为一名 Android 开发者，对 ViewHolder 应该再熟悉不过了。ViewHolder 一开始并不是 Android 原生提供的（现在已经是 RecycleView 的默认实现了），而是 Google 为了提高 ListView 的使用性能，为开发者提供的一种最佳实践，具体可以参考 ViewHolder。
+Google 提">
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160624845.jpg?imageView2/1/w/200">
 
     
 
@@ -147,12 +150,12 @@
 </aside>
 
             
-            <section id="main"><article id="post-loopback_useage_record" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-kotlin_one_method_no_viewholder" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160624845.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -164,7 +167,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            LoopBack 操作记录
+            Kotlin 一个扩展函数，从此丢掉 ViewHolder
         </h1>
     
 
@@ -172,8 +175,8 @@
                     
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/06/26/loopback_useage_record/">
-            <time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time>
+        <a href="/2016/08/02/kotlin_one_method_no_viewholder/">
+            <time datetime="2016-08-02T15:57:49.000Z" itemprop="datePublished">2016-08-02</time>
         </a>
     </div>
 
@@ -182,7 +185,7 @@
                     
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/LoopBack/">LoopBack</a>, <a class="tag-link" href="/tags/MySQL/">MySQL</a>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Kotlin/">Kotlin</a>
     </div>
 
                 </div>
@@ -191,94 +194,33 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>tags: LoopBack, MySQL</p>
-<h2 id="什么是LoopBack"><a href="#什么是LoopBack" class="headerlink" title="什么是LoopBack"></a>什么是LoopBack</h2><p>请看<a href="https://loopback.io/" target="_blank" rel="external">官方文档</a></p>
-<a id="more"></a>
-<h2 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h2><p>继续查看<a href="http://loopback.io/getting-started/" target="_blank" rel="external">Getting started</a></p>
-<h2 id="自定义MySql连接"><a href="#自定义MySql连接" class="headerlink" title="自定义MySql连接"></a>自定义MySql连接</h2><h3 id="自定义table名字"><a href="#自定义table名字" class="headerlink" title="自定义table名字"></a>自定义table名字</h3><p>在模型的json文件中<code>common/model/category.json</code>添加Mysql的配置</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  "name": "Category",</div><div class="line">  ...</div><div class="line">  "mysql": &#123;</div><div class="line">    "table": "custom_category" // 自定义的表名</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>更多Model的Json定义参考<a href="https://docs.strongloop.com/display/public/LB/Model+definition+JSON+file" target="_blank" rel="external">Model definition JSON file</a></p>
-<h3 id="自定义table列名"><a href="#自定义table列名" class="headerlink" title="自定义table列名"></a>自定义table列名</h3><p>同样在模型定义的json文件中，<code>common/model/category.json</code>找到<code>properties</code>模块的配置，为需要自定义表列名的属性下添加<code>msql</code>配置信息</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  "name": "category",</div><div class="line">  ...</div><div class="line">  "properties": &#123;</div><div class="line">    ...</div><div class="line">    "title": &#123;</div><div class="line">      "type": "String",</div><div class="line">      "required": true,</div><div class="line">      "mysql":&#123;</div><div class="line">        "columnName":"question_content",</div><div class="line">        "dataType":"VARCHAR"</div><div class="line">      &#125;</div><div class="line">    &#125;,</div><div class="line">    ...</div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>还有其他类型类型的对应关系，可以看<a href="https://docs.strongloop.com/display/public/LB/MySQL+connector" target="_blank" rel="external">MySQL connector</a></p>
-<h2 id="自定义请求方法-Remote-Method"><a href="#自定义请求方法-Remote-Method" class="headerlink" title="自定义请求方法(Remote Method)"></a>自定义请求方法(Remote Method)</h2><p>loopback默认提供了许多方法，可以方便的访问到服务端的资源，这里列出一些常用的，更多的方法可以参考<a href="http://apidocs.strongloop.com/loopback/#persistedmodel" target="_blank" rel="external">文档</a>。</p>
-<table>
-<thead>
-<tr>
-<th>method</th>
-<th>path</th>
-<th>verb</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>find</td>
-<td>/</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>findById</td>
-<td>/:id</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>findOne</td>
-<td>/findOne</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>deleteById</td>
-<td>/:id</td>
-<td>DELETE</td>
-</tr>
-<tr>
-<td>count</td>
-<td>/count</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>exists</td>
-<td>/:id/exists</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>exists</td>
-<td>/:id</td>
-<td>HEAD</td>
-</tr>
-<tr>
-<td>create</td>
-<td>/</td>
-<td>POST</td>
-</tr>
-<tr>
-<td>upsert</td>
-<td>/</td>
-<td>PUT</td>
-</tr>
-<tr>
-<td>exists</td>
-<td>/exists</td>
-<td>GET</td>
-</tr>
-<tr>
-<td>exists</td>
-<td>/exists</td>
-<td>GET</td>
-</tr>
-</tbody>
-</table>
-<p>这些方法的定义和注册都可以在<code>/node_modules/loopback/lib/persisted-model.js</code>文件中看到。如<code>find</code></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">PersistedModel.find = <span class="function"><span class="keyword">function</span> <span class="title">find</span>(<span class="params">filter, cb</span>) </span>&#123;</div><div class="line">  throwNotAttached(<span class="keyword">this</span>.modelName, <span class="string">'find'</span>);</div><div class="line">&#125;;</div><div class="line">setRemoting(PersistedModel, <span class="string">'find'</span>, &#123;</div><div class="line">  description: <span class="string">'Find all instances of the model matched by filter from the data source.'</span>,</div><div class="line">  accessType: <span class="string">'READ'</span>,</div><div class="line">  accepts: &#123;arg: <span class="string">'filter'</span>, type: <span class="string">'object'</span>, description: <span class="string">'Filter defining fields, where, include, order, offset, and limit'</span>&#125;,</div><div class="line">  returns: &#123;arg: <span class="string">'data'</span>, type: [typeName], root: <span class="literal">true</span>&#125;,</div><div class="line">  http: &#123;verb: <span class="string">'get'</span>, path: <span class="string">'/'</span>&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>参照上面的方法我们可以自定义一些需要的方法</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">Person</span>)</span>&#123;</div><div class="line">    Person.greet = <span class="function"><span class="keyword">function</span>(<span class="params">msg, cb</span>) </span>&#123;</div><div class="line">      cb(<span class="literal">null</span>, <span class="string">'Greetings... '</span> + msg);</div><div class="line">    &#125;</div><div class="line">    Person.remoteMethod(</div><div class="line">        <span class="string">'greet'</span>, </div><div class="line">        &#123;</div><div class="line">          accepts: &#123;arg: <span class="string">'msg'</span>, type: <span class="string">'string'</span>&#125;,</div><div class="line">          http: &#123;verb: <span class="string">'get'</span>, path: <span class="string">'/greet'</span>&#125;,</div><div class="line">          returns: &#123;arg: <span class="string">'greeting'</span>, type: <span class="string">'string'</span>&#125;</div><div class="line">        &#125;</div><div class="line">    );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>我们可以通过<code>GET /api/persons/greet?msg=John</code>获得如下的返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Greetings... John</div></pre></td></tr></table></figure>
-<p>关于自定义方法的参数说明可以参考<a href="https://docs.strongloop.com/display/public/LB/Remote+methods" target="_blank" rel="external">详细描述</a></p>
-<h2 id="自定义返回数据"><a href="#自定义返回数据" class="headerlink" title="自定义返回数据"></a>自定义返回数据</h2><p>loopback提供了一系列方法可以改变资源返回，比如我需要将请求到的资源列表包装在一个对象的<code>list</code>下返回。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Category.afterRemote(<span class="string">'find'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ctx, remoteMethodOutput, next</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (ctx.result &amp;&amp; <span class="built_in">Array</span>.isArray(remoteMethodOutput)) &#123;</div><div class="line">      ctx.result = &#123;</div><div class="line">        <span class="string">"list"</span>: remoteMethodOutput</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    next();</div><div class="line">  &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">自定义返回结果前</div><div class="line">[</div><div class="line">	&#123;...&#125;,</div><div class="line">	&#123;...&#125;,</div><div class="line">	&#123;...&#125;,</div><div class="line">	&#123;...&#125;</div><div class="line">]</div><div class="line">自定义返回结果后</div><div class="line">&#123;</div><div class="line">	"list" : [</div><div class="line">		&#123;...&#125;,</div><div class="line">		&#123;...&#125;,</div><div class="line">		&#123;...&#125;,</div><div class="line">		&#123;...&#125;</div><div class="line">	]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>更多关于请求资源的逻辑控制，请参考<a href="https://docs.strongloop.com/display/public/LB/Adding+logic+to+models" target="_blank" rel="external">Adding logic to models</a></p>
+            <p>tags: Android, Kotlin</p>
+<h2 id="ViewHolder"><a href="#ViewHolder" class="headerlink" title="ViewHolder"></a>ViewHolder</h2><p>作为一名 Android 开发者，对 ViewHolder 应该再熟悉不过了。ViewHolder 一开始并不是 Android 原生提供的（现在已经是 RecycleView 的默认实现了），而是 Google 为了提高 ListView 的使用性能，为开发者提供的一种最佳实践，具体可以参考 <a href="https://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder" target="_blank" rel="external">ViewHolder</a>。</p>
+<p>Google 提供的 ViewHolder 的标准实现如下，熟悉者可以直接跳到下个部分「ViewHolder变种」继续阅读。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</div><div class="line">  TextView text;</div><div class="line">  TextView timestamp;</div><div class="line">  ImageView icon;</div><div class="line">  ProgressBar progress;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 Item 第一次创建视图的时候，填充 ViewHolder 并且将其保存在视图中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ViewHolder holder = <span class="keyword">new</span> ViewHolder();</div><div class="line">holder.icon = (ImageView) convertView.findViewById(R.id.listitem_image);</div><div class="line">holder.text = (TextView) convertView.findViewById(R.id.listitem_text);</div><div class="line">holder.timestamp = (TextView) convertView.findViewById(R.id.listitem_timestamp);</div><div class="line">holder.progress = (ProgressBar) convertView.findViewById(R.id.progress_spinner);</div><div class="line">convertView.setTag(holder);</div></pre></td></tr></table></figure>
+<p>在填充 Item 数据的时候，直接使用 Viewholder 对象的属性，这样可以减少在滚动 ListView 频繁调用 <code>findViewById()</code> 而导致的性能问题。</p>
+<h2 id="ViewHolder变种"><a href="#ViewHolder变种" class="headerlink" title="ViewHolder变种"></a>ViewHolder变种</h2><p>Google 提供的 ViewHolder 的确能够提升 ListView 的使用效率，但是 ViewHolder 的实现相对繁琐，需要为每一种 Item 定义一个 ViewHolder，对代码书写和维护都是额外的开销。于是有人针对 ViewHolder 的实现做了一些优化，让 ViewHolder 写起来更方便。网上有很多种写法，我最认可的是下面的这种实现，简单优雅。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class ViewHolder &#123;    </div><div class="line">    @SuppressWarnings(&quot;unchecked&quot;)  </div><div class="line">    public static &lt;T extends View&gt; T get(View view, int id) &#123;  </div><div class="line">        SparseArray&lt;View&gt; viewHolder = (SparseArray&lt;View&gt;) view.getTag();  </div><div class="line">        if (viewHolder == null) &#123;  </div><div class="line">            viewHolder = new SparseArray&lt;View&gt;();  </div><div class="line">            view.setTag(viewHolder);  </div><div class="line">        &#125;  </div><div class="line">        View childView = viewHolder.get(id);  </div><div class="line">        if (childView == null) &#123;  </div><div class="line">            childView = view.findViewById(id);  </div><div class="line">            viewHolder.put(id, childView);  </div><div class="line">        &#125;  </div><div class="line">        return (T) childView;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里使用 <code>SparseArray</code> 映射每个视图 <code>id</code> 和对应的视图，并将其保存在视图中，这样既保证在滚动过程中频繁获取视图的效率，使用起来也极其方便。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ImageView bananaView = ViewHolder.get(convertView, R.id.banana);  </div><div class="line">TextView phoneView = ViewHolder.get(convertView, R.id.phone);  </div><div class="line">BananaPhone bananaPhone = getItem(position);  </div><div class="line">phoneView.setText(bananaPhone.getPhone());</div></pre></td></tr></table></figure>
+<h2 id="Kotlin-扩展函数"><a href="#Kotlin-扩展函数" class="headerlink" title="Kotlin 扩展函数"></a>Kotlin 扩展函数</h2><p>这里Kotlin 实现 ViewHolder 的扩展函数和上面的变种使用的同一种思路，但得益于 Kotlin 语言提供的特性，实现和使用起来更加方便流畅，甚至都感觉不到 ViewHolder 这种特殊机制的存在。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T : View&gt;</span> View.<span class="title">findViewOften</span><span class="params">(viewId: <span class="type">Int</span>)</span></span>: T &#123;</div><div class="line">    <span class="keyword">var</span> viewHolder: SparseArray&lt;View&gt; = tag <span class="keyword">as</span>? SparseArray&lt;View&gt; ?: SparseArray()</div><div class="line">    tag = viewHolder</div><div class="line">    <span class="keyword">var</span> childView: View? = viewHolder.<span class="keyword">get</span>(viewId)</div><div class="line">    <span class="keyword">if</span> (<span class="literal">null</span> == childView) &#123;</div><div class="line">        childView = findViewById(viewId)</div><div class="line">        viewHolder.put(viewId, childView)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> childView <span class="keyword">as</span> T</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里实现了一个 View 的扩展函数 <code>findViewOften(viewId: Int)</code> 意味着在需要频繁寻找一个视图的子视图的情况下使用，这样我们在 Item 中就可以这样写了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">val subTitle: TextView = convertView.findViewOften(R.id.list_item_subtitle)</div><div class="line">subTitle.text = itemData.subTitle</div></pre></td></tr></table></figure>
+<p>由于 Kotlin 提供类型推断功能，所以 <code>findViewOften</code> 的返回值不用手动转换或者手动指定泛型类型。</p>
+<p>利用 Kotlin 的语言特性，为 View 扩展一个方法，从此再也不用繁琐的定义 Viewholder 了，使用的时候也是如此的顺畅，从此再也不必记得什么 ViewHolder 了。</p>
+<p>PS: 该方法在 <a href="https://github.com/KotlinThree/AndroidExtension" target="_blank" rel="external">AndroidExtension</a> 已经提供封装，这个库里面还封装了一些其他方法，也蛮好用的，不过这个库还没有正式发布。</p>
+<h2 id="RecycleView-的-ViewHolder"><a href="#RecycleView-的-ViewHolder" class="headerlink" title="RecycleView 的 ViewHolder"></a>RecycleView 的 ViewHolder</h2><p>最后，不得不提一下在 RecycleView 应该怎么办，因为在 RecycleView 的机制里面，在创建 Item 的 View 的时候，必须创建一个 RecyclerView.ViewHolder 并且返回。对于我们上面那么完美的封装， Google 这明显是在帮倒忙，还好这忙虽然帮倒了，不过还不至于无法挽回。</p>
+<p>如果大家在使用 RecycleView 还想使用本文提供的方法的话，可以参考我下面的方式实现。提供一个 RecyclerView.ViewHolder 默认实现类，该类提供一个通过 <code>id</code> 获取视图的方法，在创建 Item 的 View 的时候默认都返回这个类的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class MyViewHolder(val convertView: View) : RecyclerView.ViewHolder(convertView) &#123;</div><div class="line">    	fun &lt;T : View&gt; findView(viewId: Int): T &#123;</div><div class="line">        return convertView.findViewOften(viewId)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果不想 <code>MyViewHolder</code> 的外部有不需要的依赖，可以将 <code>findViewOften</code> 直接实现在 <code>MyViewHolder</code> 里面。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://developer.android.com/training/improving-layouts/smooth-scrolling.html#ViewHolder" target="_blank" rel="external">ViewHolder</a></li>
+<li><a href="http://www.programcreek.com/java-api-examples/android.util.SparseArray" target="_blank" rel="external">Java Code Examples for android.util.SparseArray</a></li>
+<li><a href="https://github.com/KotlinThree/AndroidExtension" target="_blank" rel="external">AndroidExtension</a></li>
+</ul>
 
         
         </div>
@@ -342,7 +284,7 @@
 
             
     
-        <a href="http://ohmerhe.com/2016/06/26/loopback_useage_record/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/06/26/loopback_useage_record/">Comments</a>
+        <a href="http://ohmerhe.com/2016/08/02/kotlin_one_method_no_viewholder/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/08/02/kotlin_one_method_no_viewholder/">Comments</a>
     
 
         </footer>
@@ -351,19 +293,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2016/07/05/kotlin_function_three_common_methods/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    Kotlin 函数式编程三板斧
-                
-            </div>
-        </a>
     
-    
-        <a href="/2016/06/26/raspberry_install_node/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2016/07/14/kotlin-type-option/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">树莓派安装 Node</div>
+            <div class="article-nav-title">NullPointException 利器 Kotlin 可选型</div>
         </a>
     
 </nav>
@@ -564,7 +497,7 @@
     var disqus_shortname = 'ohmersblog';
     
     
-    var disqus_url = 'http://ohmerhe.com/2016/06/26/loopback_useage_record/';
+    var disqus_url = 'http://ohmerhe.com/2016/08/02/kotlin_one_method_no_viewholder/';
     
     (function() {
     var dsq = document.createElement('script');
