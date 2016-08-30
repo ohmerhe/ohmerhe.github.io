@@ -14,7 +14,7 @@
 <meta property="og:description" content="tags: Android, Gradle
 在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-08-30T10:12:02.000Z">
+<meta property="og:updated_time" content="2016-08-30T10:12:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Library 不支持调试模式，不能忍">
 <meta name="twitter:description" content="tags: Android, Gradle
@@ -210,7 +210,7 @@
 <p>这里有一个明显的 bug，必须在发布正式包和 snapshot 包的时候手动切换配置项的值。在我的项目中，我在发布 aar 包的时候，是通过在 <code>gradle.properties</code> 这个文件添加 <code>isRelease</code> 这个变量来区分的。当这个值是 <code>true</code> 的时候则会发布正式包，反之则发布 snapshot 版本。于是我也利用这个值来控制这个配置项的配置：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">	defaultPublishConfig System.properties[&apos;isRelease&apos;].toBoolean() ? &quot;release&quot; : &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>在 Groovy 中看到熟悉的三目运算好亲切啊，想象在 Kotlin 中没有三目运算就心塞。</p>
+<p>在 Groovy 中看到熟悉的三目运算好亲切啊，想到在 Kotlin 中没有三目运算就心塞。</p>
 </blockquote>
 <p>这样在发布依赖包时，就能自动实现在 snapshot 包支持调试功能，而不影响正式包。</p>
 <h2 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h2><h3 id="代码注入"><a href="#代码注入" class="headerlink" title="代码注入"></a>代码注入</h3><p>如果不使用这种方式，在代码层面想办法绕过这个限制也不是特别困难。比如我们可以在依赖库中提供接口，然后在项目中将是否支持 Debug 状态的判断注入到依赖库中，从而实现依赖库和主项目之间的 Debug 状态保持一致。</p>

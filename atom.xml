@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ohmerhe.com/"/>
-  <updated>2016-08-30T10:12:02.000Z</updated>
+  <updated>2016-08-30T10:12:44.000Z</updated>
   <id>http://ohmerhe.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://ohmerhe.com/2016/08/30/android_library_debug/"/>
     <id>http://ohmerhe.com/2016/08/30/android_library_debug/</id>
     <published>2016-08-30T09:28:49.000Z</published>
-    <updated>2016-08-30T10:12:02.000Z</updated>
+    <updated>2016-08-30T10:12:44.000Z</updated>
     
     <content type="html">&lt;p&gt;tags: Android, Gradle&lt;/p&gt;
 &lt;p&gt;在 Android 开发过程中，&lt;code&gt;BuildConfig.Debug&lt;/code&gt; 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考&lt;a href=&quot;http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。&lt;/p&gt;
@@ -41,7 +41,7 @@
 &lt;p&gt;这里有一个明显的 bug，必须在发布正式包和 snapshot 包的时候手动切换配置项的值。在我的项目中，我在发布 aar 包的时候，是通过在 &lt;code&gt;gradle.properties&lt;/code&gt; 这个文件添加 &lt;code&gt;isRelease&lt;/code&gt; 这个变量来区分的。当这个值是 &lt;code&gt;true&lt;/code&gt; 的时候则会发布正式包，反之则发布 snapshot 版本。于是我也利用这个值来控制这个配置项的配置：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;android &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	defaultPublishConfig System.properties[&amp;apos;isRelease&amp;apos;].toBoolean() ? &amp;quot;release&amp;quot; : &amp;quot;debug&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在 Groovy 中看到熟悉的三目运算好亲切啊，想象在 Kotlin 中没有三目运算就心塞。&lt;/p&gt;
+&lt;p&gt;在 Groovy 中看到熟悉的三目运算好亲切啊，想到在 Kotlin 中没有三目运算就心塞。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;这样在发布依赖包时，就能自动实现在 snapshot 包支持调试功能，而不影响正式包。&lt;/p&gt;
 &lt;h2 id=&quot;其他方案&quot;&gt;&lt;a href=&quot;#其他方案&quot; class=&quot;headerlink&quot; title=&quot;其他方案&quot;&gt;&lt;/a&gt;其他方案&lt;/h2&gt;&lt;h3 id=&quot;代码注入&quot;&gt;&lt;a href=&quot;#代码注入&quot; class=&quot;headerlink&quot; title=&quot;代码注入&quot;&gt;&lt;/a&gt;代码注入&lt;/h3&gt;&lt;p&gt;如果不使用这种方式，在代码层面想办法绕过这个限制也不是特别困难。比如我们可以在依赖库中提供接口，然后在项目中将是否支持 Debug 状态的判断注入到依赖库中，从而实现依赖库和主项目之间的 Debug 状态保持一致。&lt;/p&gt;
