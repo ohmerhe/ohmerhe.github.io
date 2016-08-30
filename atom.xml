@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ohmerhe.com/"/>
-  <updated>2016-08-30T09:28:49.000Z</updated>
+  <updated>2016-08-30T10:12:02.000Z</updated>
   <id>http://ohmerhe.com/</id>
   
   <author>
@@ -20,17 +20,18 @@
     <link href="http://ohmerhe.com/2016/08/30/android_library_debug/"/>
     <id>http://ohmerhe.com/2016/08/30/android_library_debug/</id>
     <published>2016-08-30T09:28:49.000Z</published>
-    <updated>2016-08-30T09:28:49.000Z</updated>
+    <updated>2016-08-30T10:12:02.000Z</updated>
     
     <content type="html">&lt;p&gt;tags: Android, Gradle&lt;/p&gt;
-&lt;p&gt;在 Android 开发过程中，&lt;code&gt;BuildConfig.Debug&lt;/code&gt; 这个变量用来判断当前运行环境是不是支出调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考&lt;a href=&quot;http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;常见的依赖的库的使用方式有两种，一种是把依赖库的作为一个模块和主项目一起编译，另一种是使用 aar 的方式引用，下面分别针对两种不同的提供对应得解决方案。&lt;/p&gt;
-&lt;h2 id=&quot;文件依赖方式&quot;&gt;&lt;a href=&quot;#文件依赖方式&quot; class=&quot;headerlink&quot; title=&quot;文件依赖方式&quot;&gt;&lt;/a&gt;文件依赖方式&lt;/h2&gt;&lt;p&gt;其实&lt;a href=&quot;https://code.google.com/p/android/issues/detail?id=52962&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个问题&lt;/a&gt;早在2013年就有人在 Google Group 上提出来。根据&lt;a href=&quot;http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;，我们可以通过控制 &lt;code&gt;publishNonDefault&lt;/code&gt; 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。&lt;/p&gt;
+&lt;p&gt;在 Android 开发过程中，&lt;code&gt;BuildConfig.Debug&lt;/code&gt; 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考&lt;a href=&quot;http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。&lt;/p&gt;
+&lt;p&gt;常见的依赖库的使用方式有两种，一种是把依赖库的作为一个模块和主项目一起编译，也就是文件依赖；另一种是使用 aar 的方式引用，下面分别针对两种不同的提供对应得解决方案。&lt;/p&gt;
+&lt;h2 id=&quot;文件依赖方式&quot;&gt;&lt;a href=&quot;#文件依赖方式&quot; class=&quot;headerlink&quot; title=&quot;文件依赖方式&quot;&gt;&lt;/a&gt;文件依赖方式&lt;/h2&gt;&lt;p&gt;其实 &lt;a href=&quot;https://code.google.com/p/android/issues/detail?id=52962&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个问题&lt;/a&gt; 早在 2013 年就有人在 Google Group 上提出来。根据 &lt;a href=&quot;http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;，我们可以通过控制 &lt;code&gt;publishNonDefault&lt;/code&gt; 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。&lt;/p&gt;
 &lt;p&gt;在依赖项目中添加这个配置：&lt;/p&gt;
 &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;android &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    publishNonDefault &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这样在编译完成后，默认情况下我们可以在输出目录看到两个 aar 文件（之前只有一个）。然后在项目中声明依赖的时候，区分不同的编译类型进行依赖：&lt;/p&gt;
 &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;dependencies &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    debugCompile project(&lt;span class=&quot;string&quot;&gt;path:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;:myLocalLibrary&#39;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;configuration:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;debug&#39;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    releaseCompile project(&lt;span class=&quot;string&quot;&gt;path:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;:myLocalLibrary&#39;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;configuration:&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;release&#39;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;AAR-依赖方式&quot;&gt;&lt;a href=&quot;#AAR-依赖方式&quot; class=&quot;headerlink&quot; title=&quot;AAR 依赖方式&quot;&gt;&lt;/a&gt;AAR 依赖方式&lt;/h2&gt;&lt;p&gt;Library 还有一种更为常见的依赖方式——aar 依赖。当然如果是正式发布的依赖库，不支持 debug 功能是很合理并且应该鼓励的。但是，我们还有另一种开发过程频繁使用的 snapshot 版本，这是开发过程中的测试版本，在这个版本中支持调试功能即合理也很有必要。&lt;/p&gt;
+&lt;p&gt;这样在调试应用的过程中会使用依赖库的 debug 版本，而在正式发布应用的时候就会用 release 版本。&lt;/p&gt;
+&lt;h2 id=&quot;AAR-依赖方式&quot;&gt;&lt;a href=&quot;#AAR-依赖方式&quot; class=&quot;headerlink&quot; title=&quot;AAR 依赖方式&quot;&gt;&lt;/a&gt;AAR 依赖方式&lt;/h2&gt;&lt;p&gt;Library 还有一种更为常见的依赖方式——aar 依赖。当然如果是正式发布的依赖库，不支持 debug 功能是很合理并且应该鼓励的。但是，不能忽视的是在我们开发过程频繁使用的 snapshot 版本，这是开发过程中的测试版本，在这个版本中支持调试功能即合理也很有必要。&lt;/p&gt;
 &lt;p&gt;在前面官方文档中，我们发现还有一个配置信息可以利用 &lt;code&gt;defaultPublishConfig&lt;/code&gt;。这个变量用于指定使用哪个变种的包作为默认编译的版本。默认这个值是 &lt;code&gt;release&lt;/code&gt;。你可以在项目的配置添加：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;android &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    defaultPublishConfig &amp;quot;debug&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;blockquote&gt;
@@ -56,14 +57,14 @@
     <summary type="html">
     
       &lt;p&gt;tags: Android, Gradle&lt;/p&gt;
-&lt;p&gt;在 Android 开发过程中，&lt;code&gt;BuildConfig.Debug&lt;/code&gt; 这个变量用来判断当前运行环境是不是支出调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、
+&lt;p&gt;在 Android 开发过程中，&lt;code&gt;BuildConfig.Debug&lt;/code&gt; 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、
     
     </summary>
     
     
-      <category term="Gradle" scheme="http://ohmerhe.com/tags/Gradle/"/>
-    
       <category term="Android" scheme="http://ohmerhe.com/tags/Android/"/>
+    
+      <category term="Gradle" scheme="http://ohmerhe.com/tags/Gradle/"/>
     
   </entry>
   
@@ -749,9 +750,9 @@
     </summary>
     
     
-      <category term="MySQL" scheme="http://ohmerhe.com/tags/MySQL/"/>
-    
       <category term="树莓派" scheme="http://ohmerhe.com/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+      <category term="MySQL" scheme="http://ohmerhe.com/tags/MySQL/"/>
     
   </entry>
   
@@ -912,9 +913,9 @@
     </summary>
     
     
-      <category term="Gradle" scheme="http://ohmerhe.com/tags/Gradle/"/>
-    
       <category term="Android" scheme="http://ohmerhe.com/tags/Android/"/>
+    
+      <category term="Gradle" scheme="http://ohmerhe.com/tags/Gradle/"/>
     
   </entry>
   
