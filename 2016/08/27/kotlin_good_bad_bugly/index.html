@@ -16,7 +16,7 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
 在我的 上一篇文章, 谈到了关于转换 Java 到 Kotlin 代码和我喜欢的一些库。现在，我想要谈谈关于 Kotlin 这门语言本身的想法，还有它和 Java 交互的方式。
 The GoodKotlin 有许多让人喜欢的理由。像 null safety、property access 和 unchecked exceptions 类似这些明显的特性在">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160635495.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-08-27T09:00:22.000Z">
+<meta property="og:updated_time" content="2016-08-28T07:09:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin：The Good, The Bad, and The Ugly(译)">
 <meta name="twitter:description" content="tags: Kotlin, Android
@@ -123,7 +123,7 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                18
+                19
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -273,6 +273,9 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
 <p>不能对依赖库进行扩展意味着想要添加任何新的特性和修改 bug 都很难。现实中，大多数库都需要使用一些黑客的手段。这就是现实，而且不会改变。任何库的作者都不能预测所有用户可能碰到的场景。所有的类都是不可变的只能让库的使用者实现库本身没有的功能的时候变得更加困难。相对于 Kotlin 其他语言特性的便利性，这个设计实在是太令人费解了。</p>
 <p>如果你在编写一个 Kotlin 的依赖库，请把你所有的公开方法都设置成开放的。这会让你的用户更加方便。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Kotlin 是一门非常棒的语言。它比 Java 简洁多了，它还有一个非常优秀的标准库，有了这个标准库你就可以将大量为了维持 Java 勉强可用下去的库都删掉了。多亏了代码自动转换功能，你可以很方便的把 Java 代码转换成 Koltin 代码，并且这个功能会越来越完善。如果你是一名 Android 开发者，你真应该去试一试。</p>
+<p>原文链接：<a href="http://ohmerhe.com/2016/08/27/kotlin_good_bad_bugly/">Kotlin：The Good, The Bad, and The Ugly(译)</a></p>
+<p>英文原文：<a href="https://medium.com/keepsafe-engineering/kotlin-the-good-the-bad-and-the-ugly-bf5f09b87e6f#.s0t91g9xn" target="_blank" rel="external">Kotlin: The Good, The Bad, and The Ugly</a></p>
+<p>欢迎大家投稿 <a href="http://www.jianshu.com/collection/ce44081f781f" target="_blank" rel="external">Kotlin Three</a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><strong>[1]</strong> In the case of a <em>lateinit </em>property,<em>kotlin.UninitializedPropertyAccessException </em>will be thrown, where the<em>Delegates.notNull </em>will throw an <em>IllegalStateException</em>.</li>
 <li><strong>[2]</strong> There are some details about <em>lateinit </em>that are worth noting, especially if you plan on accessing a <em>lateinit </em>property from Java code. First is that <em>lateinit</em>cannot be applied to primitive types such as <em>Int </em>or <em>Double</em>. The second is that a <em>lateinit </em>property is backed by a field with the same visibility as the property, and this field is visible from Java. Additionally, that backing field can be freely set to null from Java. If any of those are issues for your use case, <em>Delegates.notNull </em>may be a better choice.</li>
@@ -351,6 +354,15 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
         
 <nav id="article-nav">
     
+        <a href="/2016/08/30/android_library_debug/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Library 不支持调试模式，不能忍
+                
+            </div>
+        </a>
+    
     
         <a href="/2016/08/02/kotlin_one_method_no_viewholder/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
@@ -384,6 +396,24 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
         <h3 class="widget-title">recents</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/30/android_library_debug/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200)" alt="Library 不支持调试模式，不能忍" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/08/30/android_library_debug/" class="title">Library 不支持调试模式，不能忍</a></p>
+                            <p class="item-date"><time datetime="2016-08-30T09:28:49.000Z" itemprop="datePublished">2016-08-30</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -457,24 +487,6 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2016/06/26/loopback_useage_record/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153854891.jpg?imageView2/1/w/200)" alt="LoopBack 操作记录" class="thumbnail-image"></span>
-    
-</a>
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2016/06/26/loopback_useage_record/" class="title">LoopBack 操作记录</a></p>
-                            <p class="item-date"><time datetime="2016-06-26T11:02:04.000Z" itemprop="datePublished">2016-06-26</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -484,7 +496,7 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
         </div>
     </div>
 
@@ -493,7 +505,7 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -504,7 +516,7 @@ The GoodKotlin 有许多让人喜欢的理由。像 null safety、property acces
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
