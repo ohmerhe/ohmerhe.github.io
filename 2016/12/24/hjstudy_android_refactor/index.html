@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>沪江学习安卓端应用架构重构 | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。
+目标
+如图所示，这次">
+<meta property="og:type" content="article">
+<meta property="og:title" content="沪江学习安卓端应用架构重构">
+<meta property="og:url" content="http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/index.html">
+<meta property="og:site_name" content="Ohmer's Blog">
+<meta property="og:description" content="对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。
+目标
+如图所示，这次">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2016-12-24T05:51:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="沪江学习安卓端应用架构重构">
+<meta name="twitter:description" content="对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。
+目标
+如图所示，这次">
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/200">
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+    
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                20
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                13
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-hjstudy_android_refactor" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
+
+
+
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            沪江学习安卓端应用架构重构
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/12/24/hjstudy_android_refactor/">
+            <time datetime="2016-12-24T05:51:56.000Z" itemprop="datePublished">2016-12-24</time>
+        </a>
+    </div>
+
+
+                    
+                    
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-21-18-00-43.png" alt=""></p>
+<p>如图所示，这次重构围绕一个老生常谈的概念「解耦」展开，设定几个目标：</p>
+<ul>
+<li>清晰划分各模块的角色</li>
+<li>明确架构层级及各个模块所在的层级</li>
+<li>提高整个架构横向扩展的能力</li>
+<li>提高编译效率，由于我们项目大量使用 Kotlin 开发和 AOP 技术，在编译上面个比较耗时，期望在架构调整后，在整个项目的编译效率上又一次大的提升</li>
+<li>各模块独立开发，面向接口和协议编程</li>
+<li>提高可维护性</li>
+</ul>
+<h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><p>在重构之前，我们的应用架构可以大致分为两层，应用层和 Library 层。一些通用的 Library 主要由专门的部门的同事维护，各业务线也会有一些自己维护的依赖库，也属于 Library 层。各业务线的主应用通过直接依赖的方式使用所需要 Library 提供的功能。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-22-13-38-20.png" alt=""></p>
+<p>各个 Library 之间的依赖关系也是通过直接依赖的方式，由于没有一个明确的层级划分，随着 Library 数量的不断增加，他们之间的依赖关系变得越来越复杂，大致是这样一个状态。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-22-13-32-46.png" alt=""></p>
+<p>这样的应用架构在一个相对小的团队中，可以很好的满足需求，将单独的功能模块和业务模块直接抽离成依赖库的方式去维护，可以降低模块之间的耦合性，又能保证不同应用能够使用统一的公共服务（Library）。但当开发团队发展到一定规模，由于模块数据的增加，模块之间的依赖关系错综复杂，各业务线的业务需求千差万别，这样简单的架构就会显得捉襟见肘了。下面的情况常常让人很头疼。</p>
+<ul>
+<li><p>依赖库之间的强依赖。其中一个最为突出的问题，就是库与库之间的强依赖关系。比如我用了一个库 A，A 使用 B 库来实现网络访问，但是在我的主项目中 C 来实现的网络请求。这种情况就会导致在主项目中同时依赖了两个网络请求库。</p>
+</li>
+<li><p>未知调用潜在风险大，版本升级成本高。由于没有明确的接口约定，往往会发生修改某个看似不会被外面调用到的方法，却导致某个项目的崩溃。同时由于依赖关系的复杂性，当一个项目发生升级以后，需要花很大的精力去确定到具体影响到哪些项目。</p>
+</li>
+<li><p>模块方案发生变化，上层修改成本大。由于是直接依赖的方式，在使用依赖库的时候，大家常常是直接使用库里面提供的接口，这样当某个功能需要切换实现方案的时候往往会导致上层代码的大量修改。</p>
+</li>
+<li><p>依赖库之间的版本冲突。主项目依赖的某库的版本和依赖库里面所依赖的同样的库的版本发生冲突。</p>
+</li>
+<li><p>功能模块兼容性导致维护成本大。在层次关系不够清晰、只有模块划分的时候，各业务线对公共模块需求有所差异，导致库的兼容代码越来越多，不易维护。甚至当某个模块为了满足某个业务线的特殊需求而影响到其他业务的正常使用。</p>
+</li>
+</ul>
+<p>上面的这些问题，如果在规模相对小的团队中，也许表现的不是特别突出，但是当团队规模到达一定程度，存在多条主开发团队在开发不同的业务，同时又想共用许多公共模块的时候，就会经常困扰开发团队。我们可用通过一些规范或约定来规范大家的行为减少这些问题发生，也可以通过构建一些辅助工具或平台帮助我们将一些问题提前暴露出来而不至于影响到线上应用，但这终究是治标不治本。</p>
+<h2 id="重构方案"><a href="#重构方案" class="headerlink" title="重构方案"></a>重构方案</h2><p>整个架构的核心思想是面向接口编程和依赖注入使各个模块之间实现解耦，然后通过横向角色划分与纵向层级划分的方式约定各个模块之间的关系，再通过接口分层的方式，明确具体模块在不同层级上需要实现的功能，最后 AOP 横向切入的方式，去实现测试、调试工具、插桩等行为。</p>
+<h3 id="面向接口与依赖注入"><a href="#面向接口与依赖注入" class="headerlink" title="面向接口与依赖注入"></a>面向接口与依赖注入</h3><p>面向接口和依赖注入是我们这次重构的核心思想，通过接口的方式，约定各个模块对外暴露的功能，再用依赖注入的方式实现模块间的完全解耦。</p>
+<h4 id="面向接口编程"><a href="#面向接口编程" class="headerlink" title="面向接口编程"></a>面向接口编程</h4><p>面向接口编程的概念可以在网上找到很多描述，上面详细的说明了面向接口编程的好处。这里我简单说一下我们想要使用面向接口编程的理由：</p>
+<ul>
+<li><p>只暴露想暴露的部分，在直接依赖的开发模式下，开发人员对于另一个依赖库提供的接口没有一个清晰的界限，常常使用到了该库的设计人员并没有计划暴露的方法。这样在该库升级的时候，就不会考虑到这些方法的版本兼容，以至于导致意想不到的意外。</p>
+</li>
+<li><p>改变编程方式，由于开发过程中，开发人员容易处在边开发边设计的状态，尤其是对于一些入门不是很久的开发，根本没有提前抽象和整理需求的习惯。通过面向接口编程的方式可以逼迫开发人员在开始编写代码之前，进行更多的思考，和其他人达成共识。</p>
+</li>
+<li><p>对需求的高度抽象，在使用面向接口的方式时，由于接口是对某个功能需求抽象，所以不会对具体的实现形成依赖，当某个功能需求的具体实现需要发生改变时，对于使用该功能的调用方完全是透明。 </p>
+</li>
+</ul>
+<h4 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h4><p>依赖注入在我们看来是在面向接口编程的基础上再往前走了一步，让模块之间彻底解耦。在单纯的面向接口编程中，如果你需要使用某个功能模块的功能，你本身还是需要依赖对应的模块，并且需要初始化对应的实现。通过依赖注入的方式，使用方本身不用关注具体实现的初始化。而是由统一的注入模块将实现注入，调用方只需要和接口进行交互。这样做的好处是让模块间彻底解耦，也不会担心由于引入某个依赖库而导致引入一些本不想引入的库。</p>
+<h3 id="层级划分与角色划分"><a href="#层级划分与角色划分" class="headerlink" title="层级划分与角色划分"></a>层级划分与角色划分</h3><p>在我们的架构中，总体分为三个层次：底层、组件层和应用层。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-12-20-14-59-03.png" alt=""></p>
+<ul>
+<li><p>底层，底层是包含三个部分，分别为接口层、基础类层、SDK 扩展层。接口层是对上层功能组件和业务组件的接口定义。基础类层是本公司对一些 Android 原生类的进一步封装，这种封装往往抽象了本公司某些类的共有需求，但不含有任何具体业务的实现，如 BaseActivity 这种。SDK 层是对 Android 原生提供接口的强化或扩展，如对线程管理的优化。当在公司选定某种框架作为底层框架时（如：Kotlin 的标准库）也属于底层的 SDK。</p>
+</li>
+<li><p>组件层，分为功能组件、业务组件和试图组件。功能组件往往是技术实现的封装，如网络请求模块、图片加载模块等。业务组件包含两个部分，一是公司通用业务的封装，如登录模块、意见反馈模块等；二是业务线自己为了解耦拆分出来的子业务模块。试图组件是大家平时积累的通用试图组件。</p>
+</li>
+<li><p>应用层，在我们的架构中，应用层的东西应该很少，主要负责对所有子业务模块进行整合成为一个完整的 App，主要体现在 Splash 页面、首页等，这个时候的应用更像是一个空架子，而很少有具体的业务实现。</p>
+</li>
+</ul>
+<p>除此之外还有一个很重要的 DI 控制模块，这一层主要负责将具体接口的实现注入，这一层本身可以脱离主项目存在，但介于现在 Android 还没有一个较为满意的依赖注入框架，暂时我们先放在应用层，后面计划封装成一个单独的框架，就可以实现类似 Sprint 用配置文件的方式来控制依赖注入，然后通过使用 AOP 的方式进行初始化，这样整个依赖注入控制模块就和主项目没有任何直接的关联了。</p>
+<p>除了在每层的角色划分外，还有一个 Common Utils 模块，这是一个并列与所有层级存在的一个模块，可以被任何一个模块引用。</p>
+<h3 id="接口纵向分层和横向分类"><a href="#接口纵向分层和横向分类" class="headerlink" title="接口纵向分层和横向分类"></a>接口纵向分层和横向分类</h3><h4 id="纵向分层"><a href="#纵向分层" class="headerlink" title="纵向分层"></a>纵向分层</h4><p>在多线开发过程中，针对某个功能模块抽象出来的接口，要么不能满足所有产线的需求，要么会定义一些其他线不需要的接口。所以针对这样的过程我们考虑了接口纵向分层的概念，如果在一个相对小的合作团队中，可以不考虑这个问题。比如在网络请求这个功能模块的封装，我们将接口层分为 Common 接口层和业务接口层。</p>
+<ul>
+<li><p>Common 接口层只定义通用的网络请求的接口，不包含任何产线对网络请求模块额外定义的功能。会有一个通用的网络实现库区实现这一层的接口，基于 Volley、OkHttp 或者 Android-Async-Http 去实现接口。</p>
+</li>
+<li><p>业务接口层是每个产线针对自己的业务需求对网络请求功能进行的特殊定义，如对返回状态码的处理、API 层级的业务缓存和网络加密验证等。这种业务有的产线需要，有的产线不需要，即使都需要也可能出现需要定义的接口千差万别，所以每个产线单独定义这一层的接口，当然这层接口的实现也是由产线自己封装实现。</p>
+</li>
+</ul>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-12-20-14-58-10.png" alt=""></p>
+<h4 id="横向分类"><a href="#横向分类" class="headerlink" title="横向分类"></a>横向分类</h4><p>关于接口层里面不同功能模块的接口以怎样的形式组合和依赖，有两种方式，一种是在同一接口层的所有接口都放在一个库里面，所有需要用到任何接口的部分，都依赖这个接口库；还有一种是将接口和具体实现放在一个项目一起维护，只是这个模块提供两个依赖库：接口库和实现库。这两种实现方案各有利弊。</p>
+<p>第一种方案方便使用方的理解和使用，对于使用方只需要知道接口这个库，其他不需要知道，当有接口不满足的话，直接提需求就可以了。弊端是在任何一个模块的接口发生变化，都需要更新整个接口层，不过好在 Gradle 通过依赖合并的方式解决了这个问题，你只需要在你需要升级接口的地方升级，其他地方如果跟这次接口升级没有关系的话，依然可以使用老的版本。</p>
+<p>第二种方案比较方便于模块维护人员的维护，当你需要升级接口时能够在一个项目里面同时把接口层和实现层同时升级掉。第二种方案的缺陷也是很明显的，这样在接口层之前形成的依赖关系，又会和之前模块之间形成的依赖关系一样复杂，对于使用方还是要去理解复杂的依赖关系。</p>
+<p>结合这两种方案的优缺点，我们选择一个相对折中的方案，在同一层级的接口上进行横向分类，这样将整个接口层分成几个大的接口库去维护，这样能够有效降低一些模块变化对整个接口库版本的升级的影响，同时也可以减少一个接口库同时维护人员的数量，如果分配合理的话，甚至可以每个接口库和对应的实现层都是一个人维护，同样降低维护人员的成本。当然如果你们的接口本身就很少，就不用为这个问题烦恼了。</p>
+<h3 id="消息通讯"><a href="#消息通讯" class="headerlink" title="消息通讯"></a>消息通讯</h3><p>除了通过接口实现模块间的通讯方式，我们还设计了一套内部通讯协议，用于在应用内部消息通讯。对于一些易变的、灵活的、简单的通讯，可以直接通过发送消息的方式进行通讯。在任何一个想要接受到消息的地方，只要监听对应的消息就可以了，不管你是在主线程或者子线程。</p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>我们是从解决Android 6.0 的权限处理问题引入 AOP 技术的，为了在不影响之前的代码的情况下，我们通过横向切入的方式解决了这个问题。</p>
+<p>除了解决类似这种问题以外，我们使用 AOP 技术来实现只在 Debug 包才需要的功能，如一些测试的辅助工具、快速调试工具（调试板）等。这些功能只会出现在 Debug 包中，又不会影响到主项目的代码。</p>
+<h2 id="实施过程"><a href="#实施过程" class="headerlink" title="实施过程"></a>实施过程</h2><p>我们将整个重构融合到每个迭代中，逐步实现一次架构的大调整，为了保证业务正常的进行，同时进行平稳的重构，我们把整个实施过程进行了细致的划分，这里大概总结下我们的实施过程。</p>
+<h3 id="从底层开始着手"><a href="#从底层开始着手" class="headerlink" title="从底层开始着手"></a>从底层开始着手</h3><ul>
+<li>将 Common Utils 和 SDK 扩展层逐步独立到单独的库。</li>
+<li>将 Base View 逐步独立到单独的库。</li>
+<li>将 Base Class 逐步独立到单独的库。</li>
+</ul>
+<h3 id="抽离功能模块"><a href="#抽离功能模块" class="headerlink" title="抽离功能模块"></a>抽离功能模块</h3><ul>
+<li>将功能模块的接口逐步定义完成，并在对应的库提供相应的实现。</li>
+<li>在主项目完成功能模块的依赖注入。</li>
+<li>将对于功能模块的调用逐步换成接口的调用方式。</li>
+<li>去掉之前的依赖关系。</li>
+</ul>
+<h3 id="抽离公共视图模块"><a href="#抽离公共视图模块" class="headerlink" title="抽离公共视图模块"></a>抽离公共视图模块</h3><p>在抽取公共试图的时候需要区分哪些是属于哪些是公共试图，哪些是具体业务定制的试图。将属于公共的部分逐步抽离到公共试图库。需要说明的是，公共试图模块不一定是一个单独的库，可以根据需要拆分成不同的库，只要保证整个都在试图模块这一范畴就可以了。</p>
+<h3 id="抽离公共业务模块"><a href="#抽离公共业务模块" class="headerlink" title="抽离公共业务模块"></a>抽离公共业务模块</h3><ul>
+<li>定义公共业务模块的接口，并提供实现。</li>
+<li>完成依赖注入和调用替换。</li>
+<li>依赖关系解除。</li>
+</ul>
+<p>在抽离业务模块的时候，当业务模块提供了试图直接给外部使用，个人建议是将试图部分和具体的业务实现拆分到不同的 Model。试图属于试图模块，通过调用接口的方式实现内部逻辑。主项目或者其他模块需要使用该试图的时候，可以直接依赖（业务模块可以直接依赖任何试图组件）。</p>
+<h3 id="抽离产线业务模块"><a href="#抽离产线业务模块" class="headerlink" title="抽离产线业务模块"></a>抽离产线业务模块</h3><p>和抽离公共业务模块的步骤类似。</p>
+<h3 id="DI-控制框架封装"><a href="#DI-控制框架封装" class="headerlink" title="DI 控制框架封装"></a>DI 控制框架封装</h3><p>实现 DI 的配置化框架。</p>
+<h2 id="需要注意的问题"><a href="#需要注意的问题" class="headerlink" title="需要注意的问题"></a>需要注意的问题</h2><p>在重构过程中，还会碰到平时写代码由于不注意导致的隐形的坑，比如我们碰到过一个在库里面存在类型强转导致的问题。这种问题不可避免，但是如果你在平时写代码时比较遵守代码规范，这种问题应该会相对较少。</p>
+<ul>
+<li>Kotlin 试图文件目录迁移，Layout 不会修改对应的类名，需要手工确认，这个时候可以编写一些脚本才做这个事前。</li>
+<li>目录调整后，proguard 过滤文件相应的调整。</li>
+<li>如果之前一些模块在主项目已经以单独的包存在的时候，在抽离到单独的库的时候，把之前关于这个目录的 git 记录保留。</li>
+<li>当新增一个子模块的时候，可以先以代码的方式成为主项目的 Model 依赖，在相对稳定以后再提供 Maven 库依赖。</li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
+    
+        <a href="http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2016/08/30/android_library_debug/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Library 不支持调试模式，不能忍</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/12/24/hjstudy_android_refactor/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/200)" alt="沪江学习安卓端应用架构重构" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/12/24/hjstudy_android_refactor/" class="title">沪江学习安卓端应用架构重构</a></p>
+                            <p class="item-date"><time datetime="2016-12-24T05:51:56.000Z" itemprop="datePublished">2016-12-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/30/android_library_debug/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200)" alt="Library 不支持调试模式，不能忍" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/08/30/android_library_debug/" class="title">Library 不支持调试模式，不能忍</a></p>
+                            <p class="item-date"><time datetime="2016-08-30T09:28:49.000Z" itemprop="datePublished">2016-08-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/27/kotlin_good_bad_bugly/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160635495.jpg?imageView2/1/w/200)" alt="Kotlin：The Good, The Bad, and The Ugly(译)" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/08/27/kotlin_good_bad_bugly/" class="title">Kotlin：The Good, The Bad, and The Ugly(译)</a></p>
+                            <p class="item-date"><time datetime="2016-08-27T08:59:00.000Z" itemprop="datePublished">2016-08-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/02/kotlin_one_method_no_viewholder/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160624845.jpg?imageView2/1/w/200)" alt="Kotlin 一个扩展函数，从此丢掉 ViewHolder" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/08/02/kotlin_one_method_no_viewholder/" class="title">Kotlin 一个扩展函数，从此丢掉 ViewHolder</a></p>
+                            <p class="item-date"><time datetime="2016-08-02T15:57:49.000Z" itemprop="datePublished">2016-08-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/07/14/kotlin-type-option/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138093189.jpg?imageView2/1/w/200)" alt="NullPointException 利器 Kotlin 可选型" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2016/07/14/kotlin-type-option/" class="title">NullPointException 利器 Kotlin 可选型</a></p>
+                            <p class="item-date"><time datetime="2016-07-14T10:52:57.000Z" itemprop="datePublished">2016-07-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.mwlio.com/">mwlIO</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
