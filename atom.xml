@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ohmerhe.com/"/>
-  <updated>2016-12-24T05:51:56.000Z</updated>
+  <updated>2016-12-29T15:10:30.000Z</updated>
   <id>http://ohmerhe.com/</id>
   
   <author>
@@ -16,11 +16,53 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>在树莓派上用 Docker 安装 Gogs</title>
+    <link href="http://ohmerhe.com/2016/12/29/raspberry_install_gogs_with_docker/"/>
+    <id>http://ohmerhe.com/2016/12/29/raspberry_install_gogs_with_docker/</id>
+    <published>2016-12-29T15:07:43.000Z</published>
+    <updated>2016-12-29T15:10:30.000Z</updated>
+    
+    <content type="html">&lt;p&gt;这里假设在你的树莓派上已经装好了 Docker，之前装 Docker 的时候稍微折腾了一下，但是遗憾的是，当时没有记录下来，后面有机会再分享这一部分。&lt;/p&gt;
+&lt;p&gt;通过搜索可以找到 &lt;code&gt;Gogs&lt;/code&gt; 官方为树莓派提供的 Docker 镜像，直接拉取下来。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# Pull image from Docker Hub.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo docker pull gogs/gogs-rpi:0.9.46&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# Create local directory for volume.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$  mkdir -p /var/gogs&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# Use `docker run` for the first time.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo docker run --name=gogs -p 10022:22 -p 10080:3000 -v /var/gogs:/data gogs/gogs-rpi:0.9.46&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;# Use `docker start` if you have stopped it.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ sudo docker start gogs&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这样你就可以通过访问 &lt;code&gt;localhost:10080&lt;/code&gt; 访问 &lt;code&gt;Gogs&lt;/code&gt; 页面了（你也可以通过 &lt;code&gt;ip&lt;/code&gt; 访问）,第一次进去是需要配置一下的。数据库的话，如果你是自己个人用的话，可以直接选 &lt;code&gt;SQLite&lt;/code&gt;，简单一点。如果是提供给大家的公共服务，可以选择 &lt;code&gt;MYSQL&lt;/code&gt; 或者 &lt;code&gt;POSTGRES&lt;/code&gt;。由于使用 Docker 的原因，这里有几个配置需要额外注意。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Domain&lt;/code&gt;，访问 &lt;code&gt;Gogs&lt;/code&gt; 的域名，如果你要提供给外部机器访问的话，这里要填你的机器的 &lt;code&gt;ip&lt;/code&gt; 或者域名；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HTTP Port&lt;/code&gt;，这里要填 &lt;code&gt;Gogs&lt;/code&gt; 在容器里的监听的端口号，一般是 &lt;code&gt;3000&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SSH Port&lt;/code&gt;，与上面的相反，这里要填机器暴露给访问者的端口，而不是容器内部 SSH 服务监听的端口，如我们用 &lt;code&gt;10022:22&lt;/code&gt; 通过 &lt;code&gt;10022&lt;/code&gt; 端口暴露，则使用 &lt;code&gt;10022&lt;/code&gt; 这个值；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ROOT_URL&lt;/code&gt;，是提供给外部访问网站的公开 URL，如 &lt;code&gt;http://192.168.99.100:10080/&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其他的都可以使用默认值。如果在配置完了以后发现有配的不对的地方，也可以通过修改 &lt;code&gt;/var/gogs/gogs/conf/app.ini&lt;/code&gt; 这个文件，再重启服务。&lt;/p&gt;
+&lt;p&gt;这些信息配置好以后，就可以进入网站了。 &lt;code&gt;Gogs&lt;/code&gt; 和 &lt;code&gt;Gitlab&lt;/code&gt; 有一点差别，默认并不提供一个管理员账号，而是将第一个注册的账号默认设置为管理员账号，这个账号是不需要邮箱验证的。&lt;/p&gt;
+&lt;p&gt;更多关于 Gogs 在 Docker 的配置信息可以参考 &lt;a href=&quot;https://github.com/gogits/gogs/tree/master/docker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker for Gogs&lt;/a&gt;，关于更多 Gogs 的配置信息可以参考 &lt;a href=&quot;https://gogs.io/docs/advanced/configuration_cheat_sheet.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Configuration Cheat Sheet&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;&lt;a href=&quot;#参考资料&quot; class=&quot;headerlink&quot; title=&quot;参考资料&quot;&gt;&lt;/a&gt;参考资料&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/gogits/gogs/tree/master/docker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker for Gogs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://gogs.io/docs/advanced/configuration_cheat_sheet.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Configuration Cheat Sheet&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这里假设在你的树莓派上已经装好了 Docker，之前装 Docker 的时候稍微折腾了一下，但是遗憾的是，当时没有记录下来，后面有机会再分享这一部分。&lt;/p&gt;
+&lt;p&gt;通过搜索可以找到 &lt;code&gt;Gogs&lt;/code&gt; 官方为树莓派提供的 Docker 镜像，直接拉取下来。
+    
+    </summary>
+    
+    
+      <category term="树莓派" scheme="http://ohmerhe.com/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+      <category term="Docker" scheme="http://ohmerhe.com/tags/Docker/"/>
+    
+      <category term="Git" scheme="http://ohmerhe.com/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>沪江学习安卓端应用架构重构</title>
     <link href="http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/"/>
     <id>http://ohmerhe.com/2016/12/24/hjstudy_android_refactor/</id>
     <published>2016-12-24T05:51:56.000Z</published>
-    <updated>2016-12-24T05:51:56.000Z</updated>
+    <updated>2016-12-29T15:11:01.000Z</updated>
     
     <content type="html">&lt;p&gt;对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。&lt;/p&gt;
 &lt;h2 id=&quot;目标&quot;&gt;&lt;a href=&quot;#目标&quot; class=&quot;headerlink&quot; title=&quot;目标&quot;&gt;&lt;/a&gt;目标&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;http://7xpox6.com1.z0.glb.clouddn.com/2016-11-21-18-00-43.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
@@ -126,6 +168,8 @@
     
     </summary>
     
+    
+      <category term="Android" scheme="http://ohmerhe.com/tags/Android/"/>
     
   </entry>
   
@@ -1293,24 +1337,6 @@
     
     
       <category term="Kotlin" scheme="http://ohmerhe.com/tags/Kotlin/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>天王盖地虎</title>
-    <link href="http://ohmerhe.com/2015/12/19/first-blog/"/>
-    <id>http://ohmerhe.com/2015/12/19/first-blog/</id>
-    <published>2015-12-19T01:45:40.000Z</published>
-    <updated>2016-01-01T10:01:17.000Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;宝塔镇河妖&quot;&gt;&lt;a href=&quot;#宝塔镇河妖&quot; class=&quot;headerlink&quot; title=&quot;宝塔镇河妖&quot;&gt;&lt;/a&gt;宝塔镇河妖&lt;/h1&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;宝塔镇河妖&quot;&gt;&lt;a href=&quot;#宝塔镇河妖&quot; class=&quot;headerlink&quot; title=&quot;宝塔镇河妖&quot;&gt;&lt;/a&gt;宝塔镇河妖&lt;/h1&gt;
-    
-    </summary>
-    
     
   </entry>
   

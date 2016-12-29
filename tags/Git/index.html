@@ -3,23 +3,14 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Kotlin 函数式编程三板斧 | Ohmer&#39;s Blog</title>
+    <title>Tag: Git | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: kotlin, 函数式编程, map, filter, reduce
-每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲 Kotlin 中提供的函数式编程三板斧filter、map、reduce。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Kotlin 函数式编程三板斧">
-<meta property="og:url" content="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Ohmer's Blog">
+<meta property="og:url" content="http://ohmerhe.com/tags/Git/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: kotlin, 函数式编程, map, filter, reduce
-每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲 Kotlin 中提供的函数式编程三板斧filter、map、reduce。">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160627353.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-08-01T03:54:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kotlin 函数式编程三板斧">
-<meta name="twitter:description" content="tags: kotlin, 函数式编程, map, filter, reduce
-每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲 Kotlin 中提供的函数式编程三板斧filter、map、reduce。">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160627353.jpg?imageView2/1/w/200">
+<meta name="twitter:title" content="Ohmer's Blog">
 
     
 
@@ -147,190 +138,65 @@
 </aside>
 
             
-            <section id="main"><article id="post-kotlin_function_three_common_methods" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
+            <section id="main">
+        <section class="archives-wrap">
+        <div class="archive-tag-wrap">
+            <span class="archive-tag">#Git</span>
+        </div>
+        <div class="archives">
         
-            
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-160627353.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
-	
-
-
-
-        
-        
-        
-            <header class="article-header">
-                
+            <article class="archive-article archive-type-summary">
     
-        <h1 class="article-title" itemprop="name">
-            Kotlin 函数式编程三板斧
+    <div class="archive-article-thumbnail">
+        <a href="/2016/12/29/raspberry_install_gogs_with_docker/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170036539.jpg?imageView2/1/w/200)" alt="在树莓派上用 Docker 安装 Gogs" class="thumbnail-image"></span>
+    
+</a>
+    </div>
+    
+    <div class="archive-article-content">
+        <header class="archive-article-header">
+            
+    
+        <h1 itemprop="name">
+            <a class="archive-article-title" href="/2016/12/29/raspberry_install_gogs_with_docker/">在树莓派上用 Docker 安装 Gogs</a>
         </h1>
     
 
-                <div class="article-meta">
-                    
+            <div class="article-meta">
+                
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/07/05/kotlin_function_three_common_methods/">
-            <time datetime="2016-07-05T14:06:41.000Z" itemprop="datePublished">2016-07-05</time>
+        <a href="/2016/12/29/raspberry_install_gogs_with_docker/">
+            <time datetime="2016-12-29T15:07:43.000Z" itemprop="datePublished">2016-12-29</time>
         </a>
     </div>
 
 
-                    
-                    
+                
+                
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Kotlin/">Kotlin</a>, <a class="tag-link" href="/tags/函数式编程/">函数式编程</a>
+        <a class="tag-link" href="/tags/Docker/">Docker</a>, <a class="tag-link" href="/tags/Git/">Git</a>, <a class="tag-link" href="/tags/树莓派/">树莓派</a>
     </div>
 
-                </div>
-            </header>
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>tags: kotlin, 函数式编程, map, filter, reduce</p>
-<p>每个函数式语言都提供及几大类基本函数，这些函数在功能上一般都极为相似，但是在名称和调用方法上可能有一些细微的差别。今天就讲讲 <code>Kotlin</code> 中提供的函数式编程三板斧<code>filter</code>、<code>map</code>、<code>reduce</code>。</p>
-<a id="more"></a>
-<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>筛选函数将用户给定的布尔逻辑作用于集合，返回由原集合中符合条件的元素组合的一个子集。假设一个逻辑，将数组中是3的倍数的数筛选出来，和 <code>Java</code> 做一个简单的对比。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Java 代码</span></div><div class="line"><span class="keyword">int</span>[] all = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</div><div class="line">List&lt;Integer&gt; filters = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : all) &#123;</div><div class="line">    <span class="keyword">if</span> (a % <span class="number">3</span> == <span class="number">0</span>) &#123;</div><div class="line">        filters.add(a);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Kotlin 代码</span></div><div class="line"><span class="keyword">val</span> all = arrayOf(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</div><div class="line"><span class="keyword">val</span> filters = all.filter &#123; it % <span class="number">3</span> == <span class="number">0</span> &#125;</div></pre></td></tr></table></figure>
-<p>Kotlin 还提供一系列类似的过滤函数：</p>
-<ul>
-<li><code>filterIndexed</code>, 同 <code>filter</code>，不过在逻辑判断的方法块中可以拿到当前item的index</li>
-<li><code>filterNot</code>，与<code>filter</code>相反，只返回不符合条件的元素组合</li>
-</ul>
-<p>针对 <code>Map</code> 类型数据集合，提供了 <code>filterKeys</code> 和 <code>filterValues</code> 方法，方便只做 key 或者 value 的判断。</p>
-<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>映射函数也是一个高阶函数，将一个集合经过一个传入的变换函数映射成另外一种集合。</p>
-<p>假设我们现在需要将一系列的名字的长度保存到另一个数组。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 代码</span></div><div class="line">String[] names = &#123;<span class="string">"James"</span>, <span class="string">"Tom"</span>, <span class="string">"Jack"</span>, <span class="string">"Kobe"</span>&#125;;</div><div class="line"><span class="keyword">int</span>[] namesLength = <span class="keyword">new</span> <span class="keyword">int</span>[names.length];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; names.length ; i ++) &#123;</div><div class="line">    namesLength[i] = names[i].length();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Kotlin 代码</span></div><div class="line"><span class="keyword">val</span> names = arrayOf(<span class="string">"James"</span>, <span class="string">"Tom"</span>, <span class="string">"Jack"</span>, <span class="string">"Kobe"</span>);</div><div class="line"><span class="keyword">val</span> namesLength = names.map &#123; it.length &#125;</div></pre></td></tr></table></figure>
-<p>映射函数是将一个集合映射成另外一种集合，所以当你需要见一个 HaspMap 映射成一个 List 的时候，会非常方便。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> params = mapOf(<span class="string">"limit"</span> to <span class="string">"10"</span>, <span class="string">"offset"</span> to <span class="string">"20"</span>, <span class="string">"order"</span> to <span class="string">"asc"</span>)</div><div class="line"><span class="keyword">val</span> s = params.map &#123; <span class="string">"<span class="subst">$&#123;it.key&#125;</span>=<span class="subst">$&#123;it.value&#125;</span>"</span> &#125;.joinToString(<span class="string">"&amp;"</span>)</div><div class="line"><span class="comment">// s = limit=10&amp;offset=20&amp;order=asc</span></div></pre></td></tr></table></figure>
-<p>同 <code>filter</code> 相似，Kotlin 也提供的 <code>mapIndexed</code> 的类似方法方便使用，针对 <code>Map</code> 类型的集合也有 <code>mapKeys</code> 和 <code>mapValues</code> 的封装。</p>
-<h2 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h2><p>归纳函数将一个数据集合的所有元素通过传入的操作函数实现数据集合的积累叠加效果。</p>
-<p>假设我们需要将一首藏头诗的每句诗的第一句拿出来拼成一句话。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Java 代码</span></div><div class="line">String[] texts = &#123;<span class="string">"芦花丛中一扁舟"</span>, <span class="string">"俊杰俄从此地游"</span>, <span class="string">"义士若能知此理"</span>, <span class="string">"反躬难逃可无忧"</span>&#125;;</div><div class="line">StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; texts.length ; i ++) &#123;</div><div class="line">    sb.append(texts[i].substring(<span class="number">0</span>, <span class="number">1</span>));</div><div class="line">&#125;</div><div class="line">String result = sb.toString();</div></pre></td></tr></table></figure>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Kotlin 代码</span></div><div class="line"><span class="keyword">val</span> texts = arrayOf(<span class="string">"芦花丛中一扁舟"</span>, <span class="string">"俊杰俄从此地游"</span>, <span class="string">"义士若能知此理"</span>, <span class="string">"反躬难逃可无忧"</span>)</div><div class="line"><span class="keyword">val</span> result = texts.map &#123; it.substring(<span class="number">0</span>,<span class="number">1</span>) &#125;.reduce &#123; r, s -&gt; <span class="string">"<span class="subst">$r</span><span class="subst">$s</span>"</span>&#125;</div></pre></td></tr></table></figure>
-<p>最后得到的结果是「卢俊义反」。</p>
-<h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>函数式编程的精髓在于函数本身。在函数式编程中函数是第一等公民，与其他数据类型一样，处于平等地位，可以赋值给其他变量，也可以作为参数，传入另一个函数，或者作为别的函数的返回值。</p>
-<p>函数式编程好的实践在于对运算过程的高度抽象和没有”副作用”（既保持函数的独立性），函数式编程三板斧是函数式编程的典型范式，在编程中被大量使用，即使人们不关注函数式编程，在使用函数式编程语言的时候，也会不自觉的使用这些函数。</p>
-<p>函数式编程是一种思维方式，函数式编程鼓励放弃对状态的维持（是命令式编程的基础），将所有的操作都交给运行时去执行。当然为了保证程序运行的效率，这需要提供一些辅助性的手段（缓存、缓求值等）。</p>
-<p>[参考资料]</p>
-<ul>
-<li><a href="https://book.douban.com/subject/26587213/" target="_blank" rel="external">函数式编程思维</a></li>
-<li><a href="http://baike.baidu.com/view/1711147.htm" target="_blank" rel="external">函数式编程</a></li>
-<li><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">kotlin doc</a></li>
-<li><a href="https://kotlinlang.org/api/latest/jvm/stdlib/" target="_blank" rel="external">kotlin api doc</a></li>
-</ul>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-    <div class="jiathis_style">
-    <span class="jiathis_txt">分享到：</span>
-    <a class="jiathis_button_qzone">QQ空间</a>
-    <a class="jiathis_button_tsina">新浪微博</a>
-    <a class="jiathis_button_tqq">腾讯微博</a>
-    <a class="jiathis_button_weixin">微信</a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-    <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<style>
-    .jiathis_style div:first-child:not(.jiadiv_01) {
-        width: auto !important;
-        border: none !important;
-    }
-    .jiathis_style .jiadiv_01 {
-        margin: 10px 0;
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .jiathis_style .jiadiv_01 div:first-child {
-        display: none;
-    }
-    .jiathis_style .jiadiv_02 {
-        padding: 7px 0 !important;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle {
-        width: 85px;
-        border: none;
-        height: auto;
-        margin: 3px 10px;
-        padding: 6px 10px;
-        border-radius: 4px;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:hover {
-        border: none;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
-        margin-left: 0;
-    }
-    .jiathis_style .jtico:hover {
-        opacity: 1;
-    }
-    .jiathis_style .ckepopBottom,
-    .jiathis_style .centerBottom {
-        width: auto !important;
-        padding: 5px;
-        background: #f7f7f7;
-    }
-</style>
-
-
-
-</div>
-
-            
-    
-        <a href="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2016/07/14/kotlin-type-option/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    NullPointException 利器 Kotlin 可选型
-                
             </div>
-        </a>
-    
-    
-        <a href="/2016/06/26/loopback_useage_record/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">LoopBack 操作记录</div>
-        </a>
-    
-</nav>
-
-
-    
-</article>
-
-
-    
-    <section id="comments">
-    
-        
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </header>
+        <div class="article-entry">
+            <p>这里假设在你的树莓派上已经装好了 Docker，之前装 Docker 的时候稍微折腾了一下，但是遗憾的是，当时没有记录下来，后面有机会再分享这一部分。
+通过搜索可以找到 Gogs 官方为树莓派提供的 Docker 镜像，直接拉取下来。
+1234567891011# Pull image from Docker Hub.$ sudo docker pull gogs/gogs-rpi:0.9.46#</p>
+            <p class="article-more-link">
+                <a href="/2016/12/29/raspberry_install_gogs_with_docker/#more">Read More</a>
+            </p>
+        </div>
     </div>
-
-    
-    </section>
-
-</section>
+</article>
+        
+        </div></section>
+        </section>
             
                 <aside id="sidebar">
     
@@ -510,13 +376,11 @@
     var disqus_shortname = 'ohmersblog';
     
     
-    var disqus_url = 'http://ohmerhe.com/2016/07/05/kotlin_function_three_common_methods/';
-    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
