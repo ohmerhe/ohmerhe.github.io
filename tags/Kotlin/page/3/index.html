@@ -3,23 +3,14 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Library 不支持调试模式，不能忍 | Ohmer&#39;s Blog</title>
+    <title>Tag: Kotlin | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Library 不支持调试模式，不能忍">
-<meta property="og:url" content="http://ohmerhe.com/2016/08/30/android_library_debug/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Ohmer's Blog">
+<meta property="og:url" content="http://ohmerhe.com/tags/Kotlin/page/3/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-08-30T10:12:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Library 不支持调试模式，不能忍">
-<meta name="twitter:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
+<meta name="twitter:title" content="Ohmer's Blog">
 
     
 
@@ -158,185 +149,67 @@ ga('send', 'pageview');
 </aside>
 
             
-            <section id="main"><article id="post-android_library_debug" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
+            <section id="main">
+        <section class="archives-wrap">
+        <div class="archive-tag-wrap">
+            <span class="archive-tag">#Kotlin</span>
+        </div>
+        <div class="archives">
         
-            
-	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
-	
-
-
-
-        
-        
-        
-            <header class="article-header">
-                
+            <article class="archive-article archive-type-summary">
     
-        <h1 class="article-title" itemprop="name">
-            Library 不支持调试模式，不能忍
+    <div class="archive-article-thumbnail">
+        <a href="/2015/12/19/class-object-object/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/tiggers_frolick.jpg?imageView2/1/w/200)" alt="Kotlin 类与对象 —— object" class="thumbnail-image"></span>
+    
+</a>
+    </div>
+    
+    <div class="archive-article-content">
+        <header class="archive-article-header">
+            
+    
+        <h1 itemprop="name">
+            <a class="archive-article-title" href="/2015/12/19/class-object-object/">Kotlin 类与对象 —— object</a>
         </h1>
     
 
-                <div class="article-meta">
-                    
+            <div class="article-meta">
+                
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/08/30/android_library_debug/">
-            <time datetime="2016-08-30T09:28:49.000Z" itemprop="datePublished">2016-08-30</time>
+        <a href="/2015/12/19/class-object-object/">
+            <time datetime="2015-12-19T11:02:38.000Z" itemprop="datePublished">2015-12-19</time>
         </a>
     </div>
 
 
-                    
-                    
+                
+                
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Gradle/">Gradle</a>
+        <a class="tag-link" href="/tags/Kotlin/">Kotlin</a>
     </div>
 
-                </div>
-            </header>
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>tags: Android, Gradle</p>
-<p>在 Android 开发过程中，<code>BuildConfig.Debug</code> 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考<a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library" target="_blank" rel="external">这里</a>。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。</p>
-<p>常见的依赖库的使用方式有两种，一种是把依赖库的作为一个模块和主项目一起编译，也就是文件依赖；另一种是使用 aar 的方式引用，下面分别针对两种不同的提供对应得解决方案。</p>
-<h2 id="文件依赖方式"><a href="#文件依赖方式" class="headerlink" title="文件依赖方式"></a>文件依赖方式</h2><p>其实 <a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">这个问题</a> 早在 2013 年就有人在 Google Group 上提出来。根据 <a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication" target="_blank" rel="external">官方文档</a>，我们可以通过控制 <code>publishNonDefault</code> 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。</p>
-<p>在依赖项目中添加这个配置：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    publishNonDefault <span class="literal">true</span></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样在编译完成后，默认情况下我们可以在输出目录看到两个 aar 文件（之前只有一个）。然后在项目中声明依赖的时候，区分不同的编译类型进行依赖：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    debugCompile project(<span class="string">path:</span> <span class="string">':myLocalLibrary'</span>, <span class="string">configuration:</span> <span class="string">'debug'</span>)</div><div class="line">    releaseCompile project(<span class="string">path:</span> <span class="string">':myLocalLibrary'</span>, <span class="string">configuration:</span> <span class="string">'release'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样在调试应用的过程中会使用依赖库的 debug 版本，而在正式发布应用的时候就会用 release 版本。</p>
-<h2 id="AAR-依赖方式"><a href="#AAR-依赖方式" class="headerlink" title="AAR 依赖方式"></a>AAR 依赖方式</h2><p>Library 还有一种更为常见的依赖方式——aar 依赖。当然如果是正式发布的依赖库，不支持 debug 功能是很合理并且应该鼓励的。但是，不能忽视的是在我们开发过程频繁使用的 snapshot 版本，这是开发过程中的测试版本，在这个版本中支持调试功能即合理也很有必要。</p>
-<p>在前面官方文档中，我们发现还有一个配置信息可以利用 <code>defaultPublishConfig</code>。这个变量用于指定使用哪个变种的包作为默认编译的版本。默认这个值是 <code>release</code>。你可以在项目的配置添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultPublishConfig &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这个配置项后面的值是编译变种的全称，如果对于变种（variants）的概念不是很熟悉的话，可以回去再看看 Google 的 <a href="https://developer.android.com/studio/build/build-variants.html" target="_blank" rel="external">定义</a>。</p>
-<p>如果没有定义针对变种做过配置的话，默认支持 <code>release</code> 和 <code>debug</code> 两种，这是根据这两种默认编译类型自动生成的。</p>
-</blockquote>
-<p>这里有一个明显的 bug，必须在发布正式包和 snapshot 包的时候手动切换配置项的值。在我的项目中，我在发布 aar 包的时候，是通过在 <code>gradle.properties</code> 这个文件添加 <code>isRelease</code> 这个变量来区分的。当这个值是 <code>true</code> 的时候则会发布正式包，反之则发布 snapshot 版本。于是我也利用这个值来控制这个配置项的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">	defaultPublishConfig System.properties[&apos;isRelease&apos;].toBoolean() ? &quot;release&quot; : &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>在 Groovy 中看到熟悉的三目运算好亲切啊，想到在 Kotlin 中没有三目运算就心塞。</p>
-</blockquote>
-<p>这样在发布依赖包时，就能自动实现在 snapshot 包支持调试功能，而不影响正式包。</p>
-<h2 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h2><h3 id="代码注入"><a href="#代码注入" class="headerlink" title="代码注入"></a>代码注入</h3><p>如果不使用这种方式，在代码层面想办法绕过这个限制也不是特别困难。比如我们可以在依赖库中提供接口，然后在项目中将是否支持 Debug 状态的判断注入到依赖库中，从而实现依赖库和主项目之间的 Debug 状态保持一致。</p>
-<p>虽然这种方案也可以解决问题，但是我个人不是很推荐。这种配置方式本身和依赖库的功能没有关联性，而且无形增加了依赖库的接入成本。</p>
-<h3 id="手动修改"><a href="#手动修改" class="headerlink" title="手动修改"></a>手动修改</h3><p>还有一种方案，是在依赖库编译完成之后，通过判断当前编译变种的类型，手动去修改 <code>BuildConfig</code> 里面的值。这种方案无形增加了解决问题的复杂度，和前面利用官方配置项没有本质区别。根据这种方案的提出的时间，我猜测这应该是在官方支持如上描述的配置方案之前的方案。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="external">Gradle Plugin User Guide</a></li>
-<li><a href="https://guides.codepath.com/android/Building-your-own-Android-library" target="_blank" rel="external">Building your own Android library</a></li>
-<li><a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">Issue 52962:    Gradle plugin does not propagate debug/release to dependencies</a></li>
-</ul>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-    <div class="jiathis_style">
-    <span class="jiathis_txt">分享到：</span>
-    <a class="jiathis_button_qzone">QQ空间</a>
-    <a class="jiathis_button_tsina">新浪微博</a>
-    <a class="jiathis_button_tqq">腾讯微博</a>
-    <a class="jiathis_button_weixin">微信</a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-    <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<style>
-    .jiathis_style div:first-child:not(.jiadiv_01) {
-        width: auto !important;
-        border: none !important;
-    }
-    .jiathis_style .jiadiv_01 {
-        margin: 10px 0;
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .jiathis_style .jiadiv_01 div:first-child {
-        display: none;
-    }
-    .jiathis_style .jiadiv_02 {
-        padding: 7px 0 !important;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle {
-        width: 85px;
-        border: none;
-        height: auto;
-        margin: 3px 10px;
-        padding: 6px 10px;
-        border-radius: 4px;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:hover {
-        border: none;
-    }
-    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
-        margin-left: 0;
-    }
-    .jiathis_style .jtico:hover {
-        opacity: 1;
-    }
-    .jiathis_style .ckepopBottom,
-    .jiathis_style .centerBottom {
-        width: auto !important;
-        padding: 5px;
-        background: #f7f7f7;
-    }
-</style>
-
-
-
-</div>
-
-            
-    
-        <a href="http://ohmerhe.com/2016/08/30/android_library_debug/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/08/30/android_library_debug/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-        
-<nav id="article-nav">
-    
-        <a href="/2016/12/24/hjstudy_android_refactor/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    沪江学习安卓端应用架构重构
-                
             </div>
-        </a>
-    
-    
-        <a href="/2016/08/27/kotlin_good_bad_bugly/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">Kotlin：The Good, The Bad, and The Ugly(译)</div>
-        </a>
-    
-</nav>
-
-
-    
-</article>
-
-
-    
-    <section id="comments">
-    
-        
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </header>
+        <div class="article-entry">
+            <p>对象（object）表达式和对象声明Kotlin中提供关键object，与java中的“Object”不同（在java中“Object”是所有类的基类，等同于Kotlin的“Any”，参考java-interop），用于直接申明一个对象，有两种使用写法：对象表达式和对象声明
+对象表达式通过对象表达式可以越过类的定义直接得到一个对象：</p>
+            <p class="article-more-link">
+                <a href="/2015/12/19/class-object-object/#more">Read More</a>
+            </p>
+        </div>
     </div>
-
-    
-    </section>
-
+</article>
+        
+        </div></section>
+        
+    <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/tags/Kotlin/page/2/">&laquo; Prev</a><a class="page-number" href="/tags/Kotlin/">1</a><a class="page-number" href="/tags/Kotlin/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
 </section>
             
                 <aside id="sidebar">
@@ -517,13 +390,11 @@ ga('send', 'pageview');
     var disqus_shortname = 'ohmersblog';
     
     
-    var disqus_url = 'http://ohmerhe.com/2016/08/30/android_library_debug/';
-    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>

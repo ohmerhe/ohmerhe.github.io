@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Library 不支持调试模式，不能忍 | Ohmer&#39;s Blog</title>
+    <title>Kotlin 迷人的语言特性（下） | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+    <meta name="description" content="在上一篇文章，我们介绍了 Kotlin 许多迷人的语言特性，包括空安全、类型推断、操作符重载等等，接下来我们继续领略 Kotlin 给我们带来的迷人特性。
+委托属性Kotlin 没有字段（field）的概念，只有属性，Kotlin 为所有的属性自动生成 Setter 和 Getter 方法（常量只有 Getter）方法，对 Kotlin 属性的设置和访问，也都是通过 Setter 和 Getter">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Library 不支持调试模式，不能忍">
-<meta property="og:url" content="http://ohmerhe.com/2016/08/30/android_library_debug/index.html">
+<meta property="og:title" content="Kotlin 迷人的语言特性（下）">
+<meta property="og:url" content="http://ohmerhe.com/2017/08/15/kotlin_facinating_feature_2/index.html">
 <meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-08-30T10:12:44.000Z">
+<meta property="og:description" content="在上一篇文章，我们介绍了 Kotlin 许多迷人的语言特性，包括空安全、类型推断、操作符重载等等，接下来我们继续领略 Kotlin 给我们带来的迷人特性。
+委托属性Kotlin 没有字段（field）的概念，只有属性，Kotlin 为所有的属性自动生成 Setter 和 Getter 方法（常量只有 Getter）方法，对 Kotlin 属性的设置和访问，也都是通过 Setter 和 Getter">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2017-08-15T14:46:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Library 不支持调试模式，不能忍">
-<meta name="twitter:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
+<meta name="twitter:title" content="Kotlin 迷人的语言特性（下）">
+<meta name="twitter:description" content="在上一篇文章，我们介绍了 Kotlin 许多迷人的语言特性，包括空安全、类型推断、操作符重载等等，接下来我们继续领略 Kotlin 给我们带来的迷人特性。
+委托属性Kotlin 没有字段（field）的概念，只有属性，Kotlin 为所有的属性自动生成 Setter 和 Getter 方法（常量只有 Getter）方法，对 Kotlin 属性的设置和访问，也都是通过 Setter 和 Getter">
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200">
 
     
 
@@ -158,12 +158,12 @@ ga('send', 'pageview');
 </aside>
 
             
-            <section id="main"><article id="post-android_library_debug" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-kotlin_facinating_feature_2" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -175,7 +175,7 @@ ga('send', 'pageview');
                 
     
         <h1 class="article-title" itemprop="name">
-            Library 不支持调试模式，不能忍
+            Kotlin 迷人的语言特性（下）
         </h1>
     
 
@@ -183,8 +183,8 @@ ga('send', 'pageview');
                     
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/08/30/android_library_debug/">
-            <time datetime="2016-08-30T09:28:49.000Z" itemprop="datePublished">2016-08-30</time>
+        <a href="/2017/08/15/kotlin_facinating_feature_2/">
+            <time datetime="2017-08-15T14:46:11.000Z" itemprop="datePublished">2017-08-15</time>
         </a>
     </div>
 
@@ -193,7 +193,7 @@ ga('send', 'pageview');
                     
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Gradle/">Gradle</a>
+        <a class="tag-link" href="/tags/Kotlin/">Kotlin</a>
     </div>
 
                 </div>
@@ -202,36 +202,23 @@ ga('send', 'pageview');
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>tags: Android, Gradle</p>
-<p>在 Android 开发过程中，<code>BuildConfig.Debug</code> 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考<a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library" target="_blank" rel="external">这里</a>。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。</p>
-<p>常见的依赖库的使用方式有两种，一种是把依赖库的作为一个模块和主项目一起编译，也就是文件依赖；另一种是使用 aar 的方式引用，下面分别针对两种不同的提供对应得解决方案。</p>
-<h2 id="文件依赖方式"><a href="#文件依赖方式" class="headerlink" title="文件依赖方式"></a>文件依赖方式</h2><p>其实 <a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">这个问题</a> 早在 2013 年就有人在 Google Group 上提出来。根据 <a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication" target="_blank" rel="external">官方文档</a>，我们可以通过控制 <code>publishNonDefault</code> 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。</p>
-<p>在依赖项目中添加这个配置：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    publishNonDefault <span class="literal">true</span></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样在编译完成后，默认情况下我们可以在输出目录看到两个 aar 文件（之前只有一个）。然后在项目中声明依赖的时候，区分不同的编译类型进行依赖：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    debugCompile project(<span class="string">path:</span> <span class="string">':myLocalLibrary'</span>, <span class="string">configuration:</span> <span class="string">'debug'</span>)</div><div class="line">    releaseCompile project(<span class="string">path:</span> <span class="string">':myLocalLibrary'</span>, <span class="string">configuration:</span> <span class="string">'release'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样在调试应用的过程中会使用依赖库的 debug 版本，而在正式发布应用的时候就会用 release 版本。</p>
-<h2 id="AAR-依赖方式"><a href="#AAR-依赖方式" class="headerlink" title="AAR 依赖方式"></a>AAR 依赖方式</h2><p>Library 还有一种更为常见的依赖方式——aar 依赖。当然如果是正式发布的依赖库，不支持 debug 功能是很合理并且应该鼓励的。但是，不能忽视的是在我们开发过程频繁使用的 snapshot 版本，这是开发过程中的测试版本，在这个版本中支持调试功能即合理也很有必要。</p>
-<p>在前面官方文档中，我们发现还有一个配置信息可以利用 <code>defaultPublishConfig</code>。这个变量用于指定使用哪个变种的包作为默认编译的版本。默认这个值是 <code>release</code>。你可以在项目的配置添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultPublishConfig &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这个配置项后面的值是编译变种的全称，如果对于变种（variants）的概念不是很熟悉的话，可以回去再看看 Google 的 <a href="https://developer.android.com/studio/build/build-variants.html" target="_blank" rel="external">定义</a>。</p>
-<p>如果没有定义针对变种做过配置的话，默认支持 <code>release</code> 和 <code>debug</code> 两种，这是根据这两种默认编译类型自动生成的。</p>
-</blockquote>
-<p>这里有一个明显的 bug，必须在发布正式包和 snapshot 包的时候手动切换配置项的值。在我的项目中，我在发布 aar 包的时候，是通过在 <code>gradle.properties</code> 这个文件添加 <code>isRelease</code> 这个变量来区分的。当这个值是 <code>true</code> 的时候则会发布正式包，反之则发布 snapshot 版本。于是我也利用这个值来控制这个配置项的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">	defaultPublishConfig System.properties[&apos;isRelease&apos;].toBoolean() ? &quot;release&quot; : &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>在 Groovy 中看到熟悉的三目运算好亲切啊，想到在 Kotlin 中没有三目运算就心塞。</p>
-</blockquote>
-<p>这样在发布依赖包时，就能自动实现在 snapshot 包支持调试功能，而不影响正式包。</p>
-<h2 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h2><h3 id="代码注入"><a href="#代码注入" class="headerlink" title="代码注入"></a>代码注入</h3><p>如果不使用这种方式，在代码层面想办法绕过这个限制也不是特别困难。比如我们可以在依赖库中提供接口，然后在项目中将是否支持 Debug 状态的判断注入到依赖库中，从而实现依赖库和主项目之间的 Debug 状态保持一致。</p>
-<p>虽然这种方案也可以解决问题，但是我个人不是很推荐。这种配置方式本身和依赖库的功能没有关联性，而且无形增加了依赖库的接入成本。</p>
-<h3 id="手动修改"><a href="#手动修改" class="headerlink" title="手动修改"></a>手动修改</h3><p>还有一种方案，是在依赖库编译完成之后，通过判断当前编译变种的类型，手动去修改 <code>BuildConfig</code> 里面的值。这种方案无形增加了解决问题的复杂度，和前面利用官方配置项没有本质区别。根据这种方案的提出的时间，我猜测这应该是在官方支持如上描述的配置方案之前的方案。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="external">Gradle Plugin User Guide</a></li>
-<li><a href="https://guides.codepath.com/android/Building-your-own-Android-library" target="_blank" rel="external">Building your own Android library</a></li>
-<li><a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">Issue 52962:    Gradle plugin does not propagate debug/release to dependencies</a></li>
-</ul>
+            <p>在上一篇文章，我们介绍了 Kotlin 许多迷人的语言特性，包括空安全、类型推断、操作符重载等等，接下来我们继续领略 Kotlin 给我们带来的迷人特性。</p>
+<h2 id="委托属性"><a href="#委托属性" class="headerlink" title="委托属性"></a>委托属性</h2><p>Kotlin 没有字段（field）的概念，只有属性，Kotlin 为所有的属性自动生成 Setter 和 Getter 方法（常量只有 Getter）方法，对 Kotlin 属性的设置和访问，也都是通过 Setter 和 Getter 方法。利用这个特性，Kotlin 为开发者提供了委托属性，可以将对属性的操作和访问委托个另外一个对象。懒加载和属性观察者，用起来 666。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2017-08-06-22-14-42.png" alt=""></p>
+<h2 id="Lambdas-表达式和高阶函数"><a href="#Lambdas-表达式和高阶函数" class="headerlink" title="Lambdas 表达式和高阶函数"></a>Lambdas 表达式和高阶函数</h2><p>Lambdas 表达式是 Kotlin 带给 Android 程序员的又一个期待已久的礼包，在 Java 8 只是 Lambdas 表达式的时候，大家就各种期待能用 Java 8 开发 Android，然而过了这么久，Jack 依然存在各种问题，而且现在还被官方放弃了。不过现在有了 Kotlin，Lambdas 表达式和高阶函数都不在是遥不可及。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2017-08-06-22-20-28.png" alt=""></p>
+<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>当碰到一个嵌套多级的泛型类型的是，要定义这个类型的变量是通过的，因为我们需要申明这样 <code>MutableMap&lt;K, MutableList&lt;File&gt;&gt;</code> 一个类型，除了书写起来非常费力外，可读性也非常差，有时可能还要比对尖括号的位置来阅读代码。为了解决这样的问题（同样也适用于 Kotlin 的函数类型），Kotlin 提供了类型别名的方式，让你可以为一个复杂的类型定义一个简单类型别名。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2017-08-06-22-26-41.png" alt=""></p>
+<h2 id="解构声明"><a href="#解构声明" class="headerlink" title="解构声明"></a>解构声明</h2><p>还记得第一次接触到 Go 的时候，我的同事就对 Go 的同时返回多参数赞不绝口，都后来才发现，只要支持元祖的语言，都可以做到这一点。Kotlin 的解构声明在早期其实也是叫元祖，但是可能由于对元祖功能支持的并不完整，所以后面放弃了这个叫法。针对特定的类型（如：数据类）我们可以快速结构一个对象的得到多个变量，常用在多参数返回和集合迭代中。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2017-08-06-22-36-04.png" alt=""></p>
+<h2 id="Kotlin-协程"><a href="#Kotlin-协程" class="headerlink" title="Kotlin 协程"></a>Kotlin 协程</h2><p>Kotlin 协程是 1.1 后引入的一个大的语言特性，现在还是体验阶段，虽然还是体验阶段，但是这个特性实在是太赞了，以至于已经吸引了大家太多的眼球了。Kotlin 协程旨在帮助程序员更方便的处理异步程序，Kotlin 官方提供协程实现库，囊括了现在流行语言中使用协程的一些经典用法，如# 和 ECMAScript 的 async/await 及源于 C# 和 Python generators/yield。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/8B94B216-105A-47C0-A801-80B8A1237DF3.png" alt=""></p>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>当我们建一个函数或表达式标记成内联函数的时候，Kotlin 编译器会将对应的代码生成在该内联函数调用的地方，这样一方面解决了高阶函数带来的一些运行时的效率损失，同样也为具体化的类型参数（泛型）的实现提供了实现基础。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2017-08-06-23-00-17.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Kotlin 有太多让人赞不绝口的迷人特性，其中有很多特性本身就值得我们花上好几个篇章来介绍，这里只是简单做了一些汇总，具体各种语言特性的体验，还需要各位看官亲自体验。</p>
+<p>距离 Google I/O 大会已经过去一段时间了，Kotlin 的风暴似乎已经过去，你是不是已经找到自己的理由继续回去写自己的 Java 了。</p>
+<hr>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/kotlin-three-wechat.jpg" alt=""></p>
 
         
         </div>
@@ -295,7 +282,7 @@ ga('send', 'pageview');
 
             
     
-        <a href="http://ohmerhe.com/2016/08/30/android_library_debug/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2016/08/30/android_library_debug/">Comments</a>
+        <a href="http://ohmerhe.com/2017/08/15/kotlin_facinating_feature_2/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2017/08/15/kotlin_facinating_feature_2/">Comments</a>
     
 
         </footer>
@@ -304,19 +291,10 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
-        <a href="/2016/12/24/hjstudy_android_refactor/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    沪江学习安卓端应用架构重构
-                
-            </div>
-        </a>
     
-    
-        <a href="/2016/08/27/kotlin_good_bad_bugly/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/15/kotlin_fascinating_feature/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">Kotlin：The Good, The Bad, and The Ugly(译)</div>
+            <div class="article-nav-title">Kotlin 迷人的语言特性（上）</div>
         </a>
     
 </nav>
@@ -517,7 +495,7 @@ ga('send', 'pageview');
     var disqus_shortname = 'ohmersblog';
     
     
-    var disqus_url = 'http://ohmerhe.com/2016/08/30/android_library_debug/';
+    var disqus_url = 'http://ohmerhe.com/2017/08/15/kotlin_facinating_feature_2/';
     
     (function() {
     var dsq = document.createElement('script');
