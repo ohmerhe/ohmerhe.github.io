@@ -5,20 +5,19 @@
     
     <title>Kotlin 类与对象 —— 类（一） | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像：
-123class Persion//或者class Person(name: String)">
+    <meta name="description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像： 123class Persion//或者class Person(name: String)">
+<meta name="keywords" content="Kotlin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kotlin 类与对象 —— 类（一）">
 <meta property="og:url" content="http://ohmerhe.com/2016/01/02/object-class-class/index.html">
-<meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像：
-123class Persion//或者class Person(name: String)">
+<meta property="og:site_name" content="Ohmer&#39;s Blog">
+<meta property="og:description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像： 123class Persion//或者class Person(name: String)">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/ski_evening.jpg?imageView2/1/w/200">
 <meta property="og:updated_time" content="2016-07-09T14:25:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 类与对象 —— 类（一）">
-<meta name="twitter:description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像：
-123class Persion//或者class Person(name: String)">
+<meta name="twitter:description" content="类的声明kotlin用关键字class声明，声明一个类可以只声明头的部分，类的声明默认是final的。就像： 123class Persion//或者class Person(name: String)">
 <meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/ski_evening.jpg?imageView2/1/w/200">
 
     
@@ -88,7 +87,7 @@ ga('send', 'pageview');
             
             <div id="search-form-wrap">
 
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
 </div>
         </div>
@@ -109,7 +108,7 @@ ga('send', 'pageview');
                 
                 <td>
                     
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
                 </td>
             </tr>
@@ -131,11 +130,11 @@ ga('send', 'pageview');
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                27
+                28
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                17
+                19
                 <span>tags</span>
             </div>
         </div>
@@ -210,10 +209,10 @@ ga('send', 'pageview');
 <p>主构造函数没有自己的函数体，它的参数可以在类的初始化块（<code>init</code>修饰）访问，在类的属性初始化时也可以访问。所以，在主构造函数里面想要做的事情，可以放在类的初始化块中实现。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Customer(name: String) &#123;</div><div class="line">	val customerKey = name.toUpperCase()</div><div class="line">    init &#123;</div><div class="line">        print("Customer initialized with value $&#123;name&#125;")</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>如果我们想要在类的全局都可以访问主构造函数的参数，可以在参数前面加上<code>val</code>或者<code>var</code>，这样主构造函数的参数就和类的属性一样了。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>(<span class="keyword">val</span> name: String,<span class="keyword">val</span> age: <span class="built_in">Int</span>)&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my name is <span class="subst">$name</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is <span class="subst">$age</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>(<span class="keyword">val</span> name: String,<span class="keyword">val</span> age: <span class="built_in">Int</span>)&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my name is <span class="variable">$name</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is <span class="variable">$age</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>次构造函数必须要使用<code>constructor</code>修饰，并且必须直接或者间接的委托给主构造函数。</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>(<span class="keyword">val</span> name: String) &#123;</div><div class="line">    <span class="keyword">constructor</span>(name: String, parent: Person) : <span class="keyword">this</span>(name) &#123;</div><div class="line">        parent.children.add(<span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><h3 id="类的继承"><a href="#类的继承" class="headerlink" title="类的继承"></a>类的继承</h3><p>kotlin中所有的类都有一个父类<code>Any</code>，类似于java中的Object，但不存在对等关系。Any中只有<code>equals()</code>、<code>hashCode()</code>和<code>toString()</code>三个方法，所以其他的Object的方法都不能直接调用。详情请参见<a href="https://kotlinlang.org/docs/reference/java-interop.html#object-methods" target="_blank" rel="external">Java interoperability</a>。后面有机会我们会再讲到。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><h3 id="类的继承"><a href="#类的继承" class="headerlink" title="类的继承"></a>类的继承</h3><p>kotlin中所有的类都有一个父类<code>Any</code>，类似于java中的Object，但不存在对等关系。Any中只有<code>equals()</code>、<code>hashCode()</code>和<code>toString()</code>三个方法，所以其他的Object的方法都不能直接调用。详情请参见<a href="https://kotlinlang.org/docs/reference/java-interop.html#object-methods" target="_blank" rel="noopener">Java interoperability</a>。后面有机会我们会再讲到。</p>
 <p>kotlin默认类都是<code>final</code>的，为了可以被继承，我们需要在类的声明前面加上<code>open</code>，让该类可以被其他类继承。</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Base</span></span>(p: <span class="built_in">Int</span>)</div></pre></td></tr></table></figure>
 <p>如果父类有主构造函数的话，则必须在子类声明的头部被初始化。</p>
@@ -221,7 +220,7 @@ ga('send', 'pageview');
 <p>次构造函数也必须直接或间接的初始化父类的构造函数：</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span> : <span class="type">View &#123;</span></span></div><div class="line">    <span class="keyword">constructor</span>(ctx: Context) : <span class="keyword">super</span>(ctx) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">constructor</span>(ctx: Context, attrs: AttributeSet) : <span class="keyword">super</span>(ctx, attrs) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="复写方法"><a href="#复写方法" class="headerlink" title="复写方法"></a>复写方法</h3><p>同类一样，子类只能复写父类中被<code>open</code>修饰的函数，复写方法必须使用<code>override</code>。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>(name: String, age: <span class="built_in">Int</span>)&#123;</div><div class="line">    <span class="keyword">var</span> name = name;</div><div class="line">    <span class="keyword">val</span> age = age;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my name is <span class="subst">$name</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is <span class="subst">$age</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Women</span></span>(name: String, age: <span class="built_in">Int</span>) : Person(name, age)&#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is 18"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="comment">// error, compiler complain</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>(name: String, age: <span class="built_in">Int</span>)&#123;</div><div class="line">    <span class="keyword">var</span> name = name;</div><div class="line">    <span class="keyword">val</span> age = age;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my name is <span class="variable">$name</span>"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is <span class="variable">$age</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Women</span></span>(name: String, age: <span class="built_in">Int</span>) : Person(name, age)&#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">showAge</span><span class="params">()</span></span>&#123;</div><div class="line">        print(<span class="string">"my age is 18"</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">showName</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="comment">// error, compiler complain</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>子类中复写的方法，默认也是<code>open</code>的，如果需要，可以在方法<code>override</code>之前添加<code>final</code>注解，让该子类的子类不能再复写该方法。</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">v</span><span class="params">()</span></span> &#123;&#125;</div></pre></td></tr></table></figure>
 <h3 id="多继承"><a href="#多继承" class="headerlink" title="多继承"></a>多继承</h3><p>kotlin和java8一样，本身并不能同时继承于多个类，但是可以实现多个接口，而且接口可以有自己的实现，所以当父类和接口或者接口和接口中的方法一样时，会发生冲突，我们需要明确这个时候的解决方案，不然就会<code>compiler complain</code>。</p>
@@ -347,6 +346,24 @@ ga('send', 'pageview');
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2018/03/21/android_thread_scheduling/" class="title">从 Linux 到 Android 线程调度</a></p>
+                            <p class="item-date"><time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
@@ -416,24 +433,6 @@ ga('send', 'pageview');
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/05/18/swiftvskotlin_variables/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153920665.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 之变量定义" class="thumbnail-image"></span>
-    
-</a>
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/05/18/swiftvskotlin_variables/" class="title">Swift vs. Kotlin 之变量定义</a></p>
-                            <p class="item-date"><time datetime="2017-05-18T05:03:43.000Z" itemprop="datePublished">2017-05-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -443,7 +442,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
         </div>
     </div>
 
@@ -452,7 +451,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -463,7 +462,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -503,7 +502,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 Ohmer<br>
+            &copy; 2018 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

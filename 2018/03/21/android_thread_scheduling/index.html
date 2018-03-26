@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>从 Linux 到 Android 线程调度 | Ohmer&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="起因最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CP">
+<meta name="keywords" content="Android,Linux,进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Linux 到 Android 线程调度">
+<meta property="og:url" content="http://ohmerhe.com/2018/03/21/android_thread_scheduling/index.html">
+<meta property="og:site_name" content="Ohmer&#39;s Blog">
+<meta property="og:description" content="起因最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CP">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2018-03-21T15:19:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 Linux 到 Android 线程调度">
+<meta name="twitter:description" content="起因最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CP">
+<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200">
+
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-98385283-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Ohmer&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">Ohmer</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/ppoffice/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                28
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                19
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    <td><a href="http://github.com/ohmerhe/" target="_blank" title="github"><i class="fa fa-github"></i></a></td>
+                    
+                    <td><a href="https://twitter.com/ohmerhe/" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></td>
+                    
+                    <td><a href="/atom.xml" target="_blank" title="rss"><i class="fa fa-rss"></i></a></td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-android_thread_scheduling" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+	
+
+
+
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            从 Linux 到 Android 线程调度
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/03/21/android_thread_scheduling/">
+            <time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/进程/">进程</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CPU，我把 Android 线程调度仔细撸了一遍。</p>
+<h2 id="Linux-进程与Android-线程"><a href="#Linux-进程与Android-线程" class="headerlink" title="Linux 进程与Android 线程"></a>Linux 进程与Android 线程</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>进程是资源管理的最小单位，线程是程序执行的最小单位。在操作系统设计上，从进程演化出线程，最主要的目的就是更好的支持SMP以及减小（进程/线程）上下文切换开销。</p>
+<p>无论按照怎样的分法，一个进程至少需要一个线程作为它的指令执行体，进程管理着资源（比如cpu、内存、文件等等），而将线程分配到某个cpu上执行。一个进程当然可以拥有多个线程，此时，如果进程运行在SMP机器上，它就可以同时使用多个cpu来执行各个线程，达到最大程度的并行，以提高效率；同时，即使是在单cpu的机器上，采用多线程模型来设计程序，正如当年采用多进程模型代替单进程模型一样，使设计更简洁、功能更完备，程序的执行效率也更高，例如采用多个线程响应多个输入，而此时多线程模型所实现的功能实际上也可以用多进程模型来实现，而与后者相比，线程的上下文切换开销就比进程要小多了，从语义上来说，同时响应多个输入这样的功能，实际上就是共享了除cpu以外的所有资源的。</p>
+<p>针对线程模型的两大意义，分别开发出了核心级线程和用户级线程两种线程模型，分类的标准主要是线程的调度者在核内还是在核外。前者更利于并发使用多处理器的资源，而后者则更多考虑的是上下文切换开销。</p>
+<h3 id="内核线程与用户线程"><a href="#内核线程与用户线程" class="headerlink" title="内核线程与用户线程"></a>内核线程与用户线程</h3><p>需要理解 Linux 进程与 Android 线程的关系，需要先解释清楚 Linux 中内核线程、用户线程的关系，在 <a href="http://blog.csdn.net/ylyuanlu/article/details/8830374" target="_blank" rel="noopener">内核线程、轻量级进程、用户线程的区别和联系</a> 中有比较清晰的阐述。可以总结为几点:</p>
+<ul>
+<li>内核线程只运行在内核态，不受用户态上下文的拖累。</li>
+<li>用户线程是完全建立在用户空间的线程库，用户线程的创建、调度、同步和销毁全由库函数在用户空间完成，不需要内核的帮助。因此这种线程是极其低消耗和高效的。</li>
+<li>轻量级进程(LWP)是建立在内核之上并由内核支持的用户线程，它是内核线程的高度抽象，每一个轻量级进程都与一个特定的内核线程关联。内核线程只能由内核管理并像普通进程一样被调度。</li>
+<li>LinuxThreads 是用户空间的线程库，所采用的是线程-进程 1对1 模型(即一个用户线程对应一个轻量级进程，而一个轻量级进程对应一个特定 的内核线程)，将线程的调度等同于进程的调度，调度交由内核完成，而线程的创建、同步、销毁由核外线程库完成（LinuxThtreads已绑定到 GLIBC中发行）。</li>
+</ul>
+<blockquote>
+<p>PS: Linux 在2.6之前使用的是 LinuxThreads 线程库,2.6之后是NPTL(Native Posix Thread Library)，NPTL 使用的也是1对1的结构，但是在信号处理，线程同步，存储管理等多方面进行了优化。</p>
+</blockquote>
+<p>此外，Linux 内核不存在真正意义上的线程。Linux 将所有的执行实体都称之为任务（task），每一个任务在 Linux 上都类似于一个单线程的进程，具有内存空间、执行实体、文件资源等。但是，Linux 下不同任务之间可以选择公用内存空间，因而在实际意义上，共享同一个内存空间的多个任务构成了一个进程，而这些任务就成为这个进程里面的线程。</p>
+<p>比如在 Android 上我们通过 <code>adb shell</code>进入手机后，可以通过 <code>ps</code> 命令查看某个应用下的所有线程，先通过 <code>ps | grep $包名</code>找到对应进程的进程号，然后执行 <code>ps -t -p -P 6493</code>：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180314-172734.png" alt=""></p>
+<p>同时我们可以，执行 <code>ls /proc/6493/tasks</code> 查看该进程下的所有 tasks，他们之间有完整的对应关系：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180314-173909.png" alt=""></p>
+<blockquote>
+<p>PS: 查看 <code>/proc/6493/tasks</code> 需要 root 权限</p>
+</blockquote>
+<h2 id="Linux-进程调度"><a href="#Linux-进程调度" class="headerlink" title="Linux 进程调度"></a>Linux 进程调度</h2><p>现在的操作系统都是多任务的，为了能让更多的任务能同时在系统上更好的运行，需要一个管理程序来管理计算机上同时运行的各个任务（也就是进程）。这个管理程序就是调度程序，它的功能说起来很简单：</p>
+<ul>
+<li>决定哪些进程运行，哪些进程等待</li>
+<li>决定每个进程运行多长时间</li>
+</ul>
+<p>此外，为了获得更好的用户体验，运行中的进程还可以立即被其他更紧急的进程打断。总之，调度是一个平衡的过程。一方面，它要保证各个运行的进程能够最大限度的使用CPU(即尽量少的切换进程，进程切换过多，CPU的时间会浪费在切换上)；另一方面，保证各个进程能公平的使用CPU(即防止一个进程长时间独占CPU的情况)。</p>
+<h3 id="Linux-进程优先级"><a href="#Linux-进程优先级" class="headerlink" title="Linux 进程优先级"></a>Linux 进程优先级</h3><p>进程提供了两种优先级，一种是普通的进程优先级，第二个是实时优先级。前者适用 <code>SCHED_NORMAL</code> 调度策略，后者可选 <code>SCHED_FIFO</code> 或 <code>SCHED_RR</code> 调度策略。任何时候，实时进程的优先级都高于普通进程，实时进程只会被更高级的实时进程抢占，同级实时进程之间是按照 FIFO（一次机会做完）或者 RR（多次轮转）规则调度的。</p>
+<p>普通进程和实时进程分别用 nice 值和实时优先级（RTPRI）来度量优先级。</p>
+<h4 id="nice-值"><a href="#nice-值" class="headerlink" title="nice 值"></a>nice 值</h4><p>Linux 中，使用 nice 值来设定一个普通进程的优先级，系统任务调度器根据 nice 值合理安排调度。</p>
+<ul>
+<li>nice 的取值范围为 -20 到 19。</li>
+<li>nice 的值越大，进程的优先级就越低，获得 CPU 调用的机会越少，nice值越小，进程的优先级则越高，获得 CPU 调用的机会越多。</li>
+<li>一个 nice 值为 -20 的进程优先级最高，nice 值为 19 的进程优先级最低。</li>
+<li>父进程 fork 出来的子进程 nice 值与父进程相同。父进程 renice，子进程 nice 值不会随之改变。</li>
+</ul>
+<h4 id="实时优先级"><a href="#实时优先级" class="headerlink" title="实时优先级"></a>实时优先级</h4><ul>
+<li>实时优先级的范围是 0～99。</li>
+<li>与 nice 值的定义相反，实时优先级是值越大优先级越高。</li>
+<li>实时进程都是一些对响应时间要求比较高的进程，因此系统中有实时优先级高的进程处于运行队列的话，它们会抢占一般的进程的运行时间。</li>
+</ul>
+<h4 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h4><p>Linux 进程优先级与 nice 值及实时进程优先级的关系：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/prio-nice-rtpri.png" alt=""></p>
+<p>通过 <code>ps -p</code> 可以看到这几个值之间的对应关系：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-135011.png" alt=""></p>
+<h4 id="动态优先级"><a href="#动态优先级" class="headerlink" title="动态优先级"></a>动态优先级</h4><p>除此之外，在执行阶段，调度程序通过增加或减少进程静态优先级的值，来达到奖励IO消耗型或惩罚cpu消耗型的进程，调整后的进程称为动态优先级。与之对应的我们前面提到的优先级的值被称为静态优先级。</p>
+<h3 id="调度原理"><a href="#调度原理" class="headerlink" title="调度原理"></a>调度原理</h3><p>优先级，可以决定谁先运行了。但是对于调度程序来说，并不是运行一次就结束了，还必须知道间隔多久进行下次调度。于是就有了时间片的概念。时间片是一个数值，表示一个进程被抢占前能持续运行的时间。也可以认为是进程在下次调度发生前运行的时间(除非进程主动放弃CPU，或者有实时进程来抢占CPU)。时间片的大小设置并不简单，设大了，系统响应变慢(调度周期长)；设小了，进程频繁切换带来的处理器消耗。默认的时间片一般是10ms。</p>
+<p>举个例子说明调度原理的实现<a href="https://www.jianshu.com/p/d80d5d0f7dbe" target="_blank" rel="noopener">1</a>。</p>
+<p>假设系统中只有3个进程ProcessA(NI=+10)，ProcessB(NI=0)，ProcessC(NI=-10)，NI表示进程的nice值，时间片=10ms：</p>
+<ul>
+<li>调度前，把进程优先级按一定的权重映射成时间片(这里假设优先级高一级相当于多5msCPU时间)。假设ProcessA分配了一个时间片10ms，那么ProcessB的优先级比ProcessA高10(nice值越小优先级越高)，ProcessB应该分配105+10=60ms，以此类推，ProcessC分配205+10=110ms。</li>
+<li>开始调度时，优先调度分配CPU时间多的进程。由于ProcessA(10ms),ProcessB(60ms),ProcessC(110ms)。显然先调度ProcessC。</li>
+<li>10ms(一个时间片)后，再次调度时，ProcessA(10ms), ProcessB(60ms), ProcessC(100ms)。 ProcessC刚运行了10ms，所以变成100ms。此时仍然先调度ProcessC。</li>
+<li>再调度4次后(4个时间片)，ProcessA(10ms), ProcessB(60ms),ProcessC(60ms)。此时ProcessB和ProcessC的CPU时间一样，这时得看ProcessB和ProcessC谁在CPU运行队列的前面，假设ProcessB在前面，则调度ProcessB</li>
+<li>10ms(一个时间片)后，ProcessA(10ms), ProcessB(50ms), ProcessC(60ms)。再次调度ProcessC</li>
+<li>ProcessB 和 ProcessC 交替运行，直至 ProcessA(10ms), ProcessB(10ms), ProcessC(10ms)。<br>这时得看ProcessA，ProcessB，ProcessC谁在CPU运行队列的前面就先调度谁。这里假设调度ProcessA</li>
+<li>10ms (一个时间片)后，ProcessA (时间片用完后退出), ProcessB (10ms), ProcessC (10ms)。</li>
+<li>再过2个时间片，ProcessB 和 ProcessC 也运行完退出。</li>
+</ul>
+<p>这个例子很简单，主要是为了说明调度的原理，实际的调度算法虽然不会这么简单，</p>
+<h3 id="进程调度算法-CFS"><a href="#进程调度算法-CFS" class="headerlink" title="进程调度算法 CFS"></a>进程调度算法 CFS</h3><p>Linux上的调度算法是不断发展的，在2.6.23内核以后，采用了“完全公平调度算法”，简称CFS。</p>
+<h4 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h4><p>CFS算法的初衷就是让所有进程同时运行在一个CPU上，例如两个进程都需要运行10ms的时间，则CFS算法下，连个进程同时运行在CPU上，且时间为20ms，而不是每个进程分别运行10ms。但是这只是一种理想的运行方式，CFS为了近似这种运行算法，就提出了虚拟运行时间(vruntime)的概念。vruntime记录了一个可执行进程到当前时刻为止执行的总时间（需要以进程总数n进行归一化，并且根据进程的优先级进行加权）。根据vruntime的定义可以知道，vruntime越大，说明该进程运行的越久，所以被调度的可能性就越小。所以我们的调度算法就是每次选择 vruntime 值最小的进程进行调度，内核中使用红黑树可以方便的得到 vruntime 值最小的进程。至于每个进程如何更新自己的 vruntime ？内核中是按照如下方式来更新的： <code>vruntime +=  delta * NICE_0_LOAD/ se.weight</code>；其中：<br><code>NICE_0_LOAD</code> 是个定值，及系统默认的进程的权值；se.weight是当前进程的权重(优先级越高，权重越大)；<br>delta 是当前进程运行的时间；我们可以得出这么个关系：vruntime 与delta 成正比，即当前运行时间越长 vruntime 增长越快<br> vruntime 与 se.weight 成反比，即权重越大 vunruntime 增长越慢。简单来说，一个进程的优先级越高，而且该进程运行的时间越少，则该进程的 vruntime 就越小，该进程被调度的可能性就越高。</p>
+<h4 id="运行时长"><a href="#运行时长" class="headerlink" title="运行时长"></a>运行时长</h4><p>CFS 的运行时间是有当前系统中所有可调度进程的优先级的比重来确定的，假如现在进程中有三个可调度进程A、B、C，它们的优先级分别为5,10,15，则它们的时间片分别为5/30，10/30，15/30。而不是由自己的时间片计算得来的，这样的话，优先级为1，2的两个进程与优先级为50,100的两个进程分的时间片是相同的。简单来说，CFS采用的所有进程优先级的比重来计算每个进程的时间片的，是相对的而不是绝对的。</p>
+<h3 id="Linux-进程组与-Cgroups"><a href="#Linux-进程组与-Cgroups" class="headerlink" title="Linux 进程组与 Cgroups"></a>Linux 进程组与 Cgroups</h3><p>Cgroups是control groups的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组（process groups）所使用的物理资源（如：cpu,memory,IO等等）的机制。最初由google的工程师提出，后来被整合进Linux内核。也是目前轻量级虚拟化技术 lxc （linux container）的基础之一。</p>
+<p>Cgroups最初的目标是为资源管理提供的一个统一的框架，既整合现有的cpuset等子系统，也为未来开发新的子系统提供接口。现在的cgroups适用于多种应用场景，从单个进程的资源控制，到实现操作系统层次的虚拟化（OS Level Virtualization）。Cgroups提供了以下功能：</p>
+<ul>
+<li>限制进程组可以使用的资源数量（Resource limiting ）。比如：memory子系统可以为进程组设定一个memory使用上限，一旦进程组使用的内存达到限额再申请内存，就会出发OOM（out of memory）。</li>
+<li>进程组的优先级控制（Prioritization ）。比如：可以使用cpu子系统为某个进程组分配特定cpu share。</li>
+<li>记录进程组使用的资源数量（Accounting ）。比如：可以使用cpuacct子系统记录某个进程组使用的cpu时间</li>
+<li>进程组隔离（Isolation）。比如：使用ns子系统可以使不同的进程组使用不同的namespace，以达到隔离的目的，不同的进程组有各自的进程、网络、文件系统挂载空间。</li>
+<li>进程组控制（Control）。比如：使用freezer子系统可以将进程组挂起和恢复。</li>
+</ul>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li>任务（task）。在 cgroups 中，任务就是系统的一个进程。</li>
+<li>控制族群（control group）。控制族群就是一组按照某种标准划分的进程。Cgroups 中的资源控制都是以控制族群为单位实现。一个进程可以加入到某个控制族群，也从一个进程组迁移到另一个控制族群。一个进程组的进程可以使用 cgroups 以控制族群为单位分配的资源，同时受到 cgroups 以控制族群为单位设定的限制。</li>
+<li>层级（hierarchy）。控制族群可以组织成 hierarchical 的形式，既一颗控制族群树。控制族群树上的子节点控制族群是父节点控制族群的孩子，继承父控制族群的特定的属性。</li>
+<li>子系统（subsytem）。一个子系统就是一个资源控制器，比如 cpu 子系统就是控制 cpu 时间分配的一个控制器。子系统必须附加（attach）到一个层级上才能起作用，一个子系统附加到某个层级以后，这个层级上的所有控制族群都受到这个子系统的控制。</li>
+</ul>
+<h4 id="cgroups-在-Android-中的应用"><a href="#cgroups-在-Android-中的应用" class="headerlink" title="cgroups 在 Android 中的应用"></a>cgroups 在 Android 中的应用</h4><p>Android中关于 cpu/cpuset/schedtune 三个子系统的应用都是基于进程优先级的。AMS(ActivityManagerService) 和 PMS(PackageManagerService) 等通过 Process 设置进程优先级、调度策略等；android/osProcess JNI通过调用libcutils.so/libutils.so执行getpriority/setpriority/sched_setscheduler/sched_getschedler系统调用或者直接操作CGroup文件节点以达到设置优先级，限制进程CPU资源的目的。</p>
+<ul>
+<li>cpu，这个子系统使用调度程序提供对 CPU 的 cgroup 任务访问，连接在 Android 系统的 /dev/cpuctl 层级结构上。</li>
+<li>cpuset，这个子系统为 cgroup 中的任务分配独立 CPU（在多核系统）和内存节点，连接在 Android 系统的 /dev/cpuset 层级结构上。</li>
+<li>schedtune，是ARM/Linaro为了EAS新增的一个子系统，主要用来控制进程调度选择CPU以及boost触发，连接在 Android 系统的 /dev/stune 层级结构上。</li>
+</ul>
+<p>Android 中在从设置进程优先级到最后映射到不同 cgroups 下的过程，有兴趣的可以参考 <a href="http://blog.csdn.net/omnispace/article/details/73320945" target="_blank" rel="noopener">Android中关于cpu/cpuset/schedtune的应用</a> 这篇文章。我们这里以 cpu 子系统为例介绍一下再 CPU 子系统下是如何控制不同 cgroup 对 CPU 资源的访问。</p>
+<h5 id="CPU-子系统"><a href="#CPU-子系统" class="headerlink" title="CPU 子系统"></a>CPU 子系统</h5><p>CPU 子系统连接的 /dev/cpuctl 层级结构下有两个 cgroup，分别是</p>
+<ul>
+<li><code>/</code>，对应到 Android 的前台进程组。</li>
+<li><code>/bg_non_interactive</code>，对应到 Android 的后台进程组。</li>
+</ul>
+<p>在 cgroup 下定义了一些参数，来控制不同的 cgroup 在使用 cpu 资源时的配置：</p>
+<ul>
+<li><code>cpu.shares</code>：保存了整数值，用来设置 cgroup 分组任务获得 CPU 时间的相对值。</li>
+<li><code>cpu.rt_runtime_us</code>：主要用来设置 cgroup 获得 CPU 资源的周期，单位为微妙。</li>
+<li><code>cpu.rt_period_us</code>：主要是用来设置 cgroup 中的任务可以最长获得 CPU 资源的时间，单位为微秒。</li>
+</ul>
+<p>通过下面的数据我们可以看到，前台进程组和后台进程组的 <code>cpu.share</code> 值相比接近于 20:1，也就是说前台进程组中的应用可以利用 95% 的 CPU，而处于后台进程组中的应用则只能获得 5% 的 CPU 利用率。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.shares</div><div class="line">1024</div><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/bg_non_interactive/cpu.shares</div><div class="line">52</div></pre></td></tr></table></figure>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-165309@2x.png" alt=""></p>
+<p>同样我们也可查看 <code>cpu.rt_period_us</code> 与 <code>cpu.rt_runtime_us</code> 的时间对比：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.rt_period_us</div><div class="line">1000000</div><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.rt_runtime_us                                          </div><div class="line">800000</div></pre></td></tr></table></figure>
+<p>即单个逻辑CPU下每一秒内可以获得0.8秒的执行时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/bg_non_interactive/cpu.rt_period_us</div><div class="line">1000000</div><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us</div><div class="line">700000</div></pre></td></tr></table></figure>
+<p>即单个逻辑CPU下每一秒内可以获得0.7秒的执行时间。</p>
+<blockquote>
+<p>PS: 最长的获取CPU资源时间取决于逻辑CPU的数量。比如 <code>cpu.rt_runtime_us</code> 设置为200000（0.2秒）， <code>cpu.rt_period_us</code> 设置为1000000（1秒）。在单个逻辑CPU上的获得时间为每秒为0.2秒。 2个逻辑CPU，获得的时间则是0.4秒。</p>
+</blockquote>
+<h4 id="SchedPolicy"><a href="#SchedPolicy" class="headerlink" title="SchedPolicy"></a>SchedPolicy</h4><p>Android 底层对进程分组的操作最后是通过 <code>sched_policy.c</code> 文件中的 <code>set_sched_policy(int tid, SchedPolicy policy)</code> 和 <code>set_cpuset_policy(int tid, SchedPolicy policy)</code> 函数添加到对应的进程组的，调用这两个函数的传递的 <code>SchedPolicy</code> 定义在 <code>sched_policy.h</code> 中，定义不同的调度策略：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Keep in sync with THREAD_GROUP_* in frameworks/base/core/java/android/os/Process.java */</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123;</div><div class="line">    SP_DEFAULT    = <span class="number">-1</span>,</div><div class="line">    SP_BACKGROUND = <span class="number">0</span>,</div><div class="line">    SP_FOREGROUND = <span class="number">1</span>,</div><div class="line">    SP_SYSTEM     = <span class="number">2</span>,  <span class="comment">// can't be used with set_sched_policy()</span></div><div class="line">    SP_AUDIO_APP  = <span class="number">3</span>,</div><div class="line">    SP_AUDIO_SYS  = <span class="number">4</span>,</div><div class="line">    SP_TOP_APP    = <span class="number">5</span>,</div><div class="line">    SP_CNT,</div><div class="line">    SP_MAX        = SP_CNT - <span class="number">1</span>,</div><div class="line">    SP_SYSTEM_DEFAULT = SP_FOREGROUND,</div><div class="line">&#125; SchedPolicy;</div></pre></td></tr></table></figure>
+<p>在 <code>set_sched_policy</code> 中根据不同的 <code>SchedPolicy</code> 为进程找到不同的进程组，并添加进去。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 根据不同调度策略选择不同的进程组</span></div><div class="line"><span class="keyword">int</span> fd = <span class="number">-1</span>;</div><div class="line"><span class="keyword">int</span> boost_fd = <span class="number">-1</span>;</div><div class="line"><span class="keyword">switch</span> (policy) &#123;</div><div class="line"><span class="keyword">case</span> SP_BACKGROUND:</div><div class="line">    fd = bg_cgroup_fd;</div><div class="line">    boost_fd = bg_schedboost_fd;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> SP_FOREGROUND:</div><div class="line"><span class="keyword">case</span> SP_AUDIO_APP:</div><div class="line"><span class="keyword">case</span> SP_AUDIO_SYS:</div><div class="line">    fd = fg_cgroup_fd;</div><div class="line">    boost_fd = fg_schedboost_fd;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> SP_TOP_APP:</div><div class="line">    fd = fg_cgroup_fd;</div><div class="line">    boost_fd = ta_schedboost_fd;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line"><span class="keyword">default</span>:</div><div class="line">    fd = <span class="number">-1</span>;</div><div class="line">    boost_fd = <span class="number">-1</span>;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 添加到对应的进程组</span></div><div class="line"><span class="keyword">if</span> (add_tid_to_cgroup(tid, fd) != <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (errno != ESRCH &amp;&amp; errno != ENOENT)</div><div class="line">        <span class="keyword">return</span> -errno;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><code>set_cpuset_policy</code> 也有类似的逻辑，这里就不重复列举了，有兴趣的可以去看看源码。</p>
+</blockquote>
+<p>在初始化方法中，可以看到对应不同的进程组和映射到不同的 cgroups 层级架构：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">static void __initialize(void) &#123;</div><div class="line">    char* filename;</div><div class="line">    if (!access("/dev/cpuctl/tasks", F_OK)) &#123;</div><div class="line">        __sys_supports_schedgroups = 1;</div><div class="line"></div><div class="line">        filename = "/dev/cpuctl/tasks";</div><div class="line">        fg_cgroup_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        if (fg_cgroup_fd &lt; 0) &#123;</div><div class="line">            SLOGE("open of %s failed: %s</div><div class="line">", filename, strerror(errno));</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        filename = "/dev/cpuctl/bg_non_interactive/tasks";</div><div class="line">        bg_cgroup_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        if (bg_cgroup_fd &lt; 0) &#123;</div><div class="line">            SLOGE("open of %s failed: %s</div><div class="line">", filename, strerror(errno));</div><div class="line">        &#125;</div><div class="line">    &#125; else &#123;</div><div class="line">        __sys_supports_schedgroups = 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">#ifdef USE_CPUSETS</div><div class="line">    if (!access("/dev/cpuset/tasks", F_OK)) &#123;</div><div class="line"></div><div class="line">        filename = "/dev/cpuset/foreground/tasks";</div><div class="line">        fg_cpuset_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        filename = "/dev/cpuset/background/tasks";</div><div class="line">        bg_cpuset_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        filename = "/dev/cpuset/system-background/tasks";</div><div class="line">        system_bg_cpuset_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        filename = "/dev/cpuset/top-app/tasks";</div><div class="line">        ta_cpuset_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line"></div><div class="line">#ifdef USE_SCHEDBOOST</div><div class="line">        filename = "/dev/stune/top-app/tasks";</div><div class="line">        ta_schedboost_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        filename = "/dev/stune/foreground/tasks";</div><div class="line">        fg_schedboost_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">        filename = "/dev/stune/background/tasks";</div><div class="line">        bg_schedboost_fd = open(filename, O_WRONLY | O_CLOEXEC);</div><div class="line">#endif</div><div class="line">    &#125;</div><div class="line">#endif</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再回到上面 <code>SchedPolicy</code>  的定义，可以看到 <code>Keep in sync with THREAD_GROUP_* in frameworks/base/core/java/android/os/Process.java</code> 这样的一句注释，看一眼这里 <code>Process.java</code> 对线程组的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Default thread group -</div><div class="line"> * has meaning with setProcessGroup() only, cannot be used with setThreadGroup().</div><div class="line"> * When used with setProcessGroup(), the group of each thread in the process</div><div class="line"> * is conditionally changed based on that thread's current priority, as follows:</div><div class="line"> * threads with priority numerically less than THREAD_PRIORITY_BACKGROUND</div><div class="line"> * are moved to foreground thread group.  All other threads are left unchanged.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_DEFAULT = -<span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Background thread group - All threads in</div><div class="line"> * this group are scheduled with a reduced share of the CPU.</div><div class="line"> * Value is same as constant SP_BACKGROUND of enum SchedPolicy.</div><div class="line"> * FIXME rename to THREAD_GROUP_BACKGROUND.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_BG_NONINTERACTIVE = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Foreground thread group - All threads in</div><div class="line"> * this group are scheduled with a normal share of the CPU.</div><div class="line"> * Value is same as constant SP_FOREGROUND of enum SchedPolicy.</div><div class="line"> * Not used at this level.</div><div class="line"> **/</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_FOREGROUND = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * System thread group.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_SYSTEM = <span class="number">2</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Application audio thread group.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_AUDIO_APP = <span class="number">3</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * System audio thread group.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_AUDIO_SYS = <span class="number">4</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Thread group for top foreground app.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_GROUP_TOP_APP = <span class="number">5</span>;</div></pre></td></tr></table></figure>
+<p>可以看到两组定义之间明确的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>Process 进程组</th>
+<th>SchedPolicy 进程组</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>THREAD_GROUP_DEFAULT</code></td>
+<td><code>SP_DEFAULT</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_BG_NONINTERACTIVE</code></td>
+<td><code>SP_BACKGROUND</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_FOREGROUND</code></td>
+<td><code>SP_FOREGROUND</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_SYSTEM</code></td>
+<td><code>SP_SYSTEM</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_AUDIO_APP</code></td>
+<td><code>SP_AUDIO_APP</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_AUDIO_SYS</code></td>
+<td><code>SP_AUDIO_SYS</code></td>
+</tr>
+<tr>
+<td><code>THREAD_GROUP_TOP_APP</code></td>
+<td><code>SP_TOP_APP</code></td>
+</tr>
+</tbody>
+</table>
+<p>至于这里的对应关系是怎么传递对接上的，会在后面进行解释。</p>
+<h2 id="Android-的线程调度"><a href="#Android-的线程调度" class="headerlink" title="Android 的线程调度"></a>Android 的线程调度</h2><h3 id="Android-进程生命周期与ADJ"><a href="#Android-进程生命周期与ADJ" class="headerlink" title="Android 进程生命周期与ADJ"></a>Android 进程生命周期与ADJ</h3><p>Android 开发者应该都知道在系统中进程重要性的划分：</p>
+<ul>
+<li>前台进程(Foreground process)</li>
+<li>可见进程(Visible process)</li>
+<li>服务进程(Service process)</li>
+<li>后台进程(Background process)</li>
+<li>空进程(Empty process)</li>
+</ul>
+<p>相信大家都很清楚，这里就不做过多的介绍了，不过对于进程重要性是通过哪些操作发生变更的，以及和我们前面讲的 Linux 进程分组又是怎么关联和映射上的，是下面要讲述的重点。</p>
+<h4 id="Android-进程优先级的相关概念"><a href="#Android-进程优先级的相关概念" class="headerlink" title="Android 进程优先级的相关概念"></a>Android 进程优先级的相关概念</h4><h4 id="oom-score-adj-级别"><a href="#oom-score-adj-级别" class="headerlink" title="oom_score_adj 级别"></a><code>oom_score_adj</code> 级别</h4><p>对于每一个运行中的进程，Linux 内核都通过 proc 文件系统暴露 <code>/proc/[pid]/oom_score_adj</code> 这样一个文件来允许其他程序修改指定进程的优先级，这个文件允许的值的范围是：-1000 ~ +1001之间。值越小，表示进程越重要。当内存非常紧张时，系统便会遍历所有进程，以确定哪个进程需要被杀死以回收内存，此时便会读取 <code>oom_score_adj</code> 这个文件的值。</p>
+<blockquote>
+<p>PS：在Linux 2.6.36之前的版本中，Linux 提供调整优先级的文件是 <code>/proc/[pid]/oom_adj</code> 。这个文件允许的值的范围是-17 ~ +15之间。数值越小表示进程越重要。 这个文件在新版的 Linux 中已经废弃。但你仍然可以使用这个文件，当你修改这个文件的时候，内核会直接进行换算，将结果反映到 <code>oom_score_adj</code> 这个文件上。<br>Android早期版本的实现中也是依赖 <code>oom_adj</code> 这个文件。但是在新版本中，已经切换到使用 <code>oom_score_adj</code> 这个文件。</p>
+</blockquote>
+<p>为了便于管理，ProcessList.java中预定义了 <code>oom_score_adj</code> 的可能取值，这里的预定义值也是对应用进程的一种分类。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-180054.png" alt=""></p>
+<p>Lowmemorykiller 根据当前可用内存情况来进行进程释放，总设计了6个级别，即上表中“解释列”加粗的行，即 Lowmemorykiller 的杀进程的6档，如下：</p>
+<ul>
+<li><code>CACHED_APP_MAX_ADJ</code></li>
+<li><code>CACHED_APP_MIN_ADJ</code></li>
+<li><code>BACKUP_APP_ADJ</code></li>
+<li><code>PERCEPTIBLE_APP_ADJ</code></li>
+<li><code>VISIBLE_APP_ADJ</code></li>
+<li><code>FOREGROUND_APP_ADJ</code></li>
+</ul>
+<p>系统内存从很宽裕到不足，Lowmemorykiller 也会相应地从 <code>CACHED_APP_MAX_ADJ</code> (第1档)开始杀进程，如果内存还不足，那么会杀 <code>CACHED_APP_MIN_ADJ</code> (第2档)，不断深入，直到满足内存阈值条件。</p>
+<p>ProcessRecord中下面这些属性反应了 <code>oom_score_adj</code> 的值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> maxAdj;                 <span class="comment">// Maximum OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> curRawAdj;              <span class="comment">// Current OOM unlimited adjustment for this process</span></div><div class="line"><span class="keyword">int</span> setRawAdj;              <span class="comment">// Last set OOM unlimited adjustment for this process</span></div><div class="line"><span class="keyword">int</span> curAdj;                 <span class="comment">// Current OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> setAdj;                 <span class="comment">// Last set OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> verifiedAdj;            <span class="comment">// The last adjustment that was verified as actually being set</span></div></pre></td></tr></table></figure>
+<h4 id="Process-State"><a href="#Process-State" class="headerlink" title="Process State"></a>Process State</h4><p>对应的在 ActivityManager 重定义了 process_state 级别的划分，Android 系统会在修改进程状态的同时更新 <code>oom_score_adj</code> 的分级：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2018-03-15-18-03-57.png" alt=""></p>
+<p>在 ProcessRecord 中，记录了和进程状态相关的属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> curProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Currently computed process state</span></div><div class="line"><span class="keyword">int</span> repProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Last reported process state</span></div><div class="line"><span class="keyword">int</span> setProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Last set process state in process tracker</span></div><div class="line"><span class="keyword">int</span> pssProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Currently requesting pss for</span></div></pre></td></tr></table></figure>
+<h4 id="Schedule-Group"><a href="#Schedule-Group" class="headerlink" title="Schedule Group"></a>Schedule Group</h4><p>对应到底层进程分组，除了上面提到的 <code>Process.java</code> 定义的不同线程组的定义，同时还为 <code>Activity manager</code> 定义了一套类似的调度分组，和之前的线程分组定义也存在对应关系：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Activity manager's version of Process.THREAD_GROUP_BG_NONINTERACTIVE</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SCHED_GROUP_BACKGROUND = <span class="number">0</span>;</div><div class="line"><span class="comment">// Activity manager's version of Process.THREAD_GROUP_DEFAULT</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SCHED_GROUP_DEFAULT = <span class="number">1</span>;</div><div class="line"><span class="comment">// Activity manager's version of Process.THREAD_GROUP_TOP_APP</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SCHED_GROUP_TOP_APP = <span class="number">2</span>;</div><div class="line"><span class="comment">// Activity manager's version of Process.THREAD_GROUP_TOP_APP</span></div><div class="line"><span class="comment">// Disambiguate between actual top app and processes bound to the top app</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SCHED_GROUP_TOP_APP_BOUND = <span class="number">3</span>;</div></pre></td></tr></table></figure>
+<p>在 ProcessRecord 中，也记录了和调度组相关的属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> curSchedGroup;          <span class="comment">// Currently desired scheduling class</span></div><div class="line"><span class="keyword">int</span> setSchedGroup;          <span class="comment">// Last set to background scheduling class</span></div></pre></td></tr></table></figure>
+<h3 id="Android-进程优先级的变化"><a href="#Android-进程优先级的变化" class="headerlink" title="Android 进程优先级的变化"></a>Android 进程优先级的变化</h3><p>我们知道影响 Android 应用进程优先级变化的是根据 Android<br>应用组件的生命周期变化相关。<a href="http://gityuan.com/2016/08/07/android-adj/" target="_blank" rel="noopener">Android进程调度之adj算法
+</a> 里面罗列了所有会触发进程状态发生变化的事件，主要包括：</p>
+<h4 id="Actvity"><a href="#Actvity" class="headerlink" title="Actvity"></a>Actvity</h4><ul>
+<li>ActivityStackSupervisor.realStartActivityLocked: 启动Activity</li>
+<li>ActivityStack.resumeTopActivityInnerLocked: 恢复栈顶Activity</li>
+<li>ActivityStack.finishCurrentActivityLocked: 结束当前Activity</li>
+<li>ActivityStack.destroyActivityLocked: 摧毁当前Activity</li>
+</ul>
+<h4 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h4><p>位于ActiveServices.java</p>
+<ul>
+<li>realStartServiceLocked: 启动服务</li>
+<li>bindServiceLocked: 绑定服务(只更新当前app)</li>
+<li>unbindServiceLocked: 解绑服务 (只更新当前app)</li>
+<li>bringDownServiceLocked: 结束服务 (只更新当前app)</li>
+<li>sendServiceArgsLocked: 在bringup或则cleanup服务过程调用 (只更新当前app)</li>
+</ul>
+<h4 id="broadcast"><a href="#broadcast" class="headerlink" title="broadcast"></a>broadcast</h4><ul>
+<li>BQ.processNextBroadcast: 处理下一个广播</li>
+<li>BQ.processCurBroadcastLocked: 处理当前广播</li>
+<li>BQ.deliverToRegisteredReceiverLocked: 分发已注册的广播 (只更新当前app)</li>
+</ul>
+<h4 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h4><ul>
+<li>AMS.removeContentProvider: 移除provider</li>
+<li>AMS.publishContentProviders: 发布provider (只更新当前app)</li>
+<li>AMS.getContentProviderImpl: 获取provider (只更新当前app)</li>
+</ul>
+<h4 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h4><p>位于 <code>ActivityManagerService.java</code></p>
+<ul>
+<li>setSystemProcess: 创建并设置系统进程</li>
+<li>addAppLocked: 创建persistent进程</li>
+<li>attachApplicationLocked: 进程创建后attach到system_server的过程;</li>
+<li>trimApplications: 清除没有使用app</li>
+<li>appDiedLocked: 进程死亡</li>
+<li>killAllBackgroundProcesses: 杀死所有后台进程.即(ADJ&gt;9或removed=true的普通进程)</li>
+<li>killPackageProcessesLocked: 以包名的形式 杀掉相关进程;</li>
+</ul>
+<p>这些事件都会直接或间接调用到 <code>ActivityManagerService.java</code> 中的 <code>updateOomAdjLocked</code> 方法来更新进程的优先级，<code>updateOomAdjLocked</code> 先通过 <code>computeOomAdjLocked</code> 方法负责计算进程的优先级，再通过调用 <code>applyOomAdjLocked</code> 应用进程的优先级。</p>
+<h4 id="computeOomAdjLocked"><a href="#computeOomAdjLocked" class="headerlink" title="computeOomAdjLocked"></a>computeOomAdjLocked</h4><p><code>computeOomAdjLocked</code> 方法负责计算进程的优先级，总计约700行，执行流程比较清晰，步骤如下，由于代码有点多这里就不贴了，想仔细研究的可以比着系统源码看：</p>
+<h5 id="空进程判断"><a href="#空进程判断" class="headerlink" title="空进程判断"></a>空进程判断</h5><p>空进程中没有任何组件，因此主线程也为null（ProcessRecord.thread描述了应用进程的主线程）。</p>
+<p>如果是空进程，则不需要再做后面的计算了。<code>curSchedGroup</code> 直接设置为<br><code>ProcessList.SCHED_GROUP_BACKGROUND</code> 进程调度组即可。</p>
+<h5 id="app-maxAdj-lt-ProcessList-FOREGROUND-APP-ADJ-的情况"><a href="#app-maxAdj-lt-ProcessList-FOREGROUND-APP-ADJ-的情况" class="headerlink" title="app.maxAdj &lt;= ProcessList.FOREGROUND_APP_ADJ 的情况"></a><code>app.maxAdj &lt;= ProcessList.FOREGROUND_APP_ADJ</code> 的情况</h5><p>系统进程或者Persistent进程会通过设置maxAdj来保持其较高的优先级，对于这类进程不用按照普通进程的算法进行计算，直接按照maxAdj的值设置即可，<code>curSchedGroup</code> 设置为<code>THREAD_GROUP_DEFAULT</code> 进程调度组。</p>
+<h5 id="是否有前台优先级"><a href="#是否有前台优先级" class="headerlink" title="是否有前台优先级"></a>是否有前台优先级</h5><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>schedGroup</th>
+<th>adj</th>
+<th>procState </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>当app是当前展示的app</td>
+<td><code>SCHED_GROUP_TOP_APP</code></td>
+<td><code>FOREGROUND_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_CUR_TOP</code> </td>
+</tr>
+<tr>
+<td>当instrumentation不为空时</td>
+<td><code>SCHED_GROUP_TOP_APP</code></td>
+<td><code>FOREGROUND_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_FOREGROUND_SERVICE</code> </td>
+</tr>
+<tr>
+<td>当进程存在正在接收的broadcastrecevier</td>
+<td>是否在前台广播组 ? <code>SCHED_GROUP_DEFAULT</code> : <code>SCHED_GROUP_BACKGROUND</code></td>
+<td><code>FOREGROUND_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_RECEIVER</code></td>
+</tr>
+<tr>
+<td>当进程存在正在执行的service</td>
+<td>是否前台服务 ? <code>SCHED_GROUP_DEFAULT</code> : <code>SCHED_GROUP_BACKGROUND</code></td>
+<td><code>FOREGROUND_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_SERVICE</code></td>
+</tr>
+<tr>
+<td>以上条件都不符合</td>
+<td><code>SCHED_GROUP_BACKGROUND</code></td>
+<td>adj=cachedAdj(&gt;=<code>FOREGROUND_APP_ADJ</code>)</td>
+<td><code>PROCESS_STATE_CACHED_EMPTY</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>PS：Instrumentation 应用是辅助测试用的，正常运行的系统中不用考虑这种应用。</p>
+</blockquote>
+<h5 id="非前台-Activity"><a href="#非前台-Activity" class="headerlink" title="非前台 Activity"></a>非前台 Activity</h5><p>遍历进程中的所有Activity，找出其中优先级最高的设置为进程的优先级。</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>schedGroup</th>
+<th>adj</th>
+<th>procState </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activity可见</td>
+<td><code>SCHED_GROUP_DEFAULT</code></td>
+<td>&lt;=<code>VISIBLE_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_CUR_TOP</code></td>
+</tr>
+<tr>
+<td>activity正在 pausing 或者已经 pause</td>
+<td><code>SCHED_GROUP_DEFAULT</code></td>
+<td>&lt;=<code>PERCEPTIBLE_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_CUR_TOP</code></td>
+</tr>
+<tr>
+<td>activity正在 stoping</td>
+<td>-</td>
+<td>&lt;=<code>PERCEPTIBLE_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_LAST_ACTIVITY</code></td>
+</tr>
+<tr>
+<td>以上都不满足</td>
+<td>-</td>
+<td>-</td>
+<td>&lt;=<code>PROCESS_STATE_CACHED_ACTIVITY</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="是否有前台服务"><a href="#是否有前台服务" class="headerlink" title="是否有前台服务"></a>是否有前台服务</h5><p>通过 <code>startForeground</code> 启动的 Service 被认为是前台 Service。</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>schedGroup</th>
+<th>adj</th>
+<th>procState </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存在前台service</td>
+<td><code>SCHED_GROUP_DEFAULT</code></td>
+<td><code>PERCEPTIBLE_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_FOREGROUND_SERVICE</code></td>
+</tr>
+<tr>
+<td>存在 Overlay UI</td>
+<td><code>SCHED_GROUP_DEFAULT</code></td>
+<td><code>PERCEPTIBLE_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_IMPORTANT_FOREGROUND</code></td>
+</tr>
+<tr>
+<td>强制前台</td>
+<td><code>SCHED_GROUP_DEFAULT</code></td>
+<td><code>PERCEPTIBLE_APP_ADJ</code></td>
+<td><code>PROCESS_STATE_TRANSIENT_BACKGROUND</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="是否特殊进程"><a href="#是否特殊进程" class="headerlink" title="是否特殊进程"></a>是否特殊进程</h5><p>特殊类型的进程包括：重量级进程，桌面进程，前一个应用进程，正在执行备份的进程。</p>
+<ul>
+<li>重量级进程是指那些通过Manifest指明不能保存状态的应用进程；</li>
+<li>桌面进程是指 Android 上的 Launcher；</li>
+<li>“前一个应用”是指：在启动新的Activity时，如果新启动的Activity是属于一个新的进程的，那么当前即将被stop的Activity所在的进程便会成为“前一个应用”进程；</li>
+<li>备份进程，进程是否正在进行备份。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>schedGroup</th>
+<th>adj</th>
+<th>procState </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重量级进程</td>
+<td>&gt;=<code>SCHED_GROUP_BACKGROUND</code></td>
+<td>&lt;=<code>HEAVY_WEIGHT_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_HEAVY_WEIGHT</code></td>
+</tr>
+<tr>
+<td>桌面进程</td>
+<td>&gt;=<code>SCHED_GROUP_BACKGROUND</code></td>
+<td>&lt;=<code>HOME_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_HOME</code></td>
+</tr>
+<tr>
+<td>“前一个应用”进程</td>
+<td>&gt;=<code>SCHED_GROUP_BACKGROUND</code></td>
+<td>&lt;=<code>PREVIOUS_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_LAST_ACTIVITY</code></td>
+</tr>
+<tr>
+<td>备份进程</td>
+<td>-</td>
+<td>&lt;=<code>BACKUP_APP_ADJ</code></td>
+<td>&lt;=<code>PROCESS_STATE_BACKUP</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="所有-Service-及连接的-Client"><a href="#所有-Service-及连接的-Client" class="headerlink" title="所有 Service 及连接的 Client"></a>所有 Service 及连接的 Client</h5><p>在当前进程满足 <code>adj &gt; ProcessList.FOREGROUND_APP_ADJ
+                        || schedGroup == ProcessList.SCHED_GROUP_BACKGROUND
+                        || procState &gt; ActivityManager.PROCESS_STATE_TOP</code> 的状态下遍历所有的Service，并且还需要遍历每一个Service的所有连接。然后根据连接的关系确认客户端进程的优先级来确定当前进程的优先级。</p>
+<p>这里详细记录了在 bindService 过程中，传递的不同的 FLAG 对于 Service 进程和 Client 进程关联计算 adj 级别。由于涉及的分支判断较多，如果想要仔细研究，最好对着代码一一查看。这里只介绍整个过程中涉及到进程调度组发生的变化：</p>
+<ul>
+<li><code>client.curSchedGroup</code> &gt; <code>schedGroup</code></li>
+</ul>
+<p>在某个 client 进行 bindService 过程中，没有设置:</p>
+<table>
+<thead>
+<tr>
+<th>FLAG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BIND_WAIVE_PRIORITY</code></td>
+</tr>
+<tr>
+<td><code>BIND_NOT_FOREGROUND</code></td>
+</tr>
+<tr>
+<td><code>BIND_IMPORTANT_BACKGROUND</code></td>
+</tr>
+</tbody>
+</table>
+<p>且 client 的 curSchedGroup 大于当前进程的 schedGroup，则需要重新设置当前进程的调度策略；此时，如果有设置 <code>BIND_IMPORTANT</code> 这个 flag，则赋值 <code>client.curSchedGroup</code> 给 <code>schedGroup</code>，否则则将 <code>schedGroup</code> 设置为 <code>SCHED_GROUP_DEFAULT</code>。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android-sched-thread-1-1.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ((cr.flags&amp;Context.BIND_WAIVE_PRIORITY) == <span class="number">0</span>) &#123;</div><div class="line">...</div><div class="line">	<span class="keyword">if</span> ((cr.flags&amp;Context.BIND_NOT_FOREGROUND) == <span class="number">0</span>) &#123;</div><div class="line">	    <span class="comment">// This will treat important bound services identically to</span></div><div class="line">	    <span class="comment">// the top app, which may behave differently than generic</span></div><div class="line">	    <span class="comment">// foreground work.</span></div><div class="line">	    <span class="keyword">if</span> (client.curSchedGroup &gt; schedGroup) &#123;</div><div class="line">	        <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_IMPORTANT) != <span class="number">0</span>) &#123;</div><div class="line">	            schedGroup = client.curSchedGroup;</div><div class="line">	        &#125; <span class="keyword">else</span> &#123;</div><div class="line">	            schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">	        &#125;</div><div class="line">	    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><code>BIND_ADJUST_WITH_ACTIVITY</code></li>
+</ul>
+<p>如果 client 有设置 <code>Context.BIND_ADJUST_WITH_ACTIVITY</code> 且 client 进程存在前台 Activity 并且 <code>adj &gt; ProcessList.FOREGROUND_APP_ADJ</code>，则根据 client 是否设置 <code>BIND_IMPORTANT</code> flag 来分别设置当前进程的调度策略。</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android-sched-thread-2.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ((cr.flags&amp;Context.BIND_WAIVE_PRIORITY) == <span class="number">0</span>) &#123;</div><div class="line">...</div><div class="line"></div><div class="line">	<span class="keyword">if</span> ((cr.flags&amp;Context.BIND_ADJUST_WITH_ACTIVITY) != <span class="number">0</span>) &#123;</div><div class="line">		<span class="comment">// client 进程存在前台 Activity 并且 adj &gt; ProcessList.FOREGROUND_APP_ADJ</span></div><div class="line">	    <span class="keyword">if</span> (a != <span class="keyword">null</span> &amp;&amp; adj &gt; ProcessList.FOREGROUND_APP_ADJ &amp;&amp;</div><div class="line">	        (a.visible || a.state == ActivityState.RESUMED ||</div><div class="line">	         a.state == ActivityState.PAUSING)) &#123;</div><div class="line">	        adj = ProcessList.FOREGROUND_APP_ADJ;</div><div class="line">	        <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_NOT_FOREGROUND) == <span class="number">0</span>) &#123;</div><div class="line">	            <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_IMPORTANT) != <span class="number">0</span>) &#123;</div><div class="line">	                schedGroup = ProcessList.SCHED_GROUP_TOP_APP_BOUND;</div><div class="line">	            &#125; <span class="keyword">else</span> &#123;</div><div class="line">	                schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">	            &#125;</div><div class="line">	        &#125;</div><div class="line">	        app.cached = <span class="keyword">false</span>;</div><div class="line">	        app.adjType = <span class="string">"service"</span>;</div><div class="line">	        app.adjTypeCode = ActivityManager.RunningAppProcessInfo</div><div class="line">	                .REASON_SERVICE_IN_USE;</div><div class="line">	        app.adjSource = a;</div><div class="line">	        app.adjSourceProcState = procState;</div><div class="line">	        app.adjTarget = s.name;</div><div class="line">	        <span class="keyword">if</span> (DEBUG_OOM_ADJ_REASON) Slog.d(TAG, <span class="string">"Raise to service w/activity: "</span></div><div class="line">	                + app);</div><div class="line">	    &#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>关于整计算过程，可以参考 <a href="http://gityuan.com/2016/08/07/android-adj/" target="_blank" rel="noopener">Android进程调度之adj算法</a> 里面的总结，不过根据不同的系统版本，会有稍许差异：</p>
+<ul>
+<li>当 service 已启动，则 procState&lt;= <code>PROCESS_STATE_SERVICE</code>；<ul>
+<li>当 service 在 30 分钟内活动过，则adj= <code>SERVICE_ADJ</code>,cached=false;</li>
+</ul>
+</li>
+<li>获取service所绑定的connections<ul>
+<li>当client与当前app同一个进程，则continue;</li>
+<li>当client进程的 ProcState &gt;= <code>PROCESS_STATE_CACHED_ACTIVITY</code>，则设置为空进程</li>
+<li>当进程存在显示的 ui，则将当前进程的 adj 和 ProcState 值赋予给 client 进程</li>
+<li>当不存在显示的 ui，且 service 上次活动时间距离现在超过30分钟，则只将当前进程的 adj 值赋予给 client 进程</li>
+<li>当前进程 adj &gt; client进程adj的情况<ul>
+<li>当 service 进程比较重要时，则设置adj &gt;= <code>PERSISTENT_SERVICE_ADJ</code></li>
+<li>当 client 进程 adj &lt; <code>PERCEPTIBLE_APP_ADJ</code>,且当前进程 adj &gt; <code>PERCEPTIBLE_APP_ADJ</code> 时，则设置 adj = <code>PERCEPTIBLE</code>;</li>
+<li>当 client 进程 adj &gt;= <code>PERCEPTIBLE_APP_ADJ</code> 时，则设置 adj = clientAdj</li>
+<li>否则，设置 adj &gt;= <code>VISIBLE_APP_ADJ</code>；</li>
+<li>若 client 进程不是 cache 进程，则当前进程也设置为非cache进程</li>
+</ul>
+</li>
+<li>当绑定的是前台进程的情况<ul>
+<li>当 client 进程状态为前台时，则设置 mayBeTop = true，并设置 client 进程 procState = <code>PROCESS_STATE_CACHED_EMPTY</code></li>
+<li>当 client 进程状态 &lt; <code>PROCESS_STATE_TOP</code> 的前提下：若绑定前台 service，则 clientProcState = <code>PROCESS_STATE_BOUND_FOREGROUND_SERVICE</code>；否则clientProcState = <code>PROCESS_STATE_IMPORTANT_FOREGROUND</code></li>
+</ul>
+</li>
+<li>当connections并没有绑定前台service时，则clientProcState &gt;= <code>PROCESS_STATE_IMPORTANT_BACKGROUND</code></li>
+<li>保证当前进程procState不会必client进程的procState大</li>
+</ul>
+</li>
+<li>当进程adj &gt; <code>FOREGROUND_APP_ADJ</code>，且 client 进程 activity 可见 或者resumed 或 正在暂停，则设置adj = <code>FOREGROUND_APP_ADJ</code></li>
+</ul>
+<h5 id="所有-ContentProvider-及连接的-client"><a href="#所有-ContentProvider-及连接的-client" class="headerlink" title="所有 ContentProvider 及连接的 client"></a>所有 ContentProvider 及连接的 client</h5><p>ContentProvider 的遍历和 Service 的遍历是类似的，在满足 <code>(adj &gt; ProcessList.FOREGROUND_APP_ADJ
+                 || schedGroup == Process.THREAD_GROUP_BG_NONINTERACTIVE
+                 || procState &gt; ActivityManager.PROCESS_STATE_TOP)</code> 的条件下进行两次循环遍，其中涉及到进程调度组发生变更的情况：</p>
+<ul>
+<li><code>client.curSchedGroup &gt; schedGroup</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (client.curSchedGroup &gt; schedGroup) &#123;</div><div class="line">    schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>provider 存在外部非framework 的进程依赖</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (cpr.hasExternalProcessHandles()) &#123;</div><div class="line">    <span class="keyword">if</span> (adj &gt; ProcessList.FOREGROUND_APP_ADJ) &#123;</div><div class="line">        adj = ProcessList.FOREGROUND_APP_ADJ;</div><div class="line">        schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">        app.cached = <span class="keyword">false</span>;</div><div class="line">        app.adjType = <span class="string">"ext-provider"</span>;</div><div class="line">        app.adjTarget = cpr.name;</div><div class="line">        <span class="keyword">if</span> (DEBUG_OOM_ADJ_REASON) Slog.d(TAG, <span class="string">"Raise to external provider: "</span> + app);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (procState &gt; ActivityManager.PROCESS_STATE_IMPORTANT_FOREGROUND) &#123;</div><div class="line">        procState = ActivityManager.PROCESS_STATE_IMPORTANT_FOREGROUND;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>20s之内有人使用过当前进程的 ContentProvider</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (app.lastProviderTime &gt; <span class="number">0</span> &amp;&amp;</div><div class="line">        (app.lastProviderTime+mConstants.CONTENT_PROVIDER_RETAIN_TIME) &gt; now) &#123;</div><div class="line">    <span class="keyword">if</span> (adj &gt; ProcessList.PREVIOUS_APP_ADJ) &#123;</div><div class="line">        adj = ProcessList.PREVIOUS_APP_ADJ;</div><div class="line">        schedGroup = ProcessList.SCHED_GROUP_BACKGROUND;</div><div class="line">        app.cached = <span class="keyword">false</span>;</div><div class="line">        app.adjType = <span class="string">"recent-provider"</span>;</div><div class="line">        <span class="keyword">if</span> (DEBUG_OOM_ADJ_REASON) Slog.d(TAG, <span class="string">"Raise to recent provider: "</span> + app);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (procState &gt; ActivityManager.PROCESS_STATE_LAST_ACTIVITY) &#123;</div><div class="line">        procState = ActivityManager.PROCESS_STATE_LAST_ACTIVITY;</div><div class="line">        app.adjType = <span class="string">"recent-provider"</span>;</div><div class="line">        <span class="keyword">if</span> (DEBUG_OOM_ADJ_REASON) Slog.d(TAG, <span class="string">"Raise to recent provider: "</span> + app);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>完整的 adj 的计算过程，依然请参考 <a href="http://gityuan.com/2016/08/07/android-adj/" target="_blank" rel="noopener">Android进程调度之adj算法</a> 或者源码：</p>
+<ul>
+<li>当client与当前app同一个进程，则continue;</li>
+<li>当client进程procState &gt;= <code>PROCESS_STATE_CACHED_ACTIVITY</code>，则把client进程设置成procState = <code>PROCESS_STATE_CACHED_EMPTY</code></li>
+<li>没有ui展示，则保证adj &gt;= <code>FOREGROUND_APP_ADJ</code></li>
+<li>当client进程状态= <code>PROCESS_STATE_TOP</code>(前台)时，则设置mayBeTop=true，并设置client进程procState=<code>PROCESS_STATE_CACHED_EMPTY</code>(空进程)</li>
+<li>当client进程状态 &lt; <code>PROCESS_STATE_TOP</code> 时，则 clientProcState = <code>PROCESS_STATE_BOUND_FOREGROUND_SERVICE</code>；</li>
+<li>procState 比clientProcState更大时，则取client端的状态值。</li>
+<li>当 contentprovider 存在外部进程依赖(非framework)时，则设置adj = <code>FOREGROUND_APP_ADJ</code>, procState = <code>PROCESS_STATE_IMPORTANT_FOREGROUND</code></li>
+<li>20s 之内有人使用过当前进程的 ContentProvider，如果 <code>adj &gt; ProcessList.PREVIOUS_APP_ADJ</code>，adj 设置为 <code>PREVIOUS_APP_ADJ</code>，schedGroup 设置为 <code>SCHED_GROUP_BACKGROUND</code>。</li>
+</ul>
+<h5 id="保存计算好的值"><a href="#保存计算好的值" class="headerlink" title="保存计算好的值"></a>保存计算好的值</h5><p>最后会进行一次 <code>adj</code> 和 <code>app.maxAdj</code> 的对比，如果 <code>adj &gt; app.maxAdj</code> 并且 <code>app.maxAdj &lt;= ProcessList.PERCEPTIBLE_APP_ADJ</code> 则将 schedGroup 设置为 <code>SCHED_GROUP_DEFAULT</code>, 然后保存之前计算的 adj、schedGroup 和 procState。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">app.curAdj = app.modifyRawOomAdj(adj);</div><div class="line">app.curSchedGroup = schedGroup;</div><div class="line">app.curProcState = procState;</div><div class="line">```              </div><div class="line"></div><div class="line">### Android 线程的优先级及变化</div><div class="line"></div><div class="line">Android 线程优先级的变化分为两种，一种是根据上面计算的进程优先级的变化，给 Android 线程带来的变化，另一种是开发者可以在代码中手动改变线程的优先级。</div><div class="line"></div><div class="line">#### 手动设置</div><div class="line"></div><div class="line">##### Java 线程优先级</div><div class="line"></div><div class="line">我们都知道，在利用 Thread 创建线程或者用 ThreadPoolExecutor 创建线程的时候，我们可以为当前设置的线程设置优先级 `setPriority`。这个优先级并不是我们之前讲到的 Nice 值，Java 的优先级分为 10 个等级，取值从 1 到 10，根据取值的大小，优先级越来越高，一般 Android 线程默认启动设置的优先级为 `NORM_PRIORITY = 5`。</div><div class="line"></div><div class="line">虽然 Java 的优先级和 Nice 值不一样，但是它们之间同样存在一定的对应关系，当我们在 Java 层设置优先级的时候，同样会导致 Linux 对应轻量级进程的 Nice 值的变化，它们的对应关系，我们可以在 `thread_android.cc` 中找到它们之间的对应关系：</div><div class="line"></div><div class="line">```c</div><div class="line">static const int kNiceValues[10] = &#123;</div><div class="line">  ANDROID_PRIORITY_LOWEST,                // 1 (MIN_PRIORITY)</div><div class="line">  ANDROID_PRIORITY_BACKGROUND + 6,</div><div class="line">  ANDROID_PRIORITY_BACKGROUND + 3,</div><div class="line">  ANDROID_PRIORITY_BACKGROUND,</div><div class="line">  ANDROID_PRIORITY_NORMAL,                // 5 (NORM_PRIORITY)</div><div class="line">  ANDROID_PRIORITY_NORMAL - 2,</div><div class="line">  ANDROID_PRIORITY_NORMAL - 4,</div><div class="line">  ANDROID_PRIORITY_URGENT_DISPLAY + 3,</div><div class="line">  ANDROID_PRIORITY_URGENT_DISPLAY + 2,</div><div class="line">  ANDROID_PRIORITY_URGENT_DISPLAY         // 10 (MAX_PRIORITY)</div><div class="line">&#125;;</div><div class="line"></div><div class="line">void Thread::SetNativePriority(int newPriority) &#123;</div><div class="line">  if (newPriority &lt; 1 || newPriority &gt; 10) &#123;</div><div class="line">    LOG(WARNING) &lt;&lt; "bad priority " &lt;&lt; newPriority;</div><div class="line">    newPriority = 5;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  int newNice = kNiceValues[newPriority-1];</div><div class="line">  pid_t tid = GetTid();</div><div class="line"></div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到它们的对应关系：</p>
+<table>
+<thead>
+<tr>
+<th>Java Priority</th>
+<th>nice值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>16</td>
+</tr>
+<tr>
+<td>3</td>
+<td>13</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>-4</td>
+</tr>
+<tr>
+<td>8</td>
+<td>-5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-6</td>
+</tr>
+<tr>
+<td>10</td>
+<td>-8</td>
+</tr>
+</tbody>
+</table>
+<h5 id="通过-Process-设置优先级"><a href="#通过-Process-设置优先级" class="headerlink" title="通过 Process 设置优先级"></a>通过 Process 设置优先级</h5><p>在 Android 中为线程设置优先级，一般鼓励通过 Process 类进行设置，Process 中 <code>setThreadPriority(int priority)</code> 优先级参数和底层Linux 的 Nice 值有一致的对应关系，而且 Process 还提供设置线程组的方法。</p>
+<p>不过需要特别说明的一点是，当我们通过 Process 进行线程优先级设置的以后，并不会改变 Thread 对象里面优先级的值，这从某种角度上来说，是系统的一个 bug。</p>
+<h5 id="Android-线程优先级的控制"><a href="#Android-线程优先级的控制" class="headerlink" title="Android 线程优先级的控制"></a>Android 线程优先级的控制</h5><p>Android 中常见的几种异步方式有 new Thread()、AysncTask、HandlerThread、ThreadPoolExecutor、IntentService。这几种方式中，除了 AysncTask 以外，其他的创建线程的过程中，默认都是和当前线程（一般是 UI 线程）保持一样的优先级，，只有 AysncTask 默认是 <code>THREAD_PRIORITY_BACKGROUND</code> 的优先级，所以为了保证主线程能够拥有较为优先的执行级别，建议在创建异步线程的过程中注意对优先级的控制。</p>
+<h4 id="随着进程改变"><a href="#随着进程改变" class="headerlink" title="随着进程改变"></a>随着进程改变</h4><p>除了开发者手动为线程设置的优先级意外，根据我们上面对 Android 进程变化的分析，可以知道，在程序运行过程中，随着应用状态的变化，Android 进程的调度策略会发生变化，接下来我们继续分析进程调度策略的变化如果改变进程的优先级（也就是主线程的优先级）和其他线程的优先级的。</p>
+<p>在前面计算完进程的优先级后，会通过 <code>applyOomAdjLocked</code> 方法将对应的优先级、adj、进程状态等值应用到进程上，我们注重关注其中关于进程优先级设置的部分。整个执行的过程可以大概总结为：</p>
+<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android_thread_schedule_3.png" alt=""></p>
+<p>其中调度组和进程组的映射关系：</p>
+<table>
+<thead>
+<tr>
+<th>调度组</th>
+<th>进程组</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SCHED_GROUP_BACKGROUND</code></td>
+<td><code>THREAD_GROUP_BG_NONINTERACTIVE</code></td>
+</tr>
+<tr>
+<td><code>SCHED_GROUP_TOP_APP</code> <code>SCHED_GROUP_TOP_APP_BOUND</code></td>
+<td><code>THREAD_GROUP_TOP_APP</code></td>
+</tr>
+<tr>
+<td>其他</td>
+<td><code>THREAD_GROUP_DEFAULT</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>通过设置进程组，改变了进程所在 cgroup，</li>
+<li>通过设置调度策略实现主线程在实时优先级和普通优先级的切换，</li>
+<li>通过设置优先级改变进程 nice 值，同时在底层会改变进程所在的 cgroup。</li>
+</ul>
+<p>由于这段代码不是很长，我们也可以看看代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 进程调度组发生变化</span></div><div class="line"><span class="keyword">if</span> (app.setSchedGroup != app.curSchedGroup) &#123;</div><div class="line">    <span class="keyword">int</span> oldSchedGroup = app.setSchedGroup;</div><div class="line">    app.setSchedGroup = app.curSchedGroup;</div><div class="line">    ...</div><div class="line">    <span class="keyword">if</span> (app.waitingToKill != <span class="keyword">null</span> &amp;&amp; app.curReceivers.isEmpty()</div><div class="line">            &amp;&amp; app.setSchedGroup == ProcessList.SCHED_GROUP_BACKGROUND) &#123;</div><div class="line">        <span class="comment">// 满足条件直接 kill 掉</span></div><div class="line">        app.kill(app.waitingToKill, <span class="keyword">true</span>);</div><div class="line">        success = <span class="keyword">false</span>;</div><div class="line">        </div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">    	<span class="comment">// 调度组映射到进程组</span></div><div class="line">        <span class="keyword">int</span> processGroup;</div><div class="line">        <span class="keyword">switch</span> (app.curSchedGroup) &#123;</div><div class="line">            <span class="keyword">case</span> ProcessList.SCHED_GROUP_BACKGROUND:</div><div class="line">                processGroup = THREAD_GROUP_BG_NONINTERACTIVE;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> ProcessList.SCHED_GROUP_TOP_APP:</div><div class="line">            <span class="keyword">case</span> ProcessList.SCHED_GROUP_TOP_APP_BOUND:</div><div class="line">                processGroup = THREAD_GROUP_TOP_APP;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                processGroup = THREAD_GROUP_DEFAULT;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">long</span> oldId = Binder.clearCallingIdentity();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">        	<span class="comment">//  设置进程组，对应到底层的 cgroup</span></div><div class="line">            setProcessGroup(app.pid, processGroup);</div><div class="line">            <span class="keyword">if</span> (app.curSchedGroup == ProcessList.SCHED_GROUP_TOP_APP) &#123;</div><div class="line">                <span class="comment">// do nothing if we already switched to RT</span></div><div class="line">                <span class="keyword">if</span> (oldSchedGroup != ProcessList.SCHED_GROUP_TOP_APP) &#123;</div><div class="line">                    <span class="comment">// 应用切换成前台应用  mVrController.onTopProcChangedLocked(app);</span></div><div class="line">                    <span class="keyword">if</span> (mUseFifoUiScheduling) &#123;</div><div class="line">                        <span class="comment">// Switch UI pipeline for app to SCHED_FIFO</span></div><div class="line">                        app.savedPriority = Process.getThreadPriority(app.pid);</div><div class="line">                        scheduleAsFifoPriority(app.pid, <span class="comment">/* suppressLogs */</span><span class="keyword">true</span>);</div><div class="line">                        <span class="keyword">if</span> (app.renderThreadTid != <span class="number">0</span>) &#123;</div><div class="line">                            scheduleAsFifoPriority(app.renderThreadTid,</div><div class="line">                                <span class="comment">/* suppressLogs */</span><span class="keyword">true</span>);</div><div class="line">                            <span class="keyword">if</span> (DEBUG_OOM_ADJ) &#123;</div><div class="line">                                Slog.d(<span class="string">"UI_FIFO"</span>, <span class="string">"Set RenderThread (TID "</span> +</div><div class="line">                                    app.renderThreadTid + <span class="string">") to FIFO"</span>);</div><div class="line">                            &#125;</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            <span class="keyword">if</span> (DEBUG_OOM_ADJ) &#123;</div><div class="line">                                Slog.d(<span class="string">"UI_FIFO"</span>, <span class="string">"Not setting RenderThread TID"</span>);</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="comment">// Boost priority for top app UI and render threads</span></div><div class="line">                        setThreadPriority(app.pid, TOP_APP_PRIORITY_BOOST);</div><div class="line">                        <span class="keyword">if</span> (app.renderThreadTid != <span class="number">0</span>) &#123;</div><div class="line">                            <span class="keyword">try</span> &#123;</div><div class="line">                                setThreadPriority(app.renderThreadTid,</div><div class="line">                                        TOP_APP_PRIORITY_BOOST);</div><div class="line">                            &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</div><div class="line">                                <span class="comment">// thread died, ignore</span></div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (oldSchedGroup == ProcessList.SCHED_GROUP_TOP_APP &amp;&amp;</div><div class="line">                       app.curSchedGroup != ProcessList.SCHED_GROUP_TOP_APP) &#123;</div><div class="line">                <span class="comment">// 应用退出前台                  mVrController.onTopProcChangedLocked(app);</span></div><div class="line">                <span class="keyword">if</span> (mUseFifoUiScheduling) &#123;</div><div class="line">                    <span class="comment">// Reset UI pipeline to SCHED_OTHER</span></div><div class="line">                    setThreadScheduler(app.pid, SCHED_OTHER, <span class="number">0</span>);</div><div class="line">                    setThreadPriority(app.pid, app.savedPriority);</div><div class="line">                    <span class="keyword">if</span> (app.renderThreadTid != <span class="number">0</span>) &#123;</div><div class="line">                        setThreadScheduler(app.renderThreadTid,</div><div class="line">                            SCHED_OTHER, <span class="number">0</span>);</div><div class="line">                        setThreadPriority(app.renderThreadTid, -<span class="number">4</span>);</div><div class="line">                    &#125;</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">// Reset priority for top app UI and render threads</span></div><div class="line">                    setThreadPriority(app.pid, <span class="number">0</span>);</div><div class="line">                    <span class="keyword">if</span> (app.renderThreadTid != <span class="number">0</span>) &#123;</div><div class="line">                        setThreadPriority(app.renderThreadTid, <span class="number">0</span>);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">false</span>) &#123;</div><div class="line">                Slog.w(TAG, <span class="string">"Failed setting process group of "</span> + app.pid</div><div class="line">                        + <span class="string">" to "</span> + app.curSchedGroup);</div><div class="line">                Slog.w(TAG, <span class="string">"at location"</span>, e);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            Binder.restoreCallingIdentity(oldId);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里我们已经清晰的了解到进程在应用状态变化后，都发生了哪些优先级的变化，接下来还有一个疑团，就是其他线程的优先级的变化，根据观察我们发现，除了主线程的优先级会发生变化，其他子线程在创建以后，除非开发者手动修改其优先级，否则子线程的优先级并不会发生变化。但是在应用状态发生变化的时候，子线程其所在的进程组合主线程（也就是应用进程）是保持一致的，这是由于我们在设置进程组的时候，会遍历当前进程下所有的 task，然后根据不同的 cgroup 子系统设置进程组，这段代码在 <code>android_util_Process.cpp</code> 的 <code>android_os_Process_setProcessGroup(JNIEnv* env, jobject clazz, int pid, jint grp)</code> 方法中：</p>
+<p>这里通过 <code>SchedPolicy sp = (SchedPolicy) grp;</code> 将前文说的 Process 进程组和 SchedPolicy 进程调度组进行对应转化。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">// 打开进程所有 task 目录</div><div class="line">sprintf(proc_path, "/proc/%d/task", pid);</div><div class="line">if (!(d = opendir(proc_path))) &#123;</div><div class="line">    // If the process exited on us, don't generate an exception</div><div class="line">    if (errno != ENOENT)</div><div class="line">        signalExceptionForGroupError(env, errno, pid);</div><div class="line">    return;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 遍历所有task</div><div class="line">while ((de = readdir(d))) &#123;</div><div class="line">    int t_pid;</div><div class="line">    int t_pri;</div><div class="line"></div><div class="line">    if (de-&gt;d_name[0] == '.')</div><div class="line">        continue;</div><div class="line">    t_pid = atoi(de-&gt;d_name);</div><div class="line"></div><div class="line">    if (!t_pid) &#123;</div><div class="line">        ALOGE("Error getting pid for '%s'</div><div class="line">", de-&gt;d_name);</div><div class="line">        continue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    t_pri = getpriority(PRIO_PROCESS, t_pid);</div><div class="line"></div><div class="line">    if (t_pri &lt;= ANDROID_PRIORITY_AUDIO) &#123;</div><div class="line">        int scheduler = sched_getscheduler(t_pid);</div><div class="line">        if ((scheduler == SCHED_FIFO) || (scheduler == SCHED_RR)) &#123;</div><div class="line">            // This task wants to stay in its current audio group so it can keep its budget</div><div class="line">            // don't update its cpuset or cgroup</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (isDefault) &#123;</div><div class="line">        if (t_pri &gt;= ANDROID_PRIORITY_BACKGROUND) &#123;</div><div class="line">            // This task wants to stay at background</div><div class="line">            // update its cpuset so it doesn't only run on bg core(s)</div><div class="line">#ifdef ENABLE_CPUSETS</div><div class="line">            int err = set_cpuset_policy(t_pid, sp);</div><div class="line">            if (err != NO_ERROR) &#123;</div><div class="line">                signalExceptionForGroupError(env, -err, t_pid);</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">#endif</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    int err;</div><div class="line">#ifdef ENABLE_CPUSETS</div><div class="line">    // set both cpuset and cgroup for general threads</div><div class="line">    err = set_cpuset_policy(t_pid, sp);</div><div class="line">    if (err != NO_ERROR) &#123;</div><div class="line">        signalExceptionForGroupError(env, -err, t_pid);</div><div class="line">        break;</div><div class="line">    &#125;</div><div class="line">#endif</div><div class="line"></div><div class="line">    err = set_sched_policy(t_pid, sp);</div><div class="line">    if (err != NO_ERROR) &#123;</div><div class="line">        signalExceptionForGroupError(env, -err, t_pid);</div><div class="line">        break;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line">closedir(d);</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在 Android 应用状态发生变化以后，会导致进程的 <code>oom_score_adj</code>、<code>procState</code>、<code>schedGroup</code> 等进程状态的重新计算和设置，从而改变进程的优先级和调度策略，帮助系统进行更合理资源分配和资源回收。</p>
+<p>Android 中的线程对应到 Linux 的内核中的轻量级进程，所以 Linux 为其分配资源适用 Linux 进程调度策略。其中主线程等同于应用进程的优先级，一般由 Android 系统根据应用状态的变化自行调控，不建议开发者手动设置，不过我们为应用中各子线程设置的优先级，将直接影响到主线程在抢占各种系统资源尤其是 CPU 资源时候的优先级，所以为了保证主线程执行的顺畅，我们应尽量控制子线程的优先级。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>经过一些调试以后，我们发现应用在启动 1-2s 以后，主线程的优先级就从 <code>TOP_APP_PRIORITY_BOOST(-10)</code> 降为 <code>THREAD_PRIORITY_BACKGROUND(10)</code> 后台进程的优先级，这直接导致主线程在大多数情况下的优先级是低于其他线程的，从而在抢占 CPU 资源时处于劣势。根据之前对于 Android 线程调度分析，可以排除是系统降低的可能，同时我们对比了其他应用，发现所有其他应用当处于前台的时候，主线程的优先级都是 <code>TOP_APP_PRIORITY_BOOST(-10)</code>，这进一步加强了对于业务代码误操作导致主线程降低的推断，最后我们通过对  <code>Process.setThreadPriority(priority)</code> 调用的排查，发现的确有一个地方不小心为主线程设置了 <code>THREAD_PRIORITY_BACKGROUND(10)</code> 的优先级。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>可以预测，如果不是这次对于卡顿栈的分析，我们不能确定我们还有多久才能发现这个已经存在很久的 bug，我们依然会这样一个小小的失误而承担巨大的成本，因为在后台线程本身就很多主线程的优先级得不到保障的情况下，应用的卡顿是不可避免的，而且可能做再多其他方面的优化，也于事无补，性能检测和监控的价值就在这里，虽然不能马上让应用有质的飞跃，但一点一滴的优化，我们的应用会变得越来越流畅。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.jianshu.com/p/d80d5d0f7dbe" target="_blank" rel="noopener">从linux到android，进程的方方面面</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/kernel/l-thread/index.html" target="_blank" rel="noopener">Linux 线程实现机制分析</a></li>
+<li><a href="http://blog.csdn.net/ylyuanlu/article/details/8830374" target="_blank" rel="noopener">内核线程、轻量级进程、用户线程的区别和联系</a></li>
+<li><a href="http://www.oschina.net/question/565065_67868" target="_blank" rel="noopener">Android 多线程系统概述及与Linux系统的关系</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-threading.html" target="_blank" rel="noopener">Linux 线程模型的比较：LinuxThreads 和 NPTL</a></li>
+<li><a href="https://www.jianshu.com/p/5a4fc2729c17" target="_blank" rel="noopener">内核线程与用户线程的一点小总结 《程序员的自我修养》</a></li>
+<li><a href="http://gityuan.com/2015/10/11/ps-command/" target="_blank" rel="noopener">ps进程命令</a></li>
+<li><a href="https://droidyue.com/blog/2015/09/05/android-process-and-thread-schedule-nice/" target="_blank" rel="noopener">剖析Android中进程与线程调度之nice</a></li>
+<li><a href="https://www.kancloud.cn/alex_wsc/androidsystem/483951" target="_blank" rel="noopener">深入了解Android系统-进程优先级</a></li>
+<li><a href="https://droidyue.com/blog/2015/09/17/android-process-and-thread-schedule-cgroups/?droid_refer=series" target="_blank" rel="noopener">Android进程线程调度之cgroups</a></li>
+<li><a href="http://blog.csdn.net/jesseyoung/article/details/39077829" target="_blank" rel="noopener">cgroups介绍及安装配置使用详解</a></li>
+<li><a href="http://blog.csdn.net/omnispace/article/details/73320945" target="_blank" rel="noopener">Android中关于cpu/cpuset/schedtune的应用</a></li>
+<li><a href="https://tech.meituan.com/cgroups.html" target="_blank" rel="noopener">Linux资源管理之cgroups简介</a></li>
+<li><a href="http://files.cnblogs.com/files/lisperl/cgroups%E4%BB%8B%E7%BB%8D.pdf" target="_blank" rel="noopener">cgroups介绍.pdf</a></li>
+<li><a href="http://gityuan.com/2016/08/07/android-adj/" target="_blank" rel="noopener">Android进程调度之adj算法</a></li>
+<li><a href="http://qiangbo.space/2016-11-23/AndroidAnatomy_Process_OomAdj/" target="_blank" rel="noopener">Android系统中的进程管理：进程的优先级</a></li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
+    
+        <a href="http://ohmerhe.com/2018/03/21/android_thread_scheduling/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://ohmerhe.com/2018/03/21/android_thread_scheduling/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/08/15/kotlin_facinating_feature_2/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Kotlin 迷人的语言特性（下）</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2018/03/21/android_thread_scheduling/" class="title">从 Linux 到 Android 线程调度</a></p>
+                            <p class="item-date"><time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/08/15/kotlin_facinating_feature_2/" class="title">Kotlin 迷人的语言特性（下）</a></p>
+                            <p class="item-date"><time datetime="2017-08-15T14:46:11.000Z" itemprop="datePublished">2017-08-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/08/15/kotlin_fascinating_feature/" class="title">Kotlin 迷人的语言特性（上）</a></p>
+                            <p class="item-date"><time datetime="2017-08-15T14:43:15.000Z" itemprop="datePublished">2017-08-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/22/kotlin_properties_delegate/" class="title">玩转 Kotlin 委托属性</a></p>
+                            <p class="item-date"><time datetime="2017-05-22T13:04:40.000Z" itemprop="datePublished">2017-05-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/22/swiftvskotlin_define_function/" class="title">Swift vs. Kotlin 漫谈之函数定义</a></p>
+                            <p class="item-date"><time datetime="2017-05-22T05:07:35.000Z" itemprop="datePublished">2017-05-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://kotlinthree.github.io/">KotlinThree</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.lanvige.com/">Lanvige&#39;s Zen Garden</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://liuduo.me/">刘铎.Me</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.mwlio.com/">mwlIO</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-chevron-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Ohmer<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ohmersblog';
+    
+    
+    var disqus_url = 'http://ohmerhe.com/2018/03/21/android_thread_scheduling/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

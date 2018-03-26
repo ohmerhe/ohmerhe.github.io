@@ -5,20 +5,19 @@
     
     <title>WeakHandler 是怎么解决 Handler 的内存问题的 | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
-Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+    <meta name="description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏 Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta name="keywords" content="Android,内存泄露">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WeakHandler 是怎么解决 Handler 的内存问题的">
 <meta property="og:url" content="http://ohmerhe.com/2016/01/18/how-to-work-weakhandler/index.html">
-<meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
-Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta property="og:site_name" content="Ohmer&#39;s Blog">
+<meta property="og:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏 Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/bridge_huge.jpg?imageView2/1/w/200">
 <meta property="og:updated_time" content="2016-07-09T14:24:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WeakHandler 是怎么解决 Handler 的内存问题的">
-<meta name="twitter:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏
-Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
+<meta name="twitter:description" content="问题回顾内存泄露什么是内存泄露，请参考Java的内存泄漏 Handler内存泄露对于安卓的初学者，常见的handler的写法如下：">
 <meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/bridge_huge.jpg?imageView2/1/w/200">
 
     
@@ -88,7 +87,7 @@ ga('send', 'pageview');
             
             <div id="search-form-wrap">
 
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
 </div>
         </div>
@@ -109,7 +108,7 @@ ga('send', 'pageview');
                 
                 <td>
                     
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
                 </td>
             </tr>
@@ -131,11 +130,11 @@ ga('send', 'pageview');
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                27
+                28
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                17
+                19
                 <span>tags</span>
             </div>
         </div>
@@ -202,7 +201,7 @@ ga('send', 'pageview');
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h2 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h2><h3 id="内存泄露"><a href="#内存泄露" class="headerlink" title="内存泄露"></a>内存泄露</h3><p>什么是内存泄露，请参考<a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="external">Java的内存泄漏</a></p>
+            <h2 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h2><h3 id="内存泄露"><a href="#内存泄露" class="headerlink" title="内存泄露"></a>内存泄露</h3><p>什么是内存泄露，请参考<a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="noopener">Java的内存泄漏</a></p>
 <h3 id="Handler内存泄露"><a href="#Handler内存泄露" class="headerlink" title="Handler内存泄露"></a>Handler内存泄露</h3><p>对于安卓的初学者，常见的handler的写法如下：</p>
 <a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">      <span class="comment">// ... </span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -214,7 +213,7 @@ ga('send', 'pageview');
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于上面的问题，已经可以找到比较多的解决方案，如下：</p>
 <ul>
 <li>静态内部类或独立类，一般针对Handler泄露的方案。既避免使用非静态内部类，这样Handler的对象就不会因为持有外部Activity的对象而造成泄露。</li>
-<li>弱引用，能够从根源处解决内存泄露问题。为了编写代码的方便性，一般不建议Runnable使用静态内部类或独立类来解决Runnable的泄露问题，而是通过让系统Message持有一个弱引用（<a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="external">参考</a>）来解决这个问题。</li>
+<li>弱引用，能够从根源处解决内存泄露问题。为了编写代码的方便性，一般不建议Runnable使用静态内部类或独立类来解决Runnable的泄露问题，而是通过让系统Message持有一个弱引用（<a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="noopener">参考</a>）来解决这个问题。</li>
 <li>在逻辑上控制，这个受限于业务的限制，不过如果逻辑允许的话，可以在页面关闭时将对应的线程结束，或者将Runnable对象从队列中移除<code>mHandler.removeCallback()</code>。</li>
 </ul>
 <h2 id="WeakHandler"><a href="#WeakHandler" class="headerlink" title="WeakHandler"></a>WeakHandler</h2><p>下面图片显示WeakHandler的实现逻辑</p>
@@ -229,12 +228,12 @@ ga('send', 'pageview');
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Activity&#123;</div><div class="line">	<span class="keyword">private</span> WeakHandler mHandler = <span class="keyword">new</span> WeakHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>如果只是定义一个临时变量，在内存不足时handler会被回收，导致callback和runnable对象也会被回收，从而不能拿到回调。</p>
 <p>或者如果定义一个静态变量的话，会导致callback和runnable不能被释放，从而导致内存泄露。</p>
-<p>项目地址：<a href="https://github.com/badoo/android-weak-handler" target="_blank" rel="external">android-weak-handler</a></p>
+<p>项目地址：<a href="https://github.com/badoo/android-weak-handler" target="_blank" rel="noopener">android-weak-handler</a></p>
 <h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
-<li><a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="external">Java的内存泄漏</a></li>
-<li><a href="http://my.oschina.net/rengwuxian/blog/181449" target="_blank" rel="external">Android中使用Handler造成内存泄露的分析和解决</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="external">Java 理论与实践: 用弱引用堵住内存泄漏</a></li>
-<li><a href="https://techblog.badoo.com/blog/2014/08/28/android-handler-memory-leaks" target="_blank" rel="external">Android Handler Memory Leaks</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/l-JavaMemoryLeak/" target="_blank" rel="noopener">Java的内存泄漏</a></li>
+<li><a href="http://my.oschina.net/rengwuxian/blog/181449" target="_blank" rel="noopener">Android中使用Handler造成内存泄露的分析和解决</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-jtp11225/" target="_blank" rel="noopener">Java 理论与实践: 用弱引用堵住内存泄漏</a></li>
+<li><a href="https://techblog.badoo.com/blog/2014/08/28/android-handler-memory-leaks" target="_blank" rel="noopener">Android Handler Memory Leaks</a></li>
 </ul>
 
         
@@ -354,6 +353,24 @@ ga('send', 'pageview');
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2018/03/21/android_thread_scheduling/" class="title">从 Linux 到 Android 线程调度</a></p>
+                            <p class="item-date"><time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
@@ -423,24 +440,6 @@ ga('send', 'pageview');
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/05/18/swiftvskotlin_variables/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153920665.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 之变量定义" class="thumbnail-image"></span>
-    
-</a>
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/05/18/swiftvskotlin_variables/" class="title">Swift vs. Kotlin 之变量定义</a></p>
-                            <p class="item-date"><time datetime="2017-05-18T05:03:43.000Z" itemprop="datePublished">2017-05-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -450,7 +449,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
         </div>
     </div>
 
@@ -459,7 +458,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -470,7 +469,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -510,7 +509,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 Ohmer<br>
+            &copy; 2018 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

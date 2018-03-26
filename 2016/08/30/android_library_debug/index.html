@@ -5,20 +5,19 @@
     
     <title>Library 不支持调试模式，不能忍 | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+    <meta name="description" content="tags: Android, Gradle 在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+<meta name="keywords" content="Android,Gradle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Library 不支持调试模式，不能忍">
 <meta property="og:url" content="http://ohmerhe.com/2016/08/30/android_library_debug/index.html">
-<meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+<meta property="og:site_name" content="Ohmer&#39;s Blog">
+<meta property="og:description" content="tags: Android, Gradle 在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
 <meta property="og:updated_time" content="2016-08-30T10:12:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Library 不支持调试模式，不能忍">
-<meta name="twitter:description" content="tags: Android, Gradle
-在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
+<meta name="twitter:description" content="tags: Android, Gradle 在 Android 开发过程中，BuildConfig.Debug 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 relea">
 <meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170096155.jpg?imageView2/1/w/200">
 
     
@@ -88,7 +87,7 @@ ga('send', 'pageview');
             
             <div id="search-form-wrap">
 
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
 </div>
         </div>
@@ -109,7 +108,7 @@ ga('send', 'pageview');
                 
                 <td>
                     
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
                 </td>
             </tr>
@@ -131,11 +130,11 @@ ga('send', 'pageview');
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                27
+                28
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                17
+                19
                 <span>tags</span>
             </div>
         </div>
@@ -203,9 +202,9 @@ ga('send', 'pageview');
         
             
             <p>tags: Android, Gradle</p>
-<p>在 Android 开发过程中，<code>BuildConfig.Debug</code> 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考<a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library" target="_blank" rel="external">这里</a>。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。</p>
+<p>在 Android 开发过程中，<code>BuildConfig.Debug</code> 这个变量用来判断当前运行环境是不是支持调试模式。我们常常利用这个变量的判断在开发或者测试包中做一些代码追踪、测试工具开启、调试信息等工作。不过在 Android 依赖库中默认编译出来的包并不会像编译应用一样默认会自动生成 release 和 debug 两种包，它只会默认生成 release 一个版本的包，可以参考<a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Referencing-a-Library" target="_blank" rel="noopener">这里</a>。在 release 版本的包里面，除非你有做过改动，不然默认 debuggable 这个值是 false。</p>
 <p>常见的依赖库的使用方式有两种，一种是把依赖库的作为一个模块和主项目一起编译，也就是文件依赖；另一种是使用 aar 的方式引用，下面分别针对两种不同的提供对应得解决方案。</p>
-<h2 id="文件依赖方式"><a href="#文件依赖方式" class="headerlink" title="文件依赖方式"></a>文件依赖方式</h2><p>其实 <a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">这个问题</a> 早在 2013 年就有人在 Google Group 上提出来。根据 <a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication" target="_blank" rel="external">官方文档</a>，我们可以通过控制 <code>publishNonDefault</code> 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。</p>
+<h2 id="文件依赖方式"><a href="#文件依赖方式" class="headerlink" title="文件依赖方式"></a>文件依赖方式</h2><p>其实 <a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="noopener">这个问题</a> 早在 2013 年就有人在 Google Group 上提出来。根据 <a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Library-Publication" target="_blank" rel="noopener">官方文档</a>，我们可以通过控制 <code>publishNonDefault</code> 这个变量的配置来使得依赖库在编译的时候默认生成所有变种的包，而不是仅仅生成 release 一种。</p>
 <p>在依赖项目中添加这个配置：</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    publishNonDefault <span class="literal">true</span></div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这样在编译完成后，默认情况下我们可以在输出目录看到两个 aar 文件（之前只有一个）。然后在项目中声明依赖的时候，区分不同的编译类型进行依赖：</p>
@@ -215,7 +214,9 @@ ga('send', 'pageview');
 <p>在前面官方文档中，我们发现还有一个配置信息可以利用 <code>defaultPublishConfig</code>。这个变量用于指定使用哪个变种的包作为默认编译的版本。默认这个值是 <code>release</code>。你可以在项目的配置添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultPublishConfig &quot;debug&quot;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>这个配置项后面的值是编译变种的全称，如果对于变种（variants）的概念不是很熟悉的话，可以回去再看看 Google 的 <a href="https://developer.android.com/studio/build/build-variants.html" target="_blank" rel="external">定义</a>。</p>
+<p>这个配置项后面的值是编译变种的全称，如果对于变种（variants）的概念不是很熟悉的话，可以回去再看看 Google 的 <a href="https://developer.android.com/studio/build/build-variants.html" target="_blank" rel="noopener">定义</a>。</p>
+</blockquote>
+<blockquote>
 <p>如果没有定义针对变种做过配置的话，默认支持 <code>release</code> 和 <code>debug</code> 两种，这是根据这两种默认编译类型自动生成的。</p>
 </blockquote>
 <p>这里有一个明显的 bug，必须在发布正式包和 snapshot 包的时候手动切换配置项的值。在我的项目中，我在发布 aar 包的时候，是通过在 <code>gradle.properties</code> 这个文件添加 <code>isRelease</code> 这个变量来区分的。当这个值是 <code>true</code> 的时候则会发布正式包，反之则发布 snapshot 版本。于是我也利用这个值来控制这个配置项的配置：</p>
@@ -228,9 +229,9 @@ ga('send', 'pageview');
 <p>虽然这种方案也可以解决问题，但是我个人不是很推荐。这种配置方式本身和依赖库的功能没有关联性，而且无形增加了依赖库的接入成本。</p>
 <h3 id="手动修改"><a href="#手动修改" class="headerlink" title="手动修改"></a>手动修改</h3><p>还有一种方案，是在依赖库编译完成之后，通过判断当前编译变种的类型，手动去修改 <code>BuildConfig</code> 里面的值。这种方案无形增加了解决问题的复杂度，和前面利用官方配置项没有本质区别。根据这种方案的提出的时间，我猜测这应该是在官方支持如上描述的配置方案之前的方案。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="external">Gradle Plugin User Guide</a></li>
-<li><a href="https://guides.codepath.com/android/Building-your-own-Android-library" target="_blank" rel="external">Building your own Android library</a></li>
-<li><a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="external">Issue 52962:    Gradle plugin does not propagate debug/release to dependencies</a></li>
+<li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="noopener">Gradle Plugin User Guide</a></li>
+<li><a href="https://guides.codepath.com/android/Building-your-own-Android-library" target="_blank" rel="noopener">Building your own Android library</a></li>
+<li><a href="https://code.google.com/p/android/issues/detail?id=52962" target="_blank" rel="noopener">Issue 52962:    Gradle plugin does not propagate debug/release to dependencies</a></li>
 </ul>
 
         
@@ -350,6 +351,24 @@ ga('send', 'pageview');
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2018/03/21/android_thread_scheduling/" class="title">从 Linux 到 Android 线程调度</a></p>
+                            <p class="item-date"><time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
@@ -419,24 +438,6 @@ ga('send', 'pageview');
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/05/18/swiftvskotlin_variables/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153920665.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 之变量定义" class="thumbnail-image"></span>
-    
-</a>
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/05/18/swiftvskotlin_variables/" class="title">Swift vs. Kotlin 之变量定义</a></p>
-                            <p class="item-date"><time datetime="2017-05-18T05:03:43.000Z" itemprop="datePublished">2017-05-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -446,7 +447,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
         </div>
     </div>
 
@@ -455,7 +456,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -466,7 +467,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -506,7 +507,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 Ohmer<br>
+            &copy; 2018 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

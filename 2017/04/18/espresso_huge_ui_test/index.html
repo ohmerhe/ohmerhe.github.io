@@ -5,26 +5,19 @@
     
     <title>使用 Espresso 实现完整覆盖的功能测试 | Ohmer&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="tags: Android, 测试
-对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。
-
-之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
+    <meta name="description" content="tags: Android, 测试 对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。  之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
+<meta name="keywords" content="Android,测试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Espresso 实现完整覆盖的功能测试">
 <meta property="og:url" content="http://ohmerhe.com/2017/04/18/espresso_huge_ui_test/index.html">
-<meta property="og:site_name" content="Ohmer's Blog">
-<meta property="og:description" content="tags: Android, 测试
-对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。
-
-之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
+<meta property="og:site_name" content="Ohmer&#39;s Blog">
+<meta property="og:description" content="tags: Android, 测试 对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。  之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
+<meta property="og:locale" content="en">
 <meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170003723.jpg?imageView2/1/w/200">
 <meta property="og:updated_time" content="2017-04-27T03:56:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Espresso 实现完整覆盖的功能测试">
-<meta name="twitter:description" content="tags: Android, 测试
-对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。
-
-之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
+<meta name="twitter:description" content="tags: Android, 测试 对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。  之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
 <meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170003723.jpg?imageView2/1/w/200">
 
     
@@ -94,7 +87,7 @@ ga('send', 'pageview');
             
             <div id="search-form-wrap">
 
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
 </div>
         </div>
@@ -115,7 +108,7 @@ ga('send', 'pageview');
                 
                 <td>
                     
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://ohmerhe.com"></form>
 
                 </td>
             </tr>
@@ -137,11 +130,11 @@ ga('send', 'pageview');
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                27
+                28
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                17
+                19
                 <span>tags</span>
             </div>
         </div>
@@ -220,7 +213,7 @@ ga('send', 'pageview');
 </ul>
 <p>对比上面的几个因素，我觉得更为主要的原因还是在于现有测试平台对于复杂逻辑处理的能力不够，导致对于 UI 测试的依赖性仅仅局限在安装测试和兼容性测试，只能用来跑一些主流程的东西，对于大多数功能还只能依靠人工的方式完成。</p>
 <h2 id="Espresso"><a href="#Espresso" class="headerlink" title="Espresso"></a>Espresso</h2><p>Espresso 是 Google 在 2013 年推出的 Android UI 测试的开源框架。其实之前我们团队也多多少少对 Espresso 有过一些尝试，但遗憾的是都没有深入的进行实践。一季度我们将 UI 测试作为一个很明确的坑来填以后，发现 Espresso 已经很强大了，经过实践下来我们发现用 Espresso 实现 80-90% 的功能性覆盖测试基本没有什么问题。而且 Espresso 的测试脚本编写起来非常简单，如果测试和开发共同来完成测试代码的编写，能够有效替代测试大量的重复机械的工作。</p>
-<p>下面我就来描述一下我们是怎么用 Espresso 来实现这一样一个完整覆盖的功能性测试平台。这篇文章会讲到一些在使用 Espresso 中遇到的坑，但是并不会在 How-to 的事情上面花太多的精力，如果你对 Espresso 还不是很了解的话，建议先去 <a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="external">官方文档</a> 了解一些，并先进行一些简单的实践。</p>
+<p>下面我就来描述一下我们是怎么用 Espresso 来实现这一样一个完整覆盖的功能性测试平台。这篇文章会讲到一些在使用 Espresso 中遇到的坑，但是并不会在 How-to 的事情上面花太多的精力，如果你对 Espresso 还不是很了解的话，建议先去 <a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="noopener">官方文档</a> 了解一些，并先进行一些简单的实践。</p>
 <h2 id="ETP-测试方案"><a href="#ETP-测试方案" class="headerlink" title="ETP 测试方案"></a>ETP 测试方案</h2><p>在介绍我们的测试平台方案之前，需要提前说明的是，我们在使用 Espresso 的方式可能和官方 Demo 里所展示的方式不完全一样。为了让我们写的测试代码能够更加灵活和方便的被复用在不同的测试用例中，从而实现更低成本的全功能覆盖，我们进行了一些方案设计，最后实现了我们现在的测试平台。</p>
 <p>给我们的测试方案取了一个高大上的名称——ETP 测试方案，也就是 Espresso Test Platform 的简称。大家如果看过 Google 官方的 Demo 的话，就应该能理解官方的思路其实是每个测试是完成一条完整的逻辑测试，比如完成添加一个笔记的测试逻辑。</p>
 <p><img src="http://7xpox6.com1.z0.glb.clouddn.com/4A9E3284-F1C5-4ED5-8B7F-3E5D4ACF0475.png" alt=""></p>
@@ -276,17 +269,17 @@ ga('send', 'pageview');
 <p>理论上这里进行的异步操作应该和 App 里面执行的异步操作是一样的，可以用 IdlingResource 去守护这样一个后台操作，但是实际使用下来，虽然 IdlingResource 已经接受到对应的异步完成回调，但是并没有回调到被注册的 ResourceCallback。</p>
 <h3 id="hasProperty-异常"><a href="#hasProperty-异常" class="headerlink" title="hasProperty 异常"></a>hasProperty 异常</h3><p>Espresso 用的是 Hamcrest 的语法来进行的验证，理论上应该支持所有 Hamcrest 的写法，但是当我们在使用 hasProperty 这个方法的时候，会发现下面这样的错误。这主要是由于 Android SDK 里面并没有完整 JDK 的库，我们用到这部分刚好在 Android SDK 没有。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.NoClassDefFoundError: Failed resolution of: Ljava/beans/Introspector;</div><div class="line">at org.hamcrest.beans.PropertyUtil.propertyDescriptorsFor(PropertyUtil.java:47)</div><div class="line">at org.hamcrest.beans.PropertyUtil.getPropertyDescriptor(PropertyUtil.java:28)</div><div class="line">at org.hamcrest.beans.HasPropertyWithValue.propertyOn(HasPropertyWithValue.java:94)</div><div class="line">at org.hamcrest.beans.HasPropertyWithValue.matchesSafely(HasPropertyWithValue.java:81)</div><div class="line">at org.hamcrest.TypeSafeDiagnosingMatcher.matches(TypeSafeDiagnosingMatcher.java:55)</div><div class="line">at org.hamcrest.core.AllOf.matches(AllOf.java:27)</div><div class="line">at org.hamcrest.DiagnosingMatcher.matches(DiagnosingMatcher.java:12)</div><div class="line">at android.support.test.espresso.action.AdapterDataLoaderAction.perform(AdapterDataLoaderAction.java:83)</div><div class="line">at android.support.test.espresso.ViewInteraction$1.run(ViewInteraction.java:144)</div><div class="line">at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:422)</div><div class="line">at java.util.concurrent.FutureTask.run(FutureTask.java:237)</div><div class="line">at android.os.Handler.handleCallback(Handler.java:739)</div><div class="line">at android.os.Handler.dispatchMessage(Handler.java:95)</div><div class="line">at android.os.Looper.loop(Looper.java:135)</div></pre></td></tr></table></figure>
-<p>根据 <a href="http://baiduhix.blogspot.com/2015/07/android-espresso-ondata-error.html" target="_blank" rel="external">Android espresso onData error</a> 这篇文章可以找到对应的解决方案，但是实际使用下来效果并不好，主要是 gradle 的 Android 插件在不同的版本里面对于引入 Java Core 的代码处理方式有差别，而且我用的 2.2.3 的版本根本就不能用，所以这里的建议绕过不要使用这个方法，我们最后是通过自己定义了一个 Match 来解决这个问题的。</p>
+<p>根据 <a href="http://baiduhix.blogspot.com/2015/07/android-espresso-ondata-error.html" target="_blank" rel="noopener">Android espresso onData error</a> 这篇文章可以找到对应的解决方案，但是实际使用下来效果并不好，主要是 gradle 的 Android 插件在不同的版本里面对于引入 Java Core 的代码处理方式有差别，而且我用的 2.2.3 的版本根本就不能用，所以这里的建议绕过不要使用这个方法，我们最后是通过自己定义了一个 Match 来解决这个问题的。</p>
 <h3 id="Drawerlayout-的坑导致用例执行失败"><a href="#Drawerlayout-的坑导致用例执行失败" class="headerlink" title="Drawerlayout 的坑导致用例执行失败"></a>Drawerlayout 的坑导致用例执行失败</h3><p>在官方 Support 包里面的 Drawerlayout 控件有个特性，就是当你触摸到它的触发区域就会发出一个延时操作（160ms），如果这段时间内没有子试图触发事件（如没有及时抬起手指）就会自动触发 Peek 动画，从而导致子试图的事件得不到响应。</p>
 <p>Espresso 的 perform(click()) 操作是先后发送了一个 EventDown 和 EventUp 事件，由于是异步发送的，所以没法保证每次两个事件的执行间隔在 160ms 之内，所以如果在 Drawerlayout 的拖拽相应区域内针对其他子试图的点击事件有可能得不到相应，从而导致用例执行失败。</p>
 <p>这种失败并不是业务逻辑出错，完全是 Drawerlayout 控件设计不合理导致的，而且 Google 的大神们根本没有提供关闭这个功能的接口（他们这么任性不是一次两次了）。 Drawerlayout 是官方提供的控件，你可以选择不使用这个控件自定义一个。我们的解决方案是通过 AOP 的方式在 Drawerlayout 发送这个延时操作以后马上将他从执行队列里移除，从而实现将它这个功能关闭的效果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Pointcut(&quot;execution(* android.support.v4.widget.DrawerLayout.ViewDragCallback.onEdgeTouched(..))&quot;)</div><div class="line">public void edgeTouchedPoint() &#123;&#125;</div><div class="line"></div><div class="line">@After(&quot;edgeTouchedPoint()&quot;)</div><div class="line">public void onExecutionPoint(final JoinPoint joinPoint) throws Throwable &#123;</div><div class="line">    Reflect.on(joinPoint.getTarget()).call(&quot;removeCallbacks&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>经过诸多尝试和实践，虽然过程中碰到了很多的问题，但最后都逐个被解决，证明用 Espresso 实现全功能覆盖的可行性。我们的方案已经开始实施，截止到现在虽然还没有完全实现覆盖，但是已经完成的部分已经开始产生效果，多次检测到由于开发不小心而导致的 bug，提高了产品的提测质量。可以预见在该方案完整实施后，将对产品质量有一个稳定、高效的保证。</p>
 <h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><ul>
-<li><a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="external">espresso</a></li>
-<li><a href="http://stackoverflow.com/questions/33120493/espresso-idling-resource-doesnt-work" target="_blank" rel="external">Espresso Idling Resource doesn’t work
+<li><a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="noopener">espresso</a></li>
+<li><a href="http://stackoverflow.com/questions/33120493/espresso-idling-resource-doesnt-work" target="_blank" rel="noopener">Espresso Idling Resource doesn’t work
 </a></li>
-<li><a href="http://baiduhix.blogspot.com/2015/07/android-espresso-ondata-error.html" target="_blank" rel="external">Android espresso onData error</a></li>
+<li><a href="http://baiduhix.blogspot.com/2015/07/android-espresso-ondata-error.html" target="_blank" rel="noopener">Android espresso onData error</a></li>
 </ul>
 
         
@@ -406,6 +399,24 @@ ga('send', 'pageview');
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+    
+</a>
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2018/03/21/android_thread_scheduling/" class="title">从 Linux 到 Android 线程调度</a></p>
+                            <p class="item-date"><time datetime="2018-03-21T15:18:07.000Z" itemprop="datePublished">2018-03-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
@@ -475,24 +486,6 @@ ga('send', 'pageview');
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/05/18/swiftvskotlin_variables/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-153920665.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 之变量定义" class="thumbnail-image"></span>
-    
-</a>
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/05/18/swiftvskotlin_variables/" class="title">Swift vs. Kotlin 之变量定义</a></p>
-                            <p class="item-date"><time datetime="2017-05-18T05:03:43.000Z" itemprop="datePublished">2017-05-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -502,7 +495,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a>
+            <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Gradle/" style="font-size: 12.5px;">Gradle</a> <a href="/tags/Kotlin/" style="font-size: 20px;">Kotlin</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/LoopBack/" style="font-size: 10px;">LoopBack</a> <a href="/tags/MySQL/" style="font-size: 12.5px;">MySQL</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/Swift/" style="font-size: 12.5px;">Swift</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/函数式编程/" style="font-size: 10px;">函数式编程</a> <a href="/tags/树莓派/" style="font-size: 15px;">树莓派</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a> <a href="/tags/测试/" style="font-size: 10px;">测试</a> <a href="/tags/网络请求/" style="font-size: 10px;">网络请求</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
         </div>
     </div>
 
@@ -511,7 +504,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kotlin/">Kotlin</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LoopBack/">LoopBack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-js/">Node.js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存泄露/">内存泄露</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/树莓派/">树莓派</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络请求/">网络请求</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -522,7 +515,7 @@ ga('send', 'pageview');
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -562,7 +555,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 Ohmer<br>
+            &copy; 2018 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>
