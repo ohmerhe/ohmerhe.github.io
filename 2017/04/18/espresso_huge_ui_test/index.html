@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="Ohmer&#39;s Blog">
 <meta property="og:description" content="tags: Android, 测试 对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。  之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170003723.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2017-04-27T03:56:22.000Z">
+<meta property="og:image" content="http://images.notend.cn/image/stock-photo-170003723.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2019-01-02T02:38:27.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Espresso 实现完整覆盖的功能测试">
 <meta name="twitter:description" content="tags: Android, 测试 对于基于 UI 的功能测试的需求其实一直存在，理由其实很简单，不想一直让人去做重复机械的事情，而且可靠性完全是靠人力的堆积产生。然而现在行业大多数公司的功能测试工作依然主要是依靠人工来完成，从我们公司的实践来看我觉得有几个方面的因素的影响。  之前的 UI 测试框架的表现差强人意。就拿我们公司来说，其实测试部门在去年已经实现并推广一套主要基于 UIAutomat">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170003723.jpg?imageView2/1/w/200">
+<meta name="twitter:image" content="http://images.notend.cn/image/stock-photo-170003723.jpg?imageView2/1/w/200">
 
     
 
@@ -162,7 +162,7 @@ ga('send', 'pageview');
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170003723.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://images.notend.cn/image/stock-photo-170003723.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -216,7 +216,7 @@ ga('send', 'pageview');
 <p>下面我就来描述一下我们是怎么用 Espresso 来实现这一样一个完整覆盖的功能性测试平台。这篇文章会讲到一些在使用 Espresso 中遇到的坑，但是并不会在 How-to 的事情上面花太多的精力，如果你对 Espresso 还不是很了解的话，建议先去 <a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="noopener">官方文档</a> 了解一些，并先进行一些简单的实践。</p>
 <h2 id="ETP-测试方案"><a href="#ETP-测试方案" class="headerlink" title="ETP 测试方案"></a>ETP 测试方案</h2><p>在介绍我们的测试平台方案之前，需要提前说明的是，我们在使用 Espresso 的方式可能和官方 Demo 里所展示的方式不完全一样。为了让我们写的测试代码能够更加灵活和方便的被复用在不同的测试用例中，从而实现更低成本的全功能覆盖，我们进行了一些方案设计，最后实现了我们现在的测试平台。</p>
 <p>给我们的测试方案取了一个高大上的名称——ETP 测试方案，也就是 Espresso Test Platform 的简称。大家如果看过 Google 官方的 Demo 的话，就应该能理解官方的思路其实是每个测试是完成一条完整的逻辑测试，比如完成添加一个笔记的测试逻辑。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/4A9E3284-F1C5-4ED5-8B7F-3E5D4ACF0475.png" alt=""></p>
+<p><img src="http://images.notend.cn/4A9E3284-F1C5-4ED5-8B7F-3E5D4ACF0475.png" alt=""></p>
 <p>这样的测试流程总结下来有两个比较明显的问题：</p>
 <ul>
 <li><p>每条测试用例需要单独编写，代码的复用性差，导致编写单元测试的成本较高，虽然 Google 官方提供录制测试脚本的功能，但是生成的代码可用性并不强，大多数情况下还是需要靠人来编写。</p>
@@ -232,7 +232,7 @@ ga('send', 'pageview');
 </li>
 </ul>
 <p>在单页面测试中，会根据需求尽可能覆盖这个页面的所有的功能。这个时候有人可能会说，在不同的应用状态下（比如：登录是否），通过 UI 测试所能产生的逻辑并不一致，怎么做到全覆盖能。我们的解决方案是在这个页面的测试代码中，需要全部覆盖该页面所有的逻辑分支，当开始执行这个单页面测试的时候，是怎么样的状态，就进入怎样的逻辑分支。这个时候又有人开始有疑问了，这样怎么做到全功能覆盖呢。想象力丰富的人可能已经想到了解决方案，我们先给到一张图启发一下，后面再介绍我们引入的下一个概念——测试流。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/D2653BAE-B2DB-43E4-8A91-0FB9240DBA9A.png?imageView2/1/w/720" alt=""></p>
+<p><img src="http://images.notend.cn/D2653BAE-B2DB-43E4-8A91-0FB9240DBA9A.png?imageView2/1/w/720" alt=""></p>
 <p>PS：如果使用的 MVP 的模式来编写代码的话，你会发现在单个页面需要那些逻辑是非常清晰的。</p>
 <p>虽然上面已经明确定义了单页面测试的写法，但是在实际应用过程中，还是会遇到一些场景，不在定义里面被约束，应该怎么处理会让人产生疑惑，会对单页面测试的能力的覆盖性产生怀疑。下面我列出来的几种情况常见的情况来解释应该怎么坚持单页面测试作为基本单位。</p>
 <h4 id="页面关联性测试"><a href="#页面关联性测试" class="headerlink" title="页面关联性测试"></a>页面关联性测试</h4><p>当涉及到页面互相关联的逻辑，一个典型的场景就是在订阅页面订阅一个任务，然后在订阅列表页需要及时显示最新添加的订阅内容。官方的用例是把它放在一条测试里面就不用说了，在我们的测试方案里面应该怎么处理。</p>
@@ -253,7 +253,7 @@ ga('send', 'pageview');
 </li>
 </ul>
 <h3 id="测试流和全功能覆盖"><a href="#测试流和全功能覆盖" class="headerlink" title="测试流和全功能覆盖"></a>测试流和全功能覆盖</h3><p>在每个页面的单页面测试都完成以后，接下来的任务就是怎么有效的将这些单页面组合起来。在单元测试中每个单元测试都是独立的，所以只要保证所有的测试用例被执行过就可以了。但是现在我们的目的是实现功能测试，所以一定会有一些状态下的逻辑需要测试。于是在单页面的基础上我们加入了测试流的概念。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/BA340370-0A57-4C0A-8FB4-E93B41D51950.png?imageView2/1/w/720" alt=""></p>
+<p><img src="http://images.notend.cn/BA340370-0A57-4C0A-8FB4-E93B41D51950.png?imageView2/1/w/720" alt=""></p>
 <ul>
 <li>一条测试流其实是不同单页面测试的顺序执行。通过前面的单页面测试来后对应用的产生的输出，变成后面一个单页面测试的输入（如：在某条测试流中需要应用处于登录状态，则可以在整个测试流的第一个单页面测试应该是登录页面测试）。</li>
 <li>单条测试流可以对应到某条业务的一条完整流程，一般会覆盖多个测试用例。</li>
@@ -402,7 +402,7 @@ ga('send', 'pageview');
                             <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -420,7 +420,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -438,7 +438,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -456,7 +456,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -474,7 +474,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -555,7 +555,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2018 Ohmer<br>
+            &copy; 2019 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

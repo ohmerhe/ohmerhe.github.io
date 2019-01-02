@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="Ohmer&#39;s Blog">
 <meta property="og:description" content="对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。 目标 如图所示，这次">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-12-29T15:11:01.000Z">
+<meta property="og:image" content="http://images.notend.cn/image/stock-photo-170083409.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2019-01-02T02:38:31.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="沪江学习安卓端应用架构重构">
 <meta name="twitter:description" content="对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。 目标 如图所示，这次">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/200">
+<meta name="twitter:image" content="http://images.notend.cn/image/stock-photo-170083409.jpg?imageView2/1/w/200">
 
     
 
@@ -162,7 +162,7 @@ ga('send', 'pageview');
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170083409.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://images.notend.cn/image/stock-photo-170083409.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -202,7 +202,7 @@ ga('send', 'pageview');
         
             
             <p>对于大的架构重构，其实我们一直很谨慎的。我们的原则是将重构融合在每次迭代中，逐步优化代码的结构。这次针对整个应用的架构的调整的背景是公司移动开发部门的人数和项目越来越多，当初设计的移动端的架构让项目的依赖关系越来越复杂，维护成本也越来越高。刚好赶上公司产品的特别需求，我们决定梳理并优化一下整个项目解构。最后，我们还是将整个重构的过程融合在每个迭代中，逐步完成一次大的架构升级。</p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-21-18-00-43.png" alt=""></p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p><img src="http://images.notend.cn/2016-11-21-18-00-43.png" alt=""></p>
 <p>如图所示，这次重构围绕一个老生常谈的概念「解耦」展开，设定几个目标：</p>
 <ul>
 <li>清晰划分各模块的角色</li>
@@ -213,9 +213,9 @@ ga('send', 'pageview');
 <li>提高可维护性</li>
 </ul>
 <h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><p>在重构之前，我们的应用架构可以大致分为两层，应用层和 Library 层。一些通用的 Library 主要由专门的部门的同事维护，各业务线也会有一些自己维护的依赖库，也属于 Library 层。各业务线的主应用通过直接依赖的方式使用所需要 Library 提供的功能。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-22-13-38-20.png" alt=""></p>
+<p><img src="http://images.notend.cn/2016-11-22-13-38-20.png" alt=""></p>
 <p>各个 Library 之间的依赖关系也是通过直接依赖的方式，由于没有一个明确的层级划分，随着 Library 数量的不断增加，他们之间的依赖关系变得越来越复杂，大致是这样一个状态。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-11-22-13-32-46.png" alt=""></p>
+<p><img src="http://images.notend.cn/2016-11-22-13-32-46.png" alt=""></p>
 <p>这样的应用架构在一个相对小的团队中，可以很好的满足需求，将单独的功能模块和业务模块直接抽离成依赖库的方式去维护，可以降低模块之间的耦合性，又能保证不同应用能够使用统一的公共服务（Library）。但当开发团队发展到一定规模，由于模块数据的增加，模块之间的依赖关系错综复杂，各业务线的业务需求千差万别，这样简单的架构就会显得捉襟见肘了。下面的情况常常让人很头疼。</p>
 <ul>
 <li><p>依赖库之间的强依赖。其中一个最为突出的问题，就是库与库之间的强依赖关系。比如我用了一个库 A，A 使用 B 库来实现网络访问，但是在我的主项目中 C 来实现的网络请求。这种情况就会导致在主项目中同时依赖了两个网络请求库。</p>
@@ -243,7 +243,7 @@ ga('send', 'pageview');
 </ul>
 <h4 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h4><p>依赖注入在我们看来是在面向接口编程的基础上再往前走了一步，让模块之间彻底解耦。在单纯的面向接口编程中，如果你需要使用某个功能模块的功能，你本身还是需要依赖对应的模块，并且需要初始化对应的实现。通过依赖注入的方式，使用方本身不用关注具体实现的初始化。而是由统一的注入模块将实现注入，调用方只需要和接口进行交互。这样做的好处是让模块间彻底解耦，也不会担心由于引入某个依赖库而导致引入一些本不想引入的库。</p>
 <h3 id="层级划分与角色划分"><a href="#层级划分与角色划分" class="headerlink" title="层级划分与角色划分"></a>层级划分与角色划分</h3><p>在我们的架构中，总体分为三个层次：底层、组件层和应用层。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-12-20-14-59-03.png" alt=""></p>
+<p><img src="http://images.notend.cn/2016-12-20-14-59-03.png" alt=""></p>
 <ul>
 <li><p>底层，底层是包含三个部分，分别为接口层、基础类层、SDK 扩展层。接口层是对上层功能组件和业务组件的接口定义。基础类层是本公司对一些 Android 原生类的进一步封装，这种封装往往抽象了本公司某些类的共有需求，但不含有任何具体业务的实现，如 BaseActivity 这种。SDK 层是对 Android 原生提供接口的强化或扩展，如对线程管理的优化。当在公司选定某种框架作为底层框架时（如：Kotlin 的标准库）也属于底层的 SDK。</p>
 </li>
@@ -261,7 +261,7 @@ ga('send', 'pageview');
 <li><p>业务接口层是每个产线针对自己的业务需求对网络请求功能进行的特殊定义，如对返回状态码的处理、API 层级的业务缓存和网络加密验证等。这种业务有的产线需要，有的产线不需要，即使都需要也可能出现需要定义的接口千差万别，所以每个产线单独定义这一层的接口，当然这层接口的实现也是由产线自己封装实现。</p>
 </li>
 </ul>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2016-12-20-14-58-10.png" alt=""></p>
+<p><img src="http://images.notend.cn/2016-12-20-14-58-10.png" alt=""></p>
 <h4 id="横向分类"><a href="#横向分类" class="headerlink" title="横向分类"></a>横向分类</h4><p>关于接口层里面不同功能模块的接口以怎样的形式组合和依赖，有两种方式，一种是在同一接口层的所有接口都放在一个库里面，所有需要用到任何接口的部分，都依赖这个接口库；还有一种是将接口和具体实现放在一个项目一起维护，只是这个模块提供两个依赖库：接口库和实现库。这两种实现方案各有利弊。</p>
 <p>第一种方案方便使用方的理解和使用，对于使用方只需要知道接口这个库，其他不需要知道，当有接口不满足的话，直接提需求就可以了。弊端是在任何一个模块的接口发生变化，都需要更新整个接口层，不过好在 Gradle 通过依赖合并的方式解决了这个问题，你只需要在你需要升级接口的地方升级，其他地方如果跟这次接口升级没有关系的话，依然可以使用老的版本。</p>
 <p>第二种方案比较方便于模块维护人员的维护，当你需要升级接口时能够在一个项目里面同时把接口层和实现层同时升级掉。第二种方案的缺陷也是很明显的，这样在接口层之前形成的依赖关系，又会和之前模块之间形成的依赖关系一样复杂，对于使用方还是要去理解复杂的依赖关系。</p>
@@ -418,7 +418,7 @@ ga('send', 'pageview');
                             <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -436,7 +436,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -454,7 +454,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -472,7 +472,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -490,7 +490,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -571,7 +571,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2018 Ohmer<br>
+            &copy; 2019 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

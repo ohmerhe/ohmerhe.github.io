@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="Ohmer&#39;s Blog">
 <meta property="og:description" content="安装Nginx先将系统更新到最新状态 1sudo apt-get update &amp;amp;&amp;amp; sudo apt-get upgrade">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-07-09T14:28:40.000Z">
+<meta property="og:image" content="http://images.notend.cn/image/stock-photo-138104577.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2019-01-02T02:38:16.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派安装 Nginx 和 PHP">
 <meta name="twitter:description" content="安装Nginx先将系统更新到最新状态 1sudo apt-get update &amp;amp;&amp;amp; sudo apt-get upgrade">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/200">
+<meta name="twitter:image" content="http://images.notend.cn/image/stock-photo-138104577.jpg?imageView2/1/w/200">
 
     
 
@@ -162,7 +162,7 @@ ga('send', 'pageview');
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-138104577.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://images.notend.cn/image/stock-photo-138104577.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -211,7 +211,7 @@ ga('send', 'pageview');
 <p>如果启动成功的话，我们会得到类似的返回</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pi@raspberrypi:~ $ sudo /etc/init.d/nginx start</div><div class="line">[ ok ] Starting nginx (via systemctl): nginx.service.</div></pre></td></tr></table></figure>
 <p>测试远程访问，在浏览器里输入树莓派的ip地址（如果你为你的树莓派配置了域名，也可以通过域名访问），可以看到如下的显示效果：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_install_success.png" alt="nginx_install_success"></p>
+<p><img src="http://images.notend.cn/image/nginx_install_success.png" alt="nginx_install_success"></p>
 <h2 id="安装PHP"><a href="#安装PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><p>配合Nginx使用时，PHP的安装包和Apache2配合使用稍微有些不同，PHP以FastCGI接口方式运行，因此我们需要安装<code>PHP FPM</code>包。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install php5-fpm -y</div></pre></td></tr></table></figure>
 <p>安装完成后会自动启动PHP服务，或者我们可以通过下面的命令启动。</p>
@@ -227,7 +227,7 @@ ga('send', 'pageview');
 <h3 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h3><p>在上面的配置都完成后，重启Nginx服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo service nginx restart</div></pre></td></tr></table></figure>
 <p>服务启动后，可以在浏览器访问该服务，看到如下的效果。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/image/nginx_php_pass.png" alt=""></p>
+<p><img src="http://images.notend.cn/image/nginx_php_pass.png" alt=""></p>
 <p>PS： 如果在Nginx启动过程中出现问题，可以通过<code>nginx -t</code>查看是什么配置出了问题</p>
 <h3 id="PHP配置"><a href="#PHP配置" class="headerlink" title="PHP配置"></a>PHP配置</h3><p>我们需要编辑<code>/etc/php5/fpm/php.ini</code>（为了安全性）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/php5/fpm/php.ini</div></pre></td></tr></table></figure>
@@ -361,7 +361,7 @@ ga('send', 'pageview');
                             <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -379,7 +379,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -397,7 +397,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -415,7 +415,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -433,7 +433,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -514,7 +514,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2018 Ohmer<br>
+            &copy; 2019 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

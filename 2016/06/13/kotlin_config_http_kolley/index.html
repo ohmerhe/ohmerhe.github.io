@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="Ohmer&#39;s Blog">
 <meta property="og:description" content="Kotlin官方提供一个DSL的典型应用场景，Anko致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而Anko让代码布局和XML一样简洁清晰。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2016-07-09T10:42:40.000Z">
+<meta property="og:image" content="http://images.notend.cn/image/stock-photo-156658571.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2019-01-02T02:38:31.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin 实现配置化网络请求">
 <meta name="twitter:description" content="Kotlin官方提供一个DSL的典型应用场景，Anko致力直接用Kotlin配置页面布局和视图的属性。将布局文件代码化能够带来许多如类型安全、解析效率、代码重用等好处，而Anko让代码布局和XML一样简洁清晰。">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/200">
+<meta name="twitter:image" content="http://images.notend.cn/image/stock-photo-156658571.jpg?imageView2/1/w/200">
 
     
 
@@ -162,7 +162,7 @@ ga('send', 'pageview');
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-156658571.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://images.notend.cn/image/stock-photo-156658571.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -228,8 +228,8 @@ ga('send', 'pageview');
 <p><code>val get = request.partially1(Request.Method.GET)</code>等提供了RESTful方法的封装，实现<code>Http.get{}</code>的方便调用。</p>
 <h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>关于图片请求模块的实现，其实也是异曲同工，虽然更加复杂一点，但是具体思路是一样的。有兴趣的可以下载<a href="https://github.com/ohmerhe/Kolley" target="_blank" rel="noopener">源码</a>查看实现，也欢迎提交代码。</p>
 <p>图片请求的方式</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Image.display &#123;</div><div class="line">    url = <span class="string">"http://7xpox6.com1.z0.glb.clouddn.com/android_bg.jpg"</span></div><div class="line">    imageView = mImageView</div><div class="line">    options &#123;</div><div class="line">        <span class="comment">// these values are all default value , you do not need specific them if you do not want to custom</span></div><div class="line">        imageResOnLoading = R.drawable.default_image</div><div class="line">        imageResOnLoading = R.drawable.default_image</div><div class="line">        imageResOnFail = R.drawable.default_image</div><div class="line">        decodeConfig = Bitmap.Config.RGB_565</div><div class="line">        scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX</div><div class="line">        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Image.load &#123;</div><div class="line">    url = <span class="string">"http://7xpox6.com1.z0.glb.clouddn.com/android_bg.jpg"</span></div><div class="line">    options &#123;</div><div class="line">        scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX</div><div class="line">        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX</div><div class="line">    &#125;</div><div class="line">    onSuccess &#123; bitmap -&gt;</div><div class="line">        _imageView2?.setImageBitmap(bitmap)</div><div class="line">    &#125;</div><div class="line">    onFail &#123; error -&gt;</div><div class="line">        log(error.toString())</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Image.display &#123;</div><div class="line">    url = <span class="string">"http://images.notend.cn/android_bg.jpg"</span></div><div class="line">    imageView = mImageView</div><div class="line">    options &#123;</div><div class="line">        <span class="comment">// these values are all default value , you do not need specific them if you do not want to custom</span></div><div class="line">        imageResOnLoading = R.drawable.default_image</div><div class="line">        imageResOnLoading = R.drawable.default_image</div><div class="line">        imageResOnFail = R.drawable.default_image</div><div class="line">        decodeConfig = Bitmap.Config.RGB_565</div><div class="line">        scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX</div><div class="line">        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Image.load &#123;</div><div class="line">    url = <span class="string">"http://images.notend.cn/android_bg.jpg"</span></div><div class="line">    options &#123;</div><div class="line">        scaleType = ImageView.ScaleType.CENTER_CROP</div><div class="line">        maxWidth = ImageDisplayOption.DETAULT_IMAGE_WIDTH_MAX</div><div class="line">        maxHeight = ImageDisplayOption.DETAULT_IMAGE_HEIGHT_MAX</div><div class="line">    &#125;</div><div class="line">    onSuccess &#123; bitmap -&gt;</div><div class="line">        _imageView2?.setImageBitmap(bitmap)</div><div class="line">    &#125;</div><div class="line">    onFail &#123; error -&gt;</div><div class="line">        log(error.toString())</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/Kotlin/anko" target="_blank" rel="noopener">Anko</a></li>
 <li><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="noopener">Kotlin Refrence</a></li>
@@ -357,7 +357,7 @@ ga('send', 'pageview');
                             <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -375,7 +375,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -393,7 +393,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -411,7 +411,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -429,7 +429,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -510,7 +510,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2018 Ohmer<br>
+            &copy; 2019 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

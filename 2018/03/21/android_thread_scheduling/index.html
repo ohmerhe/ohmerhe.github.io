@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="Ohmer&#39;s Blog">
 <meta property="og:description" content="起因最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CP">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200">
-<meta property="og:updated_time" content="2018-03-21T15:19:07.000Z">
+<meta property="og:image" content="http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200">
+<meta property="og:updated_time" content="2019-01-02T02:38:27.119Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 Linux 到 Android 线程调度">
 <meta name="twitter:description" content="起因最近我们的 APM 上线了应用卡顿的性能检测，我们使用的是和 BlockCanary 同样的方案，通过 Looper Printer 去监控应用的卡顿。在收集到线上数据以后，发现一个比较怪异的现象，大量的卡顿的情况下，当前执行线程（主线程）的执行时间其实并不长，主线程只执行了几毫秒，但是却卡顿1s甚至更长的时间。很明显这个时候是由于主线程没有抢占到CPU导致，为了搞清楚为什么主线程没有抢到CP">
-<meta name="twitter:image" content="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200">
+<meta name="twitter:image" content="http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200">
 
     
 
@@ -162,7 +162,7 @@ ga('send', 'pageview');
         
             
 	
-		<img src="http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
+		<img src="http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/1024/h/460" class="article-banner" />
 	
 
 
@@ -217,9 +217,9 @@ ga('send', 'pageview');
 </blockquote>
 <p>此外，Linux 内核不存在真正意义上的线程。Linux 将所有的执行实体都称之为任务（task），每一个任务在 Linux 上都类似于一个单线程的进程，具有内存空间、执行实体、文件资源等。但是，Linux 下不同任务之间可以选择公用内存空间，因而在实际意义上，共享同一个内存空间的多个任务构成了一个进程，而这些任务就成为这个进程里面的线程。</p>
 <p>比如在 Android 上我们通过 <code>adb shell</code>进入手机后，可以通过 <code>ps</code> 命令查看某个应用下的所有线程，先通过 <code>ps | grep $包名</code>找到对应进程的进程号，然后执行 <code>ps -t -p -P 6493</code>：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180314-172734.png" alt=""></p>
+<p><img src="http://images.notend.cn/WX20180314-172734.png" alt=""></p>
 <p>同时我们可以，执行 <code>ls /proc/6493/tasks</code> 查看该进程下的所有 tasks，他们之间有完整的对应关系：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180314-173909.png" alt=""></p>
+<p><img src="http://images.notend.cn/WX20180314-173909.png" alt=""></p>
 <blockquote>
 <p>PS: 查看 <code>/proc/6493/tasks</code> 需要 root 权限</p>
 </blockquote>
@@ -244,9 +244,9 @@ ga('send', 'pageview');
 <li>实时进程都是一些对响应时间要求比较高的进程，因此系统中有实时优先级高的进程处于运行队列的话，它们会抢占一般的进程的运行时间。</li>
 </ul>
 <h4 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h4><p>Linux 进程优先级与 nice 值及实时进程优先级的关系：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/prio-nice-rtpri.png" alt=""></p>
+<p><img src="http://images.notend.cn/prio-nice-rtpri.png" alt=""></p>
 <p>通过 <code>ps -p</code> 可以看到这几个值之间的对应关系：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-135011.png" alt=""></p>
+<p><img src="http://images.notend.cn/WX20180315-135011.png" alt=""></p>
 <h4 id="动态优先级"><a href="#动态优先级" class="headerlink" title="动态优先级"></a>动态优先级</h4><p>除此之外，在执行阶段，调度程序通过增加或减少进程静态优先级的值，来达到奖励IO消耗型或惩罚cpu消耗型的进程，调整后的进程称为动态优先级。与之对应的我们前面提到的优先级的值被称为静态优先级。</p>
 <h3 id="调度原理"><a href="#调度原理" class="headerlink" title="调度原理"></a>调度原理</h3><p>优先级，可以决定谁先运行了。但是对于调度程序来说，并不是运行一次就结束了，还必须知道间隔多久进行下次调度。于是就有了时间片的概念。时间片是一个数值，表示一个进程被抢占前能持续运行的时间。也可以认为是进程在下次调度发生前运行的时间(除非进程主动放弃CPU，或者有实时进程来抢占CPU)。时间片的大小设置并不简单，设大了，系统响应变慢(调度周期长)；设小了，进程频繁切换带来的处理器消耗。默认的时间片一般是10ms。</p>
 <p>举个例子说明调度原理的实现<a href="https://www.jianshu.com/p/d80d5d0f7dbe" target="_blank" rel="noopener">1</a>。</p>
@@ -300,7 +300,7 @@ ga('send', 'pageview');
 </ul>
 <p>通过下面的数据我们可以看到，前台进程组和后台进程组的 <code>cpu.share</code> 值相比接近于 20:1，也就是说前台进程组中的应用可以利用 95% 的 CPU，而处于后台进程组中的应用则只能获得 5% 的 CPU 利用率。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.shares</div><div class="line">1024</div><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/bg_non_interactive/cpu.shares</div><div class="line">52</div></pre></td></tr></table></figure>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-165309@2x.png" alt=""></p>
+<p><img src="http://images.notend.cn/WX20180315-165309@2x.png" alt=""></p>
 <p>同样我们也可查看 <code>cpu.rt_period_us</code> 与 <code>cpu.rt_runtime_us</code> 的时间对比：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.rt_period_us</div><div class="line">1000000</div><div class="line">shell@hammerhead:/ $ cat /dev/cpuctl/cpu.rt_runtime_us                                          </div><div class="line">800000</div></pre></td></tr></table></figure>
 <p>即单个逻辑CPU下每一秒内可以获得0.8秒的执行时间。</p>
@@ -374,7 +374,7 @@ ga('send', 'pageview');
 <p>PS：在Linux 2.6.36之前的版本中，Linux 提供调整优先级的文件是 <code>/proc/[pid]/oom_adj</code> 。这个文件允许的值的范围是-17 ~ +15之间。数值越小表示进程越重要。 这个文件在新版的 Linux 中已经废弃。但你仍然可以使用这个文件，当你修改这个文件的时候，内核会直接进行换算，将结果反映到 <code>oom_score_adj</code> 这个文件上。<br>Android早期版本的实现中也是依赖 <code>oom_adj</code> 这个文件。但是在新版本中，已经切换到使用 <code>oom_score_adj</code> 这个文件。</p>
 </blockquote>
 <p>为了便于管理，ProcessList.java中预定义了 <code>oom_score_adj</code> 的可能取值，这里的预定义值也是对应用进程的一种分类。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/WX20180315-180054.png" alt=""></p>
+<p><img src="http://images.notend.cn/WX20180315-180054.png" alt=""></p>
 <p>Lowmemorykiller 根据当前可用内存情况来进行进程释放，总设计了6个级别，即上表中“解释列”加粗的行，即 Lowmemorykiller 的杀进程的6档，如下：</p>
 <ul>
 <li><code>CACHED_APP_MAX_ADJ</code></li>
@@ -388,7 +388,7 @@ ga('send', 'pageview');
 <p>ProcessRecord中下面这些属性反应了 <code>oom_score_adj</code> 的值：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> maxAdj;                 <span class="comment">// Maximum OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> curRawAdj;              <span class="comment">// Current OOM unlimited adjustment for this process</span></div><div class="line"><span class="keyword">int</span> setRawAdj;              <span class="comment">// Last set OOM unlimited adjustment for this process</span></div><div class="line"><span class="keyword">int</span> curAdj;                 <span class="comment">// Current OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> setAdj;                 <span class="comment">// Last set OOM adjustment for this process</span></div><div class="line"><span class="keyword">int</span> verifiedAdj;            <span class="comment">// The last adjustment that was verified as actually being set</span></div></pre></td></tr></table></figure>
 <h4 id="Process-State"><a href="#Process-State" class="headerlink" title="Process State"></a>Process State</h4><p>对应的在 ActivityManager 重定义了 process_state 级别的划分，Android 系统会在修改进程状态的同时更新 <code>oom_score_adj</code> 的分级：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/2018-03-15-18-03-57.png" alt=""></p>
+<p><img src="http://images.notend.cn/2018-03-15-18-03-57.png" alt=""></p>
 <p>在 ProcessRecord 中，记录了和进程状态相关的属性：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> curProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Currently computed process state</span></div><div class="line"><span class="keyword">int</span> repProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Last reported process state</span></div><div class="line"><span class="keyword">int</span> setProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Last set process state in process tracker</span></div><div class="line"><span class="keyword">int</span> pssProcState = PROCESS_STATE_NONEXISTENT; <span class="comment">// Currently requesting pss for</span></div></pre></td></tr></table></figure>
 <h4 id="Schedule-Group"><a href="#Schedule-Group" class="headerlink" title="Schedule Group"></a>Schedule Group</h4><p>对应到底层进程分组，除了上面提到的 <code>Process.java</code> 定义的不同线程组的定义，同时还为 <code>Activity manager</code> 定义了一套类似的调度分组，和之前的线程分组定义也存在对应关系：</p>
@@ -619,13 +619,13 @@ ga('send', 'pageview');
 </tbody>
 </table>
 <p>且 client 的 curSchedGroup 大于当前进程的 schedGroup，则需要重新设置当前进程的调度策略；此时，如果有设置 <code>BIND_IMPORTANT</code> 这个 flag，则赋值 <code>client.curSchedGroup</code> 给 <code>schedGroup</code>，否则则将 <code>schedGroup</code> 设置为 <code>SCHED_GROUP_DEFAULT</code>。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android-sched-thread-1-1.png" alt=""></p>
+<p><img src="http://images.notend.cn/android-sched-thread-1-1.png" alt=""></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ((cr.flags&amp;Context.BIND_WAIVE_PRIORITY) == <span class="number">0</span>) &#123;</div><div class="line">...</div><div class="line">	<span class="keyword">if</span> ((cr.flags&amp;Context.BIND_NOT_FOREGROUND) == <span class="number">0</span>) &#123;</div><div class="line">	    <span class="comment">// This will treat important bound services identically to</span></div><div class="line">	    <span class="comment">// the top app, which may behave differently than generic</span></div><div class="line">	    <span class="comment">// foreground work.</span></div><div class="line">	    <span class="keyword">if</span> (client.curSchedGroup &gt; schedGroup) &#123;</div><div class="line">	        <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_IMPORTANT) != <span class="number">0</span>) &#123;</div><div class="line">	            schedGroup = client.curSchedGroup;</div><div class="line">	        &#125; <span class="keyword">else</span> &#123;</div><div class="line">	            schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">	        &#125;</div><div class="line">	    &#125;</div></pre></td></tr></table></figure>
 <ul>
 <li><code>BIND_ADJUST_WITH_ACTIVITY</code></li>
 </ul>
 <p>如果 client 有设置 <code>Context.BIND_ADJUST_WITH_ACTIVITY</code> 且 client 进程存在前台 Activity 并且 <code>adj &gt; ProcessList.FOREGROUND_APP_ADJ</code>，则根据 client 是否设置 <code>BIND_IMPORTANT</code> flag 来分别设置当前进程的调度策略。</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android-sched-thread-2.png" alt=""></p>
+<p><img src="http://images.notend.cn/android-sched-thread-2.png" alt=""></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ((cr.flags&amp;Context.BIND_WAIVE_PRIORITY) == <span class="number">0</span>) &#123;</div><div class="line">...</div><div class="line"></div><div class="line">	<span class="keyword">if</span> ((cr.flags&amp;Context.BIND_ADJUST_WITH_ACTIVITY) != <span class="number">0</span>) &#123;</div><div class="line">		<span class="comment">// client 进程存在前台 Activity 并且 adj &gt; ProcessList.FOREGROUND_APP_ADJ</span></div><div class="line">	    <span class="keyword">if</span> (a != <span class="keyword">null</span> &amp;&amp; adj &gt; ProcessList.FOREGROUND_APP_ADJ &amp;&amp;</div><div class="line">	        (a.visible || a.state == ActivityState.RESUMED ||</div><div class="line">	         a.state == ActivityState.PAUSING)) &#123;</div><div class="line">	        adj = ProcessList.FOREGROUND_APP_ADJ;</div><div class="line">	        <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_NOT_FOREGROUND) == <span class="number">0</span>) &#123;</div><div class="line">	            <span class="keyword">if</span> ((cr.flags&amp;Context.BIND_IMPORTANT) != <span class="number">0</span>) &#123;</div><div class="line">	                schedGroup = ProcessList.SCHED_GROUP_TOP_APP_BOUND;</div><div class="line">	            &#125; <span class="keyword">else</span> &#123;</div><div class="line">	                schedGroup = ProcessList.SCHED_GROUP_DEFAULT;</div><div class="line">	            &#125;</div><div class="line">	        &#125;</div><div class="line">	        app.cached = <span class="keyword">false</span>;</div><div class="line">	        app.adjType = <span class="string">"service"</span>;</div><div class="line">	        app.adjTypeCode = ActivityManager.RunningAppProcessInfo</div><div class="line">	                .REASON_SERVICE_IN_USE;</div><div class="line">	        app.adjSource = a;</div><div class="line">	        app.adjSourceProcState = procState;</div><div class="line">	        app.adjTarget = s.name;</div><div class="line">	        <span class="keyword">if</span> (DEBUG_OOM_ADJ_REASON) Slog.d(TAG, <span class="string">"Raise to service w/activity: "</span></div><div class="line">	                + app);</div><div class="line">	    &#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 <p>关于整计算过程，可以参考 <a href="http://gityuan.com/2016/08/07/android-adj/" target="_blank" rel="noopener">Android进程调度之adj算法</a> 里面的总结，不过根据不同的系统版本，会有稍许差异：</p>
 <ul>
@@ -741,7 +741,7 @@ ga('send', 'pageview');
 <h5 id="Android-线程优先级的控制"><a href="#Android-线程优先级的控制" class="headerlink" title="Android 线程优先级的控制"></a>Android 线程优先级的控制</h5><p>Android 中常见的几种异步方式有 new Thread()、AysncTask、HandlerThread、ThreadPoolExecutor、IntentService。这几种方式中，除了 AysncTask 以外，其他的创建线程的过程中，默认都是和当前线程（一般是 UI 线程）保持一样的优先级，，只有 AysncTask 默认是 <code>THREAD_PRIORITY_BACKGROUND</code> 的优先级，所以为了保证主线程能够拥有较为优先的执行级别，建议在创建异步线程的过程中注意对优先级的控制。</p>
 <h4 id="随着进程改变"><a href="#随着进程改变" class="headerlink" title="随着进程改变"></a>随着进程改变</h4><p>除了开发者手动为线程设置的优先级意外，根据我们上面对 Android 进程变化的分析，可以知道，在程序运行过程中，随着应用状态的变化，Android 进程的调度策略会发生变化，接下来我们继续分析进程调度策略的变化如果改变进程的优先级（也就是主线程的优先级）和其他线程的优先级的。</p>
 <p>在前面计算完进程的优先级后，会通过 <code>applyOomAdjLocked</code> 方法将对应的优先级、adj、进程状态等值应用到进程上，我们注重关注其中关于进程优先级设置的部分。整个执行的过程可以大概总结为：</p>
-<p><img src="http://7xpox6.com1.z0.glb.clouddn.com/android_thread_schedule_3.png" alt=""></p>
+<p><img src="http://images.notend.cn/android_thread_schedule_3.png" alt=""></p>
 <p>其中调度组和进程组的映射关系：</p>
 <table>
 <thead>
@@ -909,7 +909,7 @@ ga('send', 'pageview');
                             <a href="/2018/03/21/android_thread_scheduling/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170025851.jpg?imageView2/1/w/200)" alt="从 Linux 到 Android 线程调度" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -927,7 +927,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_facinating_feature_2/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170116497.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（下）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -945,7 +945,7 @@ ga('send', 'pageview');
                             <a href="/2017/08/15/kotlin_fascinating_feature/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170024241.jpg?imageView2/1/w/200)" alt="Kotlin 迷人的语言特性（上）" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -963,7 +963,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/kotlin_properties_delegate/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170107265.jpg?imageView2/1/w/200)" alt="玩转 Kotlin 委托属性" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -981,7 +981,7 @@ ga('send', 'pageview');
                             <a href="/2017/05/22/swiftvskotlin_define_function/" class="thumbnail">
     
     
-        <span style="background-image:url(http://7xpox6.com1.z0.glb.clouddn.com/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
+        <span style="background-image:url(http://images.notend.cn/image/stock-photo-170120521.jpg?imageView2/1/w/200)" alt="Swift vs. Kotlin 漫谈之函数定义" class="thumbnail-image"></span>
     
 </a>
                         </div>
@@ -1062,7 +1062,7 @@ ga('send', 'pageview');
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2018 Ohmer<br>
+            &copy; 2019 Ohmer<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>
