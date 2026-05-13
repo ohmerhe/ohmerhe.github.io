@@ -338,14 +338,15 @@ textarea { resize: vertical; min-height: 60px; }
     <div style="padding:24px;">
       <p style="margin-bottom:16px;color:var(--text-muted);">One-time payment, lifetime access. Removes watermark on all invoices. Enter your license key below after purchase.</p>
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:20px;">
-        <p style="font-weight:700;margin-bottom:8px;">Step 1: Pay $5 on Gumroad</p>
-        <a href="https://gumroad.com/l/invoicegen-pro" target="_blank" class="btn btn-primary" style="width:100%;text-align:center;text-decoration:none;margin-bottom:8px;">Buy on Gumroad ($5)</a>
-        <p style="font-size:0.75rem;color:#718096;">After purchase, Gumroad will email you a license key instantly.</p>
+        <p style="font-weight:700;margin-bottom:8px;">Step 1: Pay $5 via PayPal</p>
+        <p style="margin-bottom:8px;">Send <strong>$5.00</strong> to:</p>
+        <div style="background:#fff;border:2px solid #0070ba;border-radius:8px;padding:12px;text-align:center;font-size:1.1rem;font-weight:700;color:#0070ba;margin-bottom:12px;">ohmerhe@gmail.com</div>
+        <p style="font-size:0.75rem;color:#718096;">Include your email in the PayPal note. You'll receive your license key within 1 hour.</p>
       </div>
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;">
-        <p style="font-weight:700;margin-bottom:8px;">Step 2: Activate</p>
-        <div class="form-group"><label>Gumroad Email</label><input type="email" id="licenseEmail" placeholder="you@email.com"></div>
-        <div class="form-group"><label>License Key (from email)</label><input type="text" id="licenseKeyInput" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"></div>
+        <p style="font-weight:700;margin-bottom:8px;">Step 2: Activate License</p>
+        <div class="form-group"><label>Your Email (same as PayPal)</label><input type="email" id="licenseEmail" placeholder="you@email.com"></div>
+        <div class="form-group"><label>License Key (from email)</label><input type="text" id="licenseKeyInput" placeholder="INVG-PRO-XXXXXXXXXXXX"></div>
         <button class="btn btn-primary" style="width:100%;" onclick="activateLicense()">Activate Pro</button>
       </div>
     </div>
