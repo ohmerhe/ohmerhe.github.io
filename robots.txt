@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ohmerhe.github.io/sitemap.xml
